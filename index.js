@@ -1002,21 +1002,11 @@ setInterval(checkReminders, 60*1000)
 ////////////////////////////////////////////////////////////////////
 //R6 COMMANDS                                                    //
 //////////////////////////////////////////////////////////////////
-const RainbowSixApi = require('rainbowsix-api-node');
-const R6 = new RainbowSixApi();
+const r6 = require('./game-integrations/rainbowsix.js')
 
 const r6Get = bot.registerCommand('r6', (msg, args) => {
-	let username = args[0];
-	let platform = args[1];
-
-	//Get stats on the user on that platform
-	R6.stats(username, platform).then(response => {
-		console.log(response);
-	}).catch(error => {
-		console.error(error)
-	});
+	r6.getAllStats(msg, args, bot)
 })
-
 
 
 ////////////////////////////////////////////////////////////////////
