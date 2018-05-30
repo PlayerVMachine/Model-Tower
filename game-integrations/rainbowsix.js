@@ -47,7 +47,8 @@ exports.getCasualStats = async (msg, args, bot) => {
         bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
         return
     }
-    let playTime = casualStats.playTime /60 /60
+    let playTime = parseInt(casualStats.playTime)
+    let playTime = playTime/60/60
 
     let operatorStats = await R6.stats(username, platform, true)
     if (operatorStats.operator_records !== undefined) {
@@ -60,12 +61,14 @@ exports.getCasualStats = async (msg, args, bot) => {
             height: 256,
             width: 256
         }
+        console.log(badgeURL)
     } else {
         thumbnail = {
             url: msg.author.avatarURL,
             height: 256,
             width: 256
         }
+        console.log(thumbnail.url)
     }
 
     let embed = {
