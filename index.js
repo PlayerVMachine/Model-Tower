@@ -68,7 +68,7 @@ const hasUnbannedAccount = async (msg) => {
 
 	//if user exists and is not banned they may use the command
 	return true
-} 
+}
 
 /////////////////////////////////////////////////////////////////////
 //COMMAND CLIENT                                                  //
@@ -176,7 +176,7 @@ const ban = bot.registerCommand('ban', async (msg, args) => {
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
-		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))	
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
 	aliases: ['heck'],
@@ -191,7 +191,7 @@ const unban = bot.registerCommand('unban', async (msg, args) => {
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
-		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))	
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
 	aliases: ['unheck'],
@@ -206,12 +206,12 @@ const premium = bot.registerCommand('setPrem', async (msg, args) => {
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
-		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))	
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
 	aliases: ['sp'],
 	requirements: {userIDs: [config.creator]},
-	hidden: true	
+	hidden: true
 })
 
 /////////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ const raven = bot.registerCommand('Night', (msg, args) => {
 })
 
 const hello = bot.registerCommand('hello', async(msg, args) => {
-	let dmChannel = await msg.author.getDMChannel()	
+	let dmChannel = await msg.author.getDMChannel()
 
 	bot.createMessage(dmChannel.id, {embed: {
 		color: parseInt(config.color, 16),
@@ -299,7 +299,7 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 	usage: reply.close.usage
 })
 
-const followUser = bot.registerCommand('follow', async (msg, args) => { 
+const followUser = bot.registerCommand('follow', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
 		act.follow(msg, args, bot, client)
@@ -995,9 +995,29 @@ const checkReminders = async () => {
 	} catch (err) {
 		console.log(err)
 	}
-} 
+}
 
 setInterval(checkReminders, 60*1000)
+
+////////////////////////////////////////////////////////////////////
+//R6 COMMANDS                                                    //
+//////////////////////////////////////////////////////////////////
+const RainbowSixApi = require('rainbowsix-api-node');
+const R6 = new RainbowSixApi();
+
+const r6Get = bot.registerCommand('r6', (msg, args) => {
+	let username = '<username here>';
+	let platform = '<platforms : uplay, xone, ps4>';
+
+	//Get stats on the user on that platform
+	R6.stats(username, platform).then(response => {
+		console.log(response);
+	}).catch(error => {
+		console.error(error)
+	});
+})
+
+
 
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
@@ -1052,7 +1072,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 					footer: {text:'Part of the Broadcast Tower Integration Network'}
 				}
 			}
-			
+
 			for (var usr in streamSubList.followers) {
 				let user = await usersCol.findOne({_id:streamSubList.followers[usr]})
 
