@@ -1006,8 +1006,8 @@ const RainbowSixApi = require('rainbowsix-api-node');
 const R6 = new RainbowSixApi();
 
 const r6Get = bot.registerCommand('r6', (msg, args) => {
-	let username = '<username here>';
-	let platform = '<platforms : uplay, xone, ps4>';
+	let username = args[0];
+	let platform = args[1];
 
 	//Get stats on the user on that platform
 	R6.stats(username, platform).then(response => {
