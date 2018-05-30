@@ -48,7 +48,7 @@ exports.getCasualStats = async (msg, args, bot) => {
         return
     }
     let playTime = parseInt(casualStats.playTime)
-    let playTime = playTime/60/60
+    playTime = playTime/60/60
 
     let operatorStats = await R6.stats(username, platform, true)
     if (operatorStats.operator_records !== undefined) {
