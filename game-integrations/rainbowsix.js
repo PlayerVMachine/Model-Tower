@@ -49,12 +49,13 @@ exports.getCasualStats = async (msg, args, bot) => {
         return
     }
 
-    if (!statistics.player.has_played) {
+    let casualStats = statistics.player.stats.casual
+
+    if (!casualStats.has_played) {
         bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
         return
     }
 
-    let casualStats = statistics.player.stats.casual
     let playTime = casualStats.playTime/60/60
 
     let embed = {
