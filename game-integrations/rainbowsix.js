@@ -49,9 +49,9 @@ exports.getCasualStats = async (msg, args, bot) => {
     }
     let playTime = casualStats.playTime /60 /60
 
-    let statistics = await R6.stats(username, platform, true)
-    if (statistics.operator_records !== undefined) {
-        let rawURL = statistics.operator_records[0].operator.images.badge
+    let operatorStats = await R6.stats(username, platform, true)
+    if (operatorStats.operator_records !== undefined) {
+        let rawURL = operatorStats.operator_records[0].operator.images.badge
         let url = rawURL.slice(0, rawURL.length - 2)
         let badgeURL = url.replace('org', 'cc')
 
