@@ -15,8 +15,7 @@ exports.getAllStats = async (msg, args, bot) => {
     let platform = args[1];
 
     //Get stats on the user on that platform
-    let statistics = await R6.stats(username, platform, true)
-    console.log(JSON.stringify(statistics.operator_records[0], null, 4))
+    let statistics = await R6.stats(username, platform)
     if (statistics.player === undefined) {
         bot.createMessage(msg.channel.id, 'An error ocurred getting stats')
         return
@@ -56,12 +55,16 @@ exports.getCasualStats = async (msg, args, bot) => {
         let url = rawURL.slice(0, rawURL.length - 1)
         let badgeURL = url.replace('org', 'cc')
 
+        desc = f('Play time: %sh Top operator: %s', playTime, operatorStats.operator_records[0].operator.name)
+
         thumbnail = {
             url: badgeURL,
             height: 256,
             width: 256
         }
     } else {
+        desc = f('Play time: %sh', playTime)
+
         thumbnail = {
             url: msg.author.avatarURL,
             height: 256,
@@ -72,7 +75,7 @@ exports.getCasualStats = async (msg, args, bot) => {
     let embed = {
         embed: {
             title:f("%s's Rainbow Six Siege Casual Stats", username),
-            description: f('Play time: %sh', playTime),
+            description: desc,
             thumbnail:thumbnail,
             fields: [
                 {name:'Wins', value:casualStats.wins, inline:true},
