@@ -1,0 +1,321 @@
+{
+	"generic" : {
+		"logError":"```diff\n- %s```",
+		"bold":"**%s**",
+		"useeNoAccount":"%s, you do not have a broadcast station!",
+		"userNoAccount":"%s, %s does not have a broadcast station!",
+		"invalidID":"%s, %s is not a valid user id or mention!",
+		"cooldownMessage":"Your frequency is too high please lower it! wait `%ds`",
+		"cannotDoToBots":"%s, this action is not supported on bots!",
+		"cannotDoToSelf":"%s, this action is not supported on yourself!",
+		"userUnknown":"%s, The user %s has never tuned into the Tower's singals.",
+		"error":"Sorry %s, a fuse blew somewhere! Try again later, if this message persists please report it.",
+		"hello":"**Hi %s!**\n\nWelcome to your DMs with the Broadcast Tower, this is where you'll send/recieve most messages with the Tower. Unlike most bots you don't need to invite the Tower to your server to use it! You just need to share a server with the Tower to create your account.\n\n**Social Functions**\n__Post__: send a post to your followers! (Profanity is not allowed by default but you can change that with edit)\n__Follow__: follow a user to recieve their posts!\n__Edit__: add a tagline and bio to your profile, set your account to private\n__View__: check out a users profile!\nOf course unfollow, block and unblock are available as well, be sure to report suspected abuse!\n\n**Notification Functions**\n__Twitch__: get stream notifications for your favourite streamers!\n__Spotify__: get notified of new releases every Friday!\n__Weather__: get the daily forecast delivered to your DMs every day!\n__Reminders__: set reminders for yourself for anytime in the future!\n\n**Utility Functions**\n__Note__: make notes for yourself the Tower will keep track of them in your pins\n\nThese are just the currently available features, more are planned and if you have any suggestions please feel free to make them!\n\nGet started using the tower by doing `b.create` to make your account!\n\nThen take a look at your profile with `b.edit`, use edit's subcommands to update your profile. You can see what info others will see with the `b.view` command.\n\nOnce you're satisfied follow your friends that have accounts with `b.follow <mention|id>` and then you're all set to send your first post with `b.post <message>`!\n\nHappy broadcasting, use `b.help` to learn about more commands and feel free to ask questions in the Tower's home server!"
+	},
+	"ping" : {
+		"description":"No one asks how the bot is, only ping?",
+		"fullDescription":"Ask the bot to reply with 'Pong!'",
+		"usage":"`b.ping`"
+	},
+	"hello" : {
+		"description":"Introduces the bot!",
+		"fullDescription":"Sends a DM introducing the bot and detailing how to start using it.",
+		"usage":"`b.hello`"
+	},
+	"create" : {
+		"success":"%s, your account has been created! You are ready to broadcast!",
+		"error":"%s, there was an error creating your account, please try again later. If this message persists contact Hal.",
+		"alreadyHasAccount":"%s, you already have an account!",
+		"description":"Create a station with the Tower to start broadcasting.",
+		"fullDescription":"Create an account to use the bot's features.",
+		"usage":"`b.create`"
+	},
+	"close" : {
+		"success":"%s, your account has been closed! The airwaves will miss your broadcasts.",
+		"error":"%s, there was an error closing your account, please try again later.",
+		"confirmation":"%s, are you sure you want to close your account? Confirm with: `%d`, cancel with `cancel`",
+		"cancelled":"%s, you have cancelled the closure of your broadcast station.",
+		"wrongCode":"%s, that was not the confirmation code. Closing cancelled.",
+		"timeout":"No repsonse recieved in time `10s` from %s, account closure cancelled.",
+		"description":"Close up your station and take down your antenna",
+		"fullDescription":"Close your account to stop using the bot's features",
+		"usage":"`b.close`"
+	},
+	"follow" : {
+		"FollowerBlocked":"%s, has blocked you %s, you cannot follow them!",
+		"followeeBlocked":"%s, you blocked %s, you cannot follow them!",
+		"sent":"%s, your follow request has been sent to %s",
+		"request":"You recieved a follow request from %s! Approve with :white_check_mark: Deny with :x:",
+		"privDeny":"Follow request from %s declined!",
+		"privAck":"Follow request from %s accepted!",
+		"denied":"%s, your request to follow %s was denied.",
+		"success":"%s, you are now tuned into %s's broadcasts!",
+		"error":"%s, there was an error tunining into %s's broadcasts, please try again later.",
+		"already":"%s, you are already tuned into %s's broadcasts!",
+		"description":"Tune into a users broadcasts.",
+		"fullDescription":"Follow a user to recieve their posts.",
+		"usage":"`b.follow @user` or `b.follow userid`"
+	},
+	"unfollow" : {
+		"success":"%s, you are no longer following %s's broadcasts!",
+		"error":"%s, there was an error unfollowing %s, please try again later.",
+		"blocked":"%s, you were blocked by %s, as a result you were removed from their followers.",
+		"notFollowing":"%s, you are not following %s!",
+		"description":"Cease recieving a users broadcasts.",
+		"fullDescription":"Unfollow a user to stop getting their posts.",
+		"usage":"`b.unfollow @user` or `b.unfollow userid`"
+	},
+	"block" : {
+		"success":"%s, you have blocked %s.",
+		"error":"%s, there was an error blocking %s, please try again later.",
+		"already":"%s, you've already blocked %s!",
+		"description":"Block a user to prevent them following you, also prevents you from following them.",
+		"fullDescription":"Block a user to prevent them following you, also prevents you from following them.",
+		"usage":"`b.block @user` or `b.block userid`"
+	},
+	"unblock" : {
+		"success":"%s, you have unblocked %s! They may now follow you if they have not blocked you",
+		"error":"%s, there was an error unblocking %s, please try again later.",
+		"notBlocked":"%s, you have not blocked %s!",
+		"description":"Unblocks a user allowing you to follow each other",
+		"fullDescription":"Unblocks a user allowing you to follow each other",
+		"usage":"`b.unblock @user` or `b.block userid`"
+	},
+	"tagline" : {
+		"current":"%s, your current tagline is: %s, set a new one with `b.edit tagline <text>`",
+		"isTooLong":"%s, sorry that's too long to be your tagline (limit is 140 characters).",
+		"isProfane":"%s, you cannot have profanity in your tagline!",
+		"success":"%s, your tagline is now set to: %s",
+		"error":"%s, there was an error setting your tagline, please try again later.",
+		"description":"Provide a brief descritption of your station.",
+		"fullDescription":"View/set your tagline on your profile card.",
+		"usage":"`b.edit tagline` to view current, `b.edit tagline <text>` to set new"
+	},
+	"bio" : {
+		"current":"%s your current bio: %s, set a new one with `b.edit bio <text>`",
+		"isTooLong":"%s, sorry that's too long to be your bio (limit is 400 characters).",
+		"isProfane":"%s, you cannot have profanity in your bio!",
+		"success":"%s, your bio is now set to: %s",
+		"error":"%s, there was an error setting your bio, please try again later.",
+		"description":"Provide a brief descritption of your station.",
+		"fullDescription":"View/set your bio on your profile card.",
+		"usage":"`b.edit bio` to view current, `b.edit bio <text>` to set new"
+	},
+	"mature" : {
+		"current":"%s, your profanity preference is set to `%s`.",
+		"unexpected":"%s setting is one of `yes` or `no` not: %s",
+		"success":"%s, your profanity preference is now set to `%s`.",
+		"error":"%s, there was an error setting your profanity preference.",
+		"description":"Set your mature preference",
+		"fullDescription":"Set your mature preference i.e. do you want to send/recieve broadcasts with some profanity",
+		"usage":"`b.edit mature y|n`"
+	},
+	"dnd" : {
+		"current":"%s, your Do Not Disturb preference is set to `%s`.",
+		"unexpected":"%s setting is one of `yes` or `no` not: %s",
+		"success":"%s, your Do Not Disturb preference is now set to `%s`.",
+		"error":"%s, there was an error setting your Do Not Disturb preference.",
+		"description":"Set your Do Not Disturb preference",
+		"fullDescription":"Set your Do Not Disturb preference i.e. do you want to recieve broadcast DMs",
+		"usage":"`b.edit dnd y|n`"
+	},
+	"color" : {
+		"current":"%s, your color is set to `%s`.",
+		"unexpected":"%s, color must be a 6 hex-digit string like `#ff0000` not: %s",
+		"success":"%s, your embed color is now set to `%s`.",
+		"error":"%s, there was an error setting your embed color preference.",
+		"premium":"%s, you need to be a Patreon supportor to change your embed color.",
+		"description":"Set your embed color",
+		"fullDescription":"Set your embed color",
+		"usage":"`b.edit color #ff0000`"
+	},
+	"timezone" : {
+		"notATZ":"'%s, please enter a valid timezone! Use <https://timezonedb.com/time-zones> for reference.'","notATZ":"'%s, please enter a valid timezone! Use <https://timezonedb.com/time-zones> for reference.'",
+		"current":"%s, your timezone is set to `%s`.",
+		"success":"%s, your timezone is now set to `%s`.",
+		"error":"%s, there was an error setting your timezone preference.",
+		"description":"Set your timezone.",
+		"fullDescription":"Set your timezone (private) so that you can subscribe to daily/weekly notifications",
+		"usage":"`b.edit -tz America/New York`"
+	},
+	"view" : {
+		"description":"View your profile or a users profile.",
+		"fullDescription":"View your profile or a users profile.",
+		"usage":"`b.view` or `b.profile @user`"
+	},
+	"private" : {
+		"current":"%s, your private account preference is set to `%s`.",
+		"unexpected":"%s setting is one of `yes` or `no` not: %s",
+		"success":"%s, your private account preference is now set to `%s`.",
+		"error":"%s, there was an error setting your private account preference.",
+		"description":"Set your private account preference",
+		"fullDescription":"Set your private account preference i.e. can people add you without confirmation?",
+		"usage":"`b.edit private y|n`"
+	},
+	"defWeather" : {
+		"current":"%s your weather preferences are set to: %s in %s",
+		"success":"%s your default weather prefences are now %s and %s",
+		"error":"%s could not set your default weather prefences to %s and %s",
+		"description":"Sets your default location and degree preference",
+		"fullDescription":"Sets the location and degree preference for when you use weather commands without any arguments.",
+		"usage":"`b.edit -w <location> -<F|C>`"
+	},
+	"clearDMs" : {
+		"description":"Clears up to x posts from the bot in DMs in the last 50 messages",
+		"fullDescription":"Clears up to x posts from the bot in DMs in the last 50 messages",
+		"usage":"`b.clean <x>`"
+	},
+	"list" : {
+		"isOneOf":"%s, list is one of following, followers, or blocked.",
+		"notAlist":"%s, list must be one of following, followers, or blocked!",
+		"followers":"List of users following %s",
+		"following":"List of users %s is following",
+		"blocked":"List of users blocked by %s",
+		"twitch":"List of Twitch streamers followed by %s",
+		"empty":"List is empty!",
+		"description":"Displays a list of the users you are following, are following you, or you have blocked.",
+		"fullDescription":"Displays a list of the users you are following, are following you, or you have blocked.",
+		"usage":"`b.list followers`"
+	},
+	"post" : {
+		"noBlankPost":"No blank broadcasts thank you %s.",
+		"noNonPrinting":"Heck off with your non-printing characters %s tyvm.",
+		"noProfanity":"**Language, %s!**",
+		"sentConfirm":"Your station just broadcasted: %s",
+		"description":"Send a post to your followers!",
+		"fullDescription":"Send a post to your followers, no blank posts, certain profanity prohibited.",
+		"usage":"`b.post I just got my first Chicken Royale!`"
+	},
+	"reply" : {
+		"notMsg":"Sorry either that's not a message id or the post is more than fifty messages old.",
+		"youBlocked":"You cannot reply to someone you have blocked!",
+		"theyBlocked":"You cannot reply to someone who has blocked you!",
+		"notFollowed":"You cannot reply to someone who is not following you!",
+		"description":"Reply to one of your followers' posts",
+		"fullDescription":"Reply to one of your followers' posts",
+		"usage":"`b.reply <post id> <reply>`"
+	},
+	"leave" : {
+		"description":"Leave a post thread.",
+		"fullDescription":"Leave a post thread to stop recieving updates when someone replies.",
+		"usage":"`b.leave <message id>`"
+	},
+	"report" : {
+		"notMsg":"Sorry either that's not a message id or the post is more than fifty messages old.",
+		"submitted":"Thank you, your report has been submitted!",
+		"description":"Report a post if you suspect abuse of the system.",
+		"fullDescription":"Report posts that are against Discord's ToS or against common decency",
+		"usage":"`b.report <post id> <reason>`"
+	},
+	"help" : {
+		"listFormat":"%s: %s",
+		"unexpected":"%s, %s is not a command!",
+		"singleCmdDesc":"**Aliases:** %s\n**Description:** %s\n**Cooldown:** %ss\n**Usage:** %s",
+		"description":"Use with a command name to get more information about the command.",
+		"fullDescription":"Use as `b.help` for a list of commands, use as `b.help commandname` for details on that command.",
+		"usage":"`b.help` or `b.help list`"
+	},
+	"twitch" : {
+		"description":"List of streamers you've subcribed to recieve DMs about.",
+		"fullDescription":"Use `b.twitch sub <Streamer>` to subscribe!",
+		"usage":"`b.twitch`"
+	},
+	"tsub" : {
+		"description":"Subcribe to get a DM when a streamer goes live.",
+		"fullDescription":"Use `b.twitch unsub <Streamer>` to unsubscribe.",
+		"usage":"`b.twitch sub <Streamer>`"
+	},
+	"tunsub" : {
+		"description":"Use to unsubscribe from stream notifications for a streamer.",
+		"fullDescription":"Use when they're no longer your third favourite streamer.",
+		"usage":"`b.twitch unsub <Streamer>`"
+	},
+	"edit" : {
+		"description":"Use to see full broadcast station details.",
+		"fullDescription":"See your full account details, use the subcommands to see or edit a specific detail.",
+		"usage":"`b.edit`, `b.edit color #FF33aa`"
+	},
+	"spotify" : {
+		"description":"Get a list of available Spotify commands",
+		"fullDescription":"top: get top new releases, album: get album details, playlist: get 5 recommended playlists",
+		"usage":"`b.spotify`, `b.spotify <subcommand>`"
+	},
+	"album" : {
+		"description":"Get more info + album art of a new release in the top 100!",
+		"fullDescription":"Get more info + album art of a new release in the top 100!",
+		"usage":"`b.spotify album #`"
+	},
+	"playlist" : {
+		"description":"Get 5 playlist suggestions from Spotify!",
+		"fullDescription":"Get 5 playlist suggestions from Spotify! Use with a number from 1-5 to get the playlist's embed",
+		"usage":"`b.spotify playlists` or `b.spotify playlists #`"
+	},
+	"top" : {
+		"description":"Check the top 10 new releases of the week on Spotify!",
+		"fullDescription":"Check up to the top 100 new releases of the week on Spotify 10 at a time.",
+		"usage":"`b.top` or `b.top #`"
+	},
+	"weather" : {
+		"description":"Get the current weather for a given location.",
+		"fullDescription":"Get the current weather for a given location, use `-C` to set degrees to celsius",
+		"usage":"`b.weather <place>` or `b.weather <place> -C`"
+	},
+	"forecast" : {
+		"description":"Get a 3 day forecast for a given location.",
+		"fullDescription":"Get a 3 day forecast for a given location, use `-C` to set degrees to celsius",
+		"usage":"`b.forecast <place>` or `b.forecast <place> -C`"
+	},
+	"fsub" : {
+		"noTZ":"%s, you need to set your timezone using `b.edit -tz <country/major city>` first!\n Use <https://timezonedb.com/time-zones> if you need help finding the right timezone.",
+		"noWeather":"%s, you need to set your weather location using `b.edit -w <location -C|F>` first!",
+		"wrongTime":"%s, you need to enter the time you want to receive the forecast at in the 24 hour clock format: `HH:MM`.",
+		"description":"Subscribe to daily forecast updates at your preferred time",
+		"fullDescription":"Once you've set your timezone and weather prefences in your profile you can subscribe to daily forecast notifications at any time, the format is `HH:MM`, where HH is in 24-hour format.",
+		"usage":"`b.fsub <HH:MM>`"
+	},
+	"funsub" : {
+		"description":"Unsubscribe from daily forecast updates.",
+		"fullDescription":"Unsubscribe from daily forecast updates.",
+		"usage":"`b.funsub`"
+	},
+	"sSub" : {
+		"noTZ":"%s, you need to set your timezone using `b.edit -tz <country/major city>` first!\n Use <https://timezonedb.com/time-zones> if you need help finding the right timezone.",
+		"wrongTime":"%s, you need to enter the time you want to receive weekly Spotify new release reminders on Fridays at in the 24 hour clock format: `HH:MM`.",
+		"description":"Subscribe to weekly Spotify new release reminders at your preferred time on Fridays",
+		"fullDescription":"Once you've set your timezone prefence in your profile you can subscribe to weekly Spotify new release reminders at any time on Fridays, the format is `HH:MM`, where HH is in 24-hour format.",
+		"usage":"`b.spotify -sub <HH:MM>`"
+	},
+	"sUnsub": {
+		"description":"Unsubscribe from weekly Spotify new release reminders.",
+		"fullDescription":"Unsubscribe from weekly Spotify new release reminders.",
+		"usage":"`b.spotify -unsub`"
+	},
+	"note" : {
+		"description":"Make a note to yourself!",
+		"fullDescription":"Make a note to yourself, can include links and file uploads, gets pinned in your DMs with the Tower",
+		"usage":"`b.nts <note text>`"
+	},
+	"unnote" : {
+		"description":"Remove a note.",
+		"fullDescription":"Remove a note, removes the pin and deletes the message",
+		"usage":"`b.unnote <note #>`"
+	},
+	"notes" : {
+		"description":"View your current notes to self.",
+		"fullDescription":"Will list your pinned messages with the Tower.",
+		"usage":"`b.notes`"
+	},
+	"remindMe" : {
+		"description":"Set reminders for yourself",
+		"fullDescription":"Will remind you of your message at the specified time, all time arguments are optional however at least one must be specified",
+		"usage":"`b.remind <reminder> in #y#M#d#h#m`"
+	},
+	"ban" : {
+		"success":"**%s was banned!**",
+		"error":"There was an error banning %s, please try again later."
+	},
+	"unban" : {
+		"success":"%s was unbanned!",
+		"error":"There was an error unbanning %s, please try again later."
+	}
+}

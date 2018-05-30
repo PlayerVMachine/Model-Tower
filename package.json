@@ -1,0 +1,39 @@
+{
+  "name": "broadcast-tower",
+  "version": "1.0.0",
+  "description": "Discord bot providing social media like functions",
+  "main": "index.js",
+  "dependencies": {
+    "better-queue": "^3.8.7",
+    "body-parser": "^1.18.3",
+    "eris": "^0.8.5",
+    "express": "^4.16.3",
+    "moment-timezone": "^0.5.17",
+    "mongodb": "^3.0.7",
+    "npm": "^6.0.0",
+    "superagent": "^3.8.3",
+    "swearjar": "^0.2.0",
+    "twitch-helix": "^1.0.7",
+    "twitch-webhook": "^1.2.4",
+    "weather-js": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PlayerVMachine/Broadcast-Tower.git"
+  },
+  "keywords": [
+    "Discord",
+    "Bot",
+    "Broadcast"
+  ],
+  "author": "PlayerVMachine#6223",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PlayerVMachine/Broadcast-Tower/issues"
+  },
+  "homepage": "https://github.com/PlayerVMachine/Broadcast-Tower#readme"
+}
