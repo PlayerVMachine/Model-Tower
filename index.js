@@ -1008,6 +1008,10 @@ const r6Get = bot.registerCommand('r6', (msg, args) => {
 	r6.getAllStats(msg, args, bot)
 })
 
+r6Get.registerSubcommand('cas', (msg, args) => {
+	r6.getCasualStats(msg, args, bot)
+})
+
 
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
