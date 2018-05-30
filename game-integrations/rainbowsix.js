@@ -65,10 +65,10 @@ exports.getCasualStats = async (msg, args, bot) => {
             fields: [
                 {name:'Wins', value:casualStats.wins, inline:true},
                 {name:'Losses', value:casualStats.losses, inline:true},
-                {name:'Win rating', value:casualStats.wlr, inline:true},
+                {name:'Win rating', value:casualStats.wlr.toString(), inline:true},
                 {name:'Kills', value:casualStats.Kills, inline:true},
                 {name:'Deaths', value:casualStats.deaths, inline:true},
-                {name:'k/d', value:casualStats.kd, inline:true}
+                {name:'k/d', value:casualStats.kd.toString(), inline:true}
             ]
         }
     }
