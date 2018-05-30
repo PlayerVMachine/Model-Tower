@@ -48,12 +48,12 @@ exports.getCasualStats = async (msg, args, bot) => {
         return
     }
     let playTime = parseInt(casualStats.playTime)
-    playTime = playTime/60/60
+    //playTime = playTime/60/60
 
     let operatorStats = await R6.stats(username, platform, true)
     if (operatorStats.operator_records !== undefined) {
         let rawURL = operatorStats.operator_records[0].operator.images.badge
-        let url = rawURL.slice(0, rawURL.length - 2)
+        let url = rawURL.slice(0, rawURL.length - 1)
         let badgeURL = url.replace('org', 'cc')
 
         thumbnail = {
@@ -61,20 +61,18 @@ exports.getCasualStats = async (msg, args, bot) => {
             height: 256,
             width: 256
         }
-        console.log(badgeURL)
     } else {
         thumbnail = {
             url: msg.author.avatarURL,
             height: 256,
             width: 256
         }
-        console.log(thumbnail.url)
     }
 
     let embed = {
         embed: {
             title:f("%s's Rainbow Six Siege Casual Stats", username),
-            description: f('Play time: %sh', playTime.toString()),
+            description: f('Play time: %sh', playTime),
             thumbnail:thumbnail,
             fields: [
                 {name:'Wins', value:casualStats.wins, inline:true},
