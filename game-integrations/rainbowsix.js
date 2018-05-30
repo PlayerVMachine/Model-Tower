@@ -16,6 +16,7 @@ exports.getAllStats = async (msg, args, bot) => {
 
     //Get stats on the user on that platform
     let statistics = await R6.stats(username, platform, true)
+    console.log(JSON.stringify(statistics))
     if (statistics.player === undefined) {
         bot.createMessage(msg.channel.id, 'An error ocurred getting stats')
         return
@@ -25,7 +26,7 @@ exports.getAllStats = async (msg, args, bot) => {
     //let casualStats = statistics.player.stats.casual
     //let overallStats = statistics.player.stats.overall
     //let progression = statistics.player.stats.progression
-    console.log(JSON.stringify(statistics))
+
 
     bot.createMessage(msg.channel.id, JSON.stringify(statistics))
     //bot.createMessage(msg.channel.id, JSON.stringify(casualStats))
