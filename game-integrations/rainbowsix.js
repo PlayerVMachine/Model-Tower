@@ -16,22 +16,13 @@ exports.getAllStats = async (msg, args, bot) => {
 
     //Get stats on the user on that platform
     let statistics = await R6.stats(username, platform, true)
-    console.log(JSON.stringify(statistics))
+    console.log(JSON.stringify(statistics.operator_records[0], null, 4))
     if (statistics.player === undefined) {
         bot.createMessage(msg.channel.id, 'An error ocurred getting stats')
         return
     }
 
-    //let rankedStats = statistics.player.stats.ranked
-    //let casualStats = statistics.player.stats.casual
-    //let overallStats = statistics.player.stats.overall
-    //let progression = statistics.player.stats.progression
-
-
-    bot.createMessage(msg.channel.id, JSON.stringify(statistics))
-    //bot.createMessage(msg.channel.id, JSON.stringify(casualStats))
-    //bot.createMessage(msg.channel.id, JSON.stringify(overallStats))
-    //bot.createMessage(msg.channel.id, JSON.stringify(progression))
+    bot.createMessage(msg.channel.id, JSON.stringify(statistics, null, 4))
 }
 
 exports.getCasualStats = async (msg, args, bot) => {
@@ -50,7 +41,6 @@ exports.getCasualStats = async (msg, args, bot) => {
         bot.createMessage(msg.channel.id, 'An error ocurred getting stats, make sure that you entered the username correctly.')
         return
     }
-
     let casualStats = statistics.player.stats.casual
 
     if (!casualStats.has_played) {
