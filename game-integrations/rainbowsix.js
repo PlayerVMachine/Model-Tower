@@ -15,21 +15,22 @@ exports.getAllStats = async (msg, args, bot) => {
     let platform = args[1];
 
     //Get stats on the user on that platform
-    let statistics = await R6.stats(username, platform)
+    let statistics = await R6.stats(username, platform, true)
     if (statistics.player === undefined) {
         bot.createMessage(msg.channel.id, 'An error ocurred getting stats')
         return
     }
 
-    let rankedStats = statistics.player.stats.ranked
-    let casualStats = statistics.player.stats.casual
-    let overallStats = statistics.player.stats.overall
-    let progression = statistics.player.stats.progression
+    //let rankedStats = statistics.player.stats.ranked
+    //let casualStats = statistics.player.stats.casual
+    //let overallStats = statistics.player.stats.overall
+    //let progression = statistics.player.stats.progression
+    console.log(JSON.stringify(statistics))
 
-    bot.createMessage(msg.channel.id, JSON.stringify(rankedStats))
-    bot.createMessage(msg.channel.id, JSON.stringify(casualStats))
-    bot.createMessage(msg.channel.id, JSON.stringify(overallStats))
-    bot.createMessage(msg.channel.id, JSON.stringify(progression))
+    bot.createMessage(msg.channel.id, JSON.stringify(statistics))
+    //bot.createMessage(msg.channel.id, JSON.stringify(casualStats))
+    //bot.createMessage(msg.channel.id, JSON.stringify(overallStats))
+    //bot.createMessage(msg.channel.id, JSON.stringify(progression))
 }
 
 exports.getCasualStats = async (msg, args, bot) => {
@@ -56,12 +57,12 @@ exports.getCasualStats = async (msg, args, bot) => {
         return
     }
 
-    let playTime = casualStats.playTime/60/60
+    let playTime = casualStats.playTime /60 /60
 
     let embed = {
         embed: {
-            title:f("%s's Rainbow Six Siege Casual Stats"),
-            description: f('Play time: %dh', playTime),
+            title:f("%s's Rainbow Six Siege Casual Stats", username),
+            description: f('Play time: %sh', playTime.toString()),
             fields: [
                 {name:'Wins', value:casualStats.wins, inline:true},
                 {name:'Losses', value:casualStats.losses, inline:true},
