@@ -47,13 +47,32 @@ exports.getCasualStats = async (msg, args, bot) => {
         bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
         return
     }
-
     let playTime = casualStats.playTime /60 /60
+
+    let statistics = await R6.stats(username, platform, true)
+    if (statistics.operator_records !== undefined) {
+        let rawURL = statistics.operator_records[0].operator.images.badge
+        let url = rawURL.slice(0, rawURL.length - 2)
+        let badgeURL = url.replace('org', 'cc')
+
+        thumbnail = {
+            url: badgeURL,
+            height: 256,
+            width: 256
+        }
+    } else {
+        thumbnail = {
+            url: msg.author.avatarURL,
+            height: 256,
+            width: 256
+        }
+    }
 
     let embed = {
         embed: {
             title:f("%s's Rainbow Six Siege Casual Stats", username),
             description: f('Play time: %sh', playTime.toString()),
+            thumbnail:thumbnail,
             fields: [
                 {name:'Wins', value:casualStats.wins, inline:true},
                 {name:'Losses', value:casualStats.losses, inline:true},
