@@ -46,8 +46,8 @@ exports.getCasualStats = async (msg, args, bot) => {
         bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
         return
     }
-    let playTime = parseInt(casualStats.playTime)
-    //playTime = playTime/60/60
+    let playTime = parseInt(casualStats.playtime)
+    playTime = playTime/60/60
 
     let operatorStats = await R6.stats(username, platform, true)
     if (operatorStats.operator_records !== undefined) {
