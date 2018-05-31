@@ -240,7 +240,7 @@ exports.getTopOp = async (msg, args, bot) => {
 
     let embed = {
         embed: {
-            title:f("%s's Top Operators: %4", username, args[2]),
+            title:f("%s's Top Operators: #%s", username, args[2]),
             image: img,
             desc: desc,
             fields: [
