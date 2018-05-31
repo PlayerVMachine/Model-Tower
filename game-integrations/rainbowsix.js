@@ -10,7 +10,14 @@ const reply = require('../proto_messages.json')
 
 
 exports.getOverallStats = async (msg, args, bot) => {
+
+    if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
+        bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+        return
+    }
+
     bot.sendChannelTyping(msg.channel.id)
+
     let username = args[0];
     let platform = args[1];
 
@@ -43,7 +50,7 @@ exports.getOverallStats = async (msg, args, bot) => {
                 {name:'Headshots:', value:overall.headshots, inline:false},
                 {name:'Melee Kills:', value:overall.melee_kills, inline:true},
                 {name:'Penetration Kills:', value:overall.penetration_kills, inline:true},
-                {name:'Assits:', value:overall.assits, inline:false}
+                {name:'Assits:', value:overall.assists, inline:false}
             ]
         }
     }
@@ -57,6 +64,8 @@ exports.getCasualStats = async (msg, args, bot) => {
         bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
         return
     }
+
+    bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0];
     let platform = args[1];
@@ -128,6 +137,8 @@ exports.getRankedStats = async (msg, args, bot) => {
         bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
         return
     }
+
+    bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0];
     let platform = args[1];
