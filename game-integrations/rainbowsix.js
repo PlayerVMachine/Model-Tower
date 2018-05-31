@@ -227,6 +227,7 @@ exports.getTopOp = async (msg, args, bot) => {
         img = {
             url: operatorURL,
         }
+        console.log(operatorURL)
     } else {
         img = {
             url: msg.author.avatarURL,
@@ -251,6 +252,5 @@ exports.getTopOp = async (msg, args, bot) => {
             footer: {text: f('Total playtime: %dh', pt.toFixed(2))}
         }
     }
-    console.log(operatorURL)
     bot.createMessage(msg.channel.id, embed)
 }
