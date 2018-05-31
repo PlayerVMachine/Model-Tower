@@ -101,6 +101,7 @@ exports.getCasualStats = async (msg, args, bot) => {
             height: 256,
             width: 256
         }
+        console.log(badgeURL)
     } else {
         desc = desc + f('Play time: %sh', playTime)
 
