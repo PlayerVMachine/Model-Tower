@@ -45,12 +45,12 @@ exports.getOverallStats = async (msg, args, bot) => {
             fields: [
                 {name:'Revives:', value:overall.revives, inline:false},
                 {name:'Reinforcements Deployed:', value:overall.reinforcements_deployed, inline:true},
-                {name:'Barricades Built:', value:overall.barricades_built, inline:false},
+                {name:'Barricades Built:', value:overall.barricades_built, inline:true},
                 {name:'Hit Rate:', value:hitrate, inline:false},
-                {name:'Headshots:', value:overall.headshots, inline:false},
+                {name:'Headshots:', value:overall.headshots, inline:true},
                 {name:'Melee Kills:', value:overall.melee_kills, inline:true},
                 {name:'Penetration Kills:', value:overall.penetration_kills, inline:true},
-                {name:'Assits:', value:overall.assists, inline:false}
+                {name:'Assists:', value:overall.assists, inline:false}
             ]
         }
     }
