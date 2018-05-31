@@ -10,7 +10,7 @@ const reply = require('../proto_messages.json')
 
 
 exports.getOverallStats = async (msg, args, bot) => {
-
+    bot.sendChannelTyping(msg.channel.id)
     let username = args[0];
     let platform = args[1];
 
@@ -21,7 +21,7 @@ exports.getOverallStats = async (msg, args, bot) => {
         return
     }
 
-    let overall = statistics.stats.player.overall
+    let overall = statistics.player.stats.overall
     if (overall.suicides > 0) {
         desc = f('Try killing yourself less you might improve your winrate! Suicides: %d', overall.suicides)
     } else {
