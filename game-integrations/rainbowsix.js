@@ -21,7 +21,7 @@ exports.getOverallStats = async (msg, args, bot) => {
         return
     }
 
-    let overall = statistics.player.overall
+    let overall = statistics.stats.player.overall
     if (overall.suicides > 0) {
         desc = f('Try killing yourself less you might improve your winrate! Suicides: %d', overall.suicides)
     } else {
