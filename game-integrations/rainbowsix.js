@@ -241,8 +241,8 @@ exports.getTopOp = async (msg, args, bot) => {
     let embed = {
         embed: {
             title:f("%s's Top Operators: %4", username, args[2]),
-            image: img1,
-            desc: desc1,
+            image: img,
+            desc: desc,
             fields: [
             {name:'Games Played:', value:operatorStats.operator_records[top].stats.played, inline:true},
             {name:'Win Rating:', value: wr, inline: true},
