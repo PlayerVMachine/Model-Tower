@@ -91,7 +91,7 @@ exports.getCasualStats = async (msg, args, bot) => {
     let operatorStats = await R6.stats(username, platform, true)
     if (operatorStats.operator_records !== undefined) {
         let rawURL = operatorStats.operator_records[0].operator.images.badge
-        let url = rawURL.slice(0, rawURL.length - 1)
+        let url = rawURL.split('\\')[0]
         let badgeURL = url.replace('org', 'cc')
 
         desc = desc + f('Play time: %sh Top operator: %s', playTime, operatorStats.operator_records[0].operator.name)
@@ -165,7 +165,7 @@ exports.getRankedStats = async (msg, args, bot) => {
     let operatorStats = await R6.stats(username, platform, true)
     if (operatorStats.operator_records !== undefined) {
         let rawURL = operatorStats.operator_records[0].operator.images.badge
-        let url = rawURL.slice(0, rawURL.length - 1)
+        let url = rawURL.split('\\')[0]
         let badgeURL = url.replace('org', 'cc')
 
         desc = desc + f('Play time: %dh Top operator: %s', playTime, operatorStats.operator_records[0].operator.name)
