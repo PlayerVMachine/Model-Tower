@@ -29,7 +29,7 @@ exports.getOverallStats = async (msg, args, bot) => {
     }
 
     let hitrate = (overall.bullets_hit / overall.bullets_fired)
-    let hitrate = hitrate.toFixed(2)
+    hitrate = hitrate.toFixed(2)
 
     let embed = {
         embed: {
