@@ -86,7 +86,7 @@ exports.getCasualStats = async (msg, args, bot) => {
     playTime = playTime/60/60
     playTime = playTime.toFixed(2)
 
-    let desc = f('Clearance level: %d, XP: %d\n', statistics.player.progression.level, statistics.player.progression.xp)
+    let desc = f('Clearance level: %d, XP: %d\n', statistics.player.stats.progression.level, statistics.player.stats.progression.xp)
 
     let operatorStats = await R6.stats(username, platform, true)
     if (operatorStats.operator_records !== undefined) {
@@ -159,7 +159,7 @@ exports.getRankedStats = async (msg, args, bot) => {
     playTime = playTime/60/60
     playTime = playTime.toFixed(2)
 
-    let desc = f('Clearance level: %d, XP: %d\n', statistics.player.progression.level, statistics.player.progression.xp)
+    let desc = f('Clearance level: %d, XP: %d\n', statistics.player.progression.stats.level, statistics.player.stats.progression.xp)
 
     let operatorStats = await R6.stats(username, platform, true)
     if (operatorStats.operator_records !== undefined) {
