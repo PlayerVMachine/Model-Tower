@@ -1016,6 +1016,10 @@ r6Get.registerSubcommand('rnk', (msg, args) => {
 	r6.getRankedStats(msg, args, bot)
 })
 
+r6Get.registerSubcommand('top', (msg, args) => {
+	r6.getTopOp(msg, args, bot)
+})
+
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
 //////////////////////////////////////////////////////////////////

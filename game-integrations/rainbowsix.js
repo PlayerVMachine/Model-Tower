@@ -123,7 +123,7 @@ exports.getCasualStats = async (msg, args, bot) => {
                 {name:'Win rating', value:casualStats.wlr.toString(), inline:true},
                 {name:'Kills', value:casualStats.kills, inline:true},
                 {name:'Deaths', value:casualStats.deaths, inline:true},
-                {name:'k/d', value:casualStats.kd.toString(), inline:true}
+                {name:'K/D', value:casualStats.kd.toString(), inline:true}
             ]
         }
     }
@@ -196,8 +196,59 @@ exports.getRankedStats = async (msg, args, bot) => {
                 {name:'Win rating', value:rankedStats.wlr.toString(), inline:true},
                 {name:'Kills', value:rankedStats.kills, inline:true},
                 {name:'Deaths', value:rankedStats.deaths, inline:true},
-                {name:'k/d', value:rankedStats.kd.toString(), inline:true}
+                {name:'K/D', value:rankedStats.kd.toString(), inline:true}
             ]
+        }
+    }
+
+    bot.createMessage(msg.channel.id, embed)
+}
+
+exports.getTopOp = async (msg, args, bot) => {
+
+    if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
+        bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+        return
+    }
+
+    bot.sendChannelTyping(msg.channel.id)
+
+    let username = args[0];
+    let platform = args[1];
+    let top = parseInt(args[2]) - 1;
+
+    //Get stats on the user on that platform
+    let operatorStats = await R6.stats(username, platform, true)
+    if (operatorStats.operator_records !== undefined) {
+        let rawURL = operatorStats.operator_records[top].operator.images.bust
+        let url = rawURL.split('\\')[0]
+        let operatorURL = url.replace('org', 'cc')
+
+        img = {
+            url: operatorURL,
+        }
+    } else {
+        img = {
+            url: msg.author.avatarURL,
+        }
+    }
+
+    let desc = f('Name: %s\tCTU: %s\tRole: %s', operatorStats.operator_records[top].operator.name, operatorStats.operator_records[top].operator.ctu, operatorStats.operator_records[0].operator.role)
+    let wr = operatorStats.operator_records[top].stats.wins / operatorStats.operator_records[top].stats.losses
+    let kd = operatorStats.operator_records[top].stats.kills / operatorStats.operator_records[top].stats.deaths
+    let pt = operatorStats.operator_records[top].stats.playtime / 60 / 60
+
+    let embed = {
+        embed: {
+            title:f("%s's Top Operators: %4", username, args[2]),
+            image: img1,
+            desc: desc1,
+            fields: [
+            {name:'Games Played:', value:operatorStats.operator_records[top].stats.played, inline:true},
+            {name:'Win Rating:', value: wr, inline: true},
+            {name:'K/D:', value: kd, inline: true}
+            ],
+            footer: {text: f('Total playtime: %dh', pt.toFixed(2))}
         }
     }
 
