@@ -245,8 +245,8 @@ exports.getTopOp = async (msg, args, bot) => {
             desc: desc,
             fields: [
             {name:'Games Played:', value:operatorStats.operator_records[top].stats.played, inline:true},
-            {name:'Win Rating:', value: wr, inline: true},
-            {name:'K/D:', value: kd, inline: true}
+            {name:'Win Rating:', value: wr.toFixed(2), inline: true},
+            {name:'K/D:', value: kd.toFixed(2), inline: true}
             ],
             footer: {text: f('Total playtime: %dh', pt.toFixed(2))}
         }
