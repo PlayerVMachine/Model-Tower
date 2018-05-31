@@ -42,7 +42,7 @@ exports.getOverallStats = async (msg, args, bot) => {
                 {name:'Hit Rate:', value:hitrate, inline:false},
                 {name:'Headshots:', value:overall.headshots, inline:false},
                 {name:'Melee Kills:', value:overall.melee_kills, inline:true},
-                {name:'Penetration Kills:', value:overall.penetration kills, inline:true},
+                {name:'Penetration Kills:', value:overall.penetration_kills, inline:true},
                 {name:'Assits:', value:overall.assits, inline:false}
             ]
         }
