@@ -242,7 +242,7 @@ exports.getTopOp = async (msg, args, bot) => {
         embed: {
             title:f("%s's Top Operators: #%s", username, args[2]),
             image: img,
-            desc: desc,
+            description: desc,
             fields: [
             {name:'Games Played:', value:operatorStats.operator_records[top].stats.played, inline:true},
             {name:'Win Rating:', value: wr.toFixed(2), inline: true},
@@ -251,6 +251,6 @@ exports.getTopOp = async (msg, args, bot) => {
             footer: {text: f('Total playtime: %dh', pt.toFixed(2))}
         }
     }
-
+    console.log(operatorURL)
     bot.createMessage(msg.channel.id, embed)
 }
