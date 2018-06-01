@@ -32,11 +32,12 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/admin?authMechanism=%s', user, pa
 const app = express()
 
 //twitch API
+/*
 const twitchApi = new TwitchHelix({
 	clientId: config.twitchID,
 	clientSecret: config.twitchSecret
 })
-
+*/
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
 //Cooldown function
