@@ -5,6 +5,9 @@ const Redis = require('ioredis')
 const express = require('express')
 const prometheus = require('prom-client')
 
+//config files
+const config = require('./config.json')
+
 //Express server to push metrics to
 const server = express()
 
