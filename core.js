@@ -28,7 +28,7 @@ const redis = new Redis();
 prometheus.collectDefaultMetrics()
 
 //Gauge representing guild count
-const guildGauge = new prometheus.Gauge({name: 'Guild Count', help: 'Number of guilds the bot is currently in.'})
+const guildGauge = new prometheus.Gauge({name: 'Guild_Count', help: 'Number of guilds the bot is currently in.'})
 
 
 server.get('/metrics', (req, res) => {
