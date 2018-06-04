@@ -67,16 +67,17 @@ bot.on("ready", () => {
 bot.on('guildCreate', async (guild) => {
     //get the bot's member object in that guild
     let selfMember = guild.members.find(m => m.id == bot.user.id)
+    let botRole = guild.roles.find(r => r.id == selfMember.roles[0])
 
     //check if the bot is missing a key permission
     let missing = []
-    if (!selfMember.permission.has('readMessages'))
+    if (!botRole.permissions.has('readMessages'))
         missing.push('Read Messages')
-    if (!selfMember.permission.has('sendMessages'))
+    if (!botRole.permissions.has('sendMessages'))
         missing.push('Send Messages')
-    if (!selfMember.permission.has('manageWebhooks'))
+    if (!botRole.permissions.has('manageWebhooks'))
         missing.push('Manage Webhooks')
-    if (!selfMember.permission.has('manageMessages'))
+    if (!botRole.permissions.has('manageMessages'))
         missing.push('Manage Messages')
 
     //Message the server owner in the case that the bot is missing a key permission
