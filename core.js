@@ -36,7 +36,7 @@ server.get('/metrics', (req, res) => {
     res.end(prometheus.register.metrics())
 })
 
-server.listen(9010)
+
 /////////////////////////////////////////////
 //COMMAND CLIENT                          //
 ///////////////////////////////////////////
@@ -57,6 +57,11 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 /////////////////////////////////////////////
 //EVENTS TO REACT TO                      //
 ///////////////////////////////////////////
+
+//ready
+bot.on("ready", () => {
+    console.log("The Tower of Power is online!")
+});
 
 //Perform permissions check when added to a guild
 bot.on('guildCreate', async (guild) => {
@@ -92,3 +97,8 @@ bot.on('guildDelete', async (guild) => {
     //Decrement guild count in Prometheus
     guildGauge.dec()
 })
+
+//Connect to Discord
+bot.connect()
+
+server.listen(9010)
