@@ -65,28 +65,33 @@ bot.on("ready", () => {
 
 //Perform permissions check when added to a guild
 bot.on('guildCreate', async (guild) => {
-    //get the bot's member object in that guild
-    let selfMember = guild.members.find(m => m.id == bot.user.id)
-    let botRole = guild.roles.find(r => r.id == selfMember.roles[0])
+    try {
+        //get the bot's member object in that guild
+        let selfMember = guild.members.find(m => m.id == bot.user.id)
+        console.log(selfMember.roles)
+        let botRole = guild.roles.find(r => r.id == selfMember.roles[0])
 
-    //check if the bot is missing a key permission
-    let missing = []
-    if (!botRole.permissions.has('sendMessages'))
-        missing.push('Send Messages')
-    if (!botRole.permissions.has('manageWebhooks'))
-        missing.push('Manage Webhooks')
-    if (!botRole.permissions.has('manageMessages'))
-        missing.push('Manage Messages')
+        //check if the bot is missing a key permission
+        let missing = []
+        if (!botRole.permissions.has('sendMessages'))
+            missing.push('Send Messages')
+        if (!botRole.permissions.has('manageWebhooks'))
+            missing.push('Manage Webhooks')
+        if (!botRole.permissions.has('manageMessages'))
+            missing.push('Manage Messages')
 
-    //Message the server owner in the case that the bot is missing a key permission
-    if (missing) {
-        let ownerDM = await bot.getDMChannel(guild.ownerID)
+        //Message the server owner in the case that the bot is missing a key permission
+        if (missing) {
+            let ownerDM = await bot.getDMChannel(guild.ownerID)
 
-        bot.createMessage(ownerDM.id, f('Hi someone (perhaps you) just invited me to your server %s! But they/you haven\'t given me all the permissions I need to do my best work, I\'m missing: %s permissions', guild.name, missing.join(', ')))
+            bot.createMessage(ownerDM.id, f('Hi someone (perhaps you) just invited me to your server %s! But they/you haven\'t given me all the permissions I need to do my best work, I\'m missing: %s permissions', guild.name, missing.join(', ')))
+        }
+
+        //Increment guild count in Prometheus
+        guildGauge.inc()
+    } catch (err) {
+        console.log(err)
     }
-
-    //Increment guild count in Prometheus
-    guildGauge.inc()
 })
 
 //Request feedback when removed from a guild
