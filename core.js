@@ -20,6 +20,11 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/admin?authMechanism=%s', user, pa
 //redis instance
 const redis = new Redis();
 
+//sleep func
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 /////////////////////////////////////////////
 //PROMETHEUS TRACKERS                     //
 ///////////////////////////////////////////
@@ -67,6 +72,7 @@ bot.on("ready", () => {
 bot.on('guildCreate', async (guild) => {
     try {
         //get the bot's member object in that guild
+        await sleep(2000)
         let selfMember = guild.members.find(m => m.id == bot.user.id)
         console.log(selfMember.roles)
         let botRole = guild.roles.find(r => r.id == selfMember.roles[0])
