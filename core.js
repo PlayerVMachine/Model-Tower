@@ -181,7 +181,6 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 }, {
     aliases: ['delete', 'rm', 'del'],
     cooldown: 10000,
-    requirements: {custom: hasUnbannedAccount},
     description: reply.close.description,
     fullDescription: reply.close.fullDescription,
     usage: reply.close.usage
