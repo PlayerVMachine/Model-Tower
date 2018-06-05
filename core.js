@@ -8,6 +8,10 @@ const prometheus = require('prom-client')
 //config files
 const config = require('./config.json')
 
+//Project files
+const reply = require('./proto_messages.json')
+const amgmt = require('./user-account-functions/accmgmt.js')
+
 //Express server to push metrics to
 const server = express()
 
@@ -134,6 +138,53 @@ const ping = bot.registerCommand('ping', (msg, args) => {
         let diff = Date.now() - start
         return msg.edit(f('Pong! `%dms`', diff))
     })
+})
+
+const glitch = bot.registerCommand('glitch', `congrats you'm'st done broken the tower, test it on monday.`, {
+    cooldown: 5000,
+    hidden: true
+})
+
+const raven = bot.registerCommand('Night', (msg, args) => {
+    return f('Raven, %s', args.join(' '))
+}, {
+    cooldown: 5000,
+    hidden: true
+})
+
+const createAccount = bot.registerCommand('create', async (msg, args) => {
+    try {
+        let client = await MongoClient.connect(url)
+        amgmt.create(msg, bot, client)
+    } catch (err) {
+        console.log(err)
+        bot.createMessage(config.logChannelID, err.message)
+        bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+    }
+}, {
+    aliases: ['signup', 'register'],
+    cooldown: 10000,
+    description: reply.create.description,
+    fullDescription: reply.create.fullDescription,
+    usage: reply.create.usage
+})
+
+const deleteAccount = bot.registerCommand('close', async (msg, args) => {
+    try {
+        let client = await MongoClient.connect(url)
+        amgmt.close(msg, bot, client)
+    } catch (err) {
+        console.log(err)
+        bot.createMessage(config.logChannelID, err.message)
+        bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+    }
+}, {
+    aliases: ['delete', 'rm', 'del'],
+    cooldown: 10000,
+    requirements: {custom: hasUnbannedAccount},
+    description: reply.close.description,
+    fullDescription: reply.close.fullDescription,
+    usage: reply.close.usage
 })
 
 /////////////////////////////////////////////
