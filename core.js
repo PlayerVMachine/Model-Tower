@@ -123,7 +123,24 @@ bot.on('guildDelete', async (guild) => {
     }
 })
 
+/////////////////////////////////////////////
+//COMMANDS                                //
+///////////////////////////////////////////
+
+const ping = bot.registerCommand('ping', (msg, args) => {
+    let start = Date.now()
+
+    bot.createMessage(msg.channel.id, 'Pong!').then(msg => {
+        let diff = Date.now() - start
+        return msg.edit(f('Pong! `%dms`', diff))
+    })
+})
+
+/////////////////////////////////////////////
+//THINGS TO DO ON START UP                //
+///////////////////////////////////////////
+
 //Connect to Discord
 bot.connect()
-
+//Endpoint for Prometheus to scrape from
 server.listen(9010)
