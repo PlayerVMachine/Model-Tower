@@ -86,7 +86,7 @@ bot.on('guildCreate', async (guild) => {
             missing.push('Manage Messages')
 
         //Message the server owner in the case that the bot is missing a key permission
-        if (missing) {
+        if (missing.length > 0) {
             let ownerDM = await bot.getDMChannel(guild.ownerID)
             bot.createMessage(ownerDM.id, f('Hi someone (perhaps you) just invited me to your server %s! But they/you haven\'t given me all the permissions I need to do my best work, I\'m missing: %s permissions', guild.name, missing.join(', ')))
         }
@@ -106,7 +106,7 @@ bot.on('guildDelete', async (guild) => {
 
         console.log(ownerDM.id)
 
-        bot.createMessage(ownerDM.id, f('Hi, someone (perhaps you) just kicked me from you server %s, I\'m sorry you weren\'t satisfied with my performance! When you have a moment if you could send me some feedback I would appreciate it! (send as one message here)'), guild.name)
+        bot.createMessage(ownerDM.id, f('Hi, someone (perhaps you) just kicked me from you server %s, I\'m sorry you weren\'t satisfied with my performance! When you have a moment if you could send me some feedback I would appreciate it! (send as one message here)', guild.name))
 
         const feedback = (message) => {
             bot.createMessage(config.feedbackID, f('Feedback from: %s\n%s', message.author.mention, message.content))
