@@ -8,39 +8,46 @@ const reply = require('../proto_messages.json')
 //Create a user in the db
 exports.create = {
     generator: async (msg, args) => {
-        const col = client.db(config.db).collection('Users')
+        try {
+            let client = await MongoClient.connect(url)
+            const col = client.db(config.db).collection('Users')
 
-        //Check if
-        let account = await col.findOne({user: msg.author.id})
-        if (account == null) {
+            //Check if
+            let account = await col.findOne({user: msg.author.id})
+            if (account == null) {
 
-            let userDM = await msg.author.getDMChannel()
+                let userDM = await msg.author.getDMChannel()
 
-            const userdata = {
-                id: msg.author.id,
-                status: 'active',
-                sendTo: userDM.id,
-                joined: new Date(),
-                premium: 0
-            }
+                const userdata = {
+                    id: msg.author.id,
+                    status: 'active',
+                    sendTo: userDM.id,
+                    joined: new Date(),
+                    premium: 0
+                }
 
-            let created = await col.insertOne(userdata)
-            if (created.insertedCount === 1) {
-                bot.createMessage(msg.channel.id, f(reply.create.success, msg.author.username))
-                bot.createMessage(config.logChannelID, msg.author.mention + ' has created an account')
+                let created = await col.insertOne(userdata)
+                if (created.insertedCount === 1) {
+                    bot.createMessage(msg.channel.id, f(reply.create.success, msg.author.username))
+                    bot.createMessage(config.logChannelID, msg.author.mention + ' has created an account')
+                } else {
+                    bot.createMessage(msg.channel.id, f(reply.create.error, msg.author.username))
+                }
+            } else if (found.status === 'closed'){
+                let unClose = await col.updateOne({user: msg.author.id}, {$set: {status: 'active'}})
+
+                if (unClose.result.ok === 1) {
+                    bot.createMessage(msg.channel.id, f('%s, your account has been reopened with all your settings where they last were.', msg.author.username))
+                } else {
+                    bot.createMessage(msg.channel.id, f('%s, sorry an error ocurred reopening your account.', msg.author.username))
+                }
             } else {
-                bot.createMessage(msg.channel.id, f(reply.create.error, msg.author.username))
+                bot.createMessage(msg.channel.id, f(reply.create.alreadyHasAccount, msg.author.username))
             }
-        } else if (found.status === 'closed'){
-            let unClose = await col.updateOne({user: msg.author.id}, {$set: {status: 'active'}})
-
-            if (unClose.result.ok === 1) {
-                bot.createMessage(msg.channel.id, f('%s, your account has been reopened with all your settings where they last were.', msg.author.username))
-            } else {
-                bot.createMessage(msg.channel.id, f('%s, sorry an error ocurred reopening your account.', msg.author.username))
-            }
-        } else {
-            bot.createMessage(msg.channel.id, f(reply.create.alreadyHasAccount, msg.author.username))
+        } catch (err) {
+            console.log(err)
+            bot.createMessage(config.logChannelID, err.message)
+            bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
         }
     },
     options: {
