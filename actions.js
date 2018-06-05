@@ -14,21 +14,21 @@ const matchUserString = new RegExp('^[0-9]{18}')
 
 //check if input is a user id or mention
 const isID = (arg, msg) => {
-	if (matchUserString.test(arg)) { 
-		return arg 
-	} else if (matchUserMention.test(arg)) { 
+	if (matchUserString.test(arg)) {
+		return arg
+	} else if (matchUserMention.test(arg)) {
 		return arg.substr(2, 18)
 	} else if (msg.channel.guild.members.find(m => m.username == arg)) {
         let member = msg.channel.guild.members.find(m => m.username == arg);
         return member.id
     } else if (msg.channel.guild.members.find(m => m.nick == arg)) {
         let member = msg.channel.guild.members.find(m => m.nick == arg);
-        return member.id 
+        return member.id
     } else if (msg.channel.guild.members.find(m => m.username.startsWith(arg))) {
         let member = msg.channel.guild.members.find(m => m.username.startsWith(arg));
         return member.id
-    } else { 
-		return -1 
+    } else {
+		return -1
 	}
 }
 
@@ -70,7 +70,7 @@ exports.follow = async(msg, args, bot, client) => {
 
 		//get user data
 		let usee = await col.findOne({user: msg.author.id})
-		
+
 		//check for undesirable conditions
 		let secondID = isID(args.join(' '), msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
@@ -153,7 +153,7 @@ exports.unfollow = async(msg, args, bot, client) => {
 
 		//check is usee is a user
 		let usee = await col.findOne({user: msg.author.id})
-		
+
 		//check for undesirable conditions
 		let secondID = isID(args[0].join(' '), msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
@@ -313,7 +313,7 @@ exports.post = async (msg, args, bot, q, client) => {
     	}
 
 		const callback = async (message, emoji, userID) => {
-			if(userID === msg.author.id &&  emoji.name === '❌') {
+			if(userID === msg.author.id && emoji.name === '❌') {
 				try {
 					bot.editMessage(msg.channel.id, remMessage.id, 'transmission cancelled')
 				} catch (e) {
@@ -362,7 +362,7 @@ exports.post = async (msg, args, bot, q, client) => {
     				content: f(reply.post.sentConfirm, message),
     				destination: sender.sendTo,
     				type: 'system',
-				}				
+				}
 
 				q.push(packet)
 			}
@@ -379,7 +379,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
 		const postCol = client.db(config.db).collection('Posts')
-		
+
 		let usee = await col.findOne({user: msg.author.id})
 
 		//get a message
@@ -400,16 +400,16 @@ exports.reply = async (msg, args, bot, q, client) => {
 		if (poster === undefined) {
 			//poster has since closed account
 			bot.createMessage(msg.channel.id, f('Sorry %s, cannot reply to a user who no longer has an account!', msg.author.username))
-			return			
+			return
 		}
 
 		//check that neither party has blocked each other since message was sent
 		if (poster.blocked.includes(usee.user)) {
 			bot.createMessage(msg.channel.id, f('Sorry %s, cannot reply to a user who has blocked you!', msg.author.username))
-			return	
+			return
 		} else if (usee.blocked.includes(poster.user)) {
 			bot.createMessage(msg.channel.id, f('Sorry %s, cannot reply to a user who you have blocked!', msg.author.username))
-			return	
+			return
 		} //neither orignal author nor replier has blocked each other
 
 		//update the embedded message
@@ -429,7 +429,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 			let msgCopy = JSON.parse(JSON.stringify(message))
 			let descCopy = msgCopy.content.embed.description.split('\n')
 
-			//skip this recpient as they no longer have an account			
+			//skip this recpient as they no longer have an account
 			let recipient = await col.findOne({user:message.recipients[r]})
 			if (recipient === undefined) {
 				message.recipients[r]
@@ -438,7 +438,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 
 			//redact message copy
 			if (usee.blocked.includes(recipient.user)) {
-	
+
 				for (l in descCopy) {
 					if (descCopy[l].startsWith('**'+ msg.author.username))
 						descCopy[l] = '_Reply from user who has blocked you_'

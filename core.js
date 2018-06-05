@@ -35,12 +35,10 @@ prometheus.collectDefaultMetrics()
 //Gauge representing guild count
 const guildGauge = new prometheus.Gauge({name: 'Guild_Count', help: 'Number of guilds the bot is currently in.'})
 
-
 server.get('/metrics', (req, res) => {
     res.set('Content-Type', prometheus.register.contentType)
     res.end(prometheus.register.metrics())
 })
-
 
 /////////////////////////////////////////////
 //COMMAND CLIENT                          //
@@ -71,13 +69,14 @@ bot.on("ready", () => {
 //Perform permissions check when added to a guild
 bot.on('guildCreate', async (guild) => {
     try {
-        //get the bot's member object in that guild
+        //Wait 2 seconds for the bot's role to be assigned
         await sleep(2000)
+
+        //Get the bot's member object in that guild
         let selfMember = guild.members.find(m => m.id == bot.user.id)
-        console.log(selfMember.roles)
         let botRole = guild.roles.find(r => r.id == selfMember.roles[0])
 
-        //check if the bot is missing a key permission
+        //Check if the bot is missing a key permission
         let missing = []
         if (!botRole.permissions.has('sendMessages'))
             missing.push('Send Messages')
@@ -89,7 +88,6 @@ bot.on('guildCreate', async (guild) => {
         //Message the server owner in the case that the bot is missing a key permission
         if (missing) {
             let ownerDM = await bot.getDMChannel(guild.ownerID)
-
             bot.createMessage(ownerDM.id, f('Hi someone (perhaps you) just invited me to your server %s! But they/you haven\'t given me all the permissions I need to do my best work, I\'m missing: %s permissions', guild.name, missing.join(', ')))
         }
 
@@ -102,10 +100,25 @@ bot.on('guildCreate', async (guild) => {
 
 //Request feedback when removed from a guild
 bot.on('guildDelete', async (guild) => {
-    //TO DO: request and submit feedback
+    try {
+        //Request and submit feedback
+        let ownerDM = await bot.getDMChannel(guild.ownerID)
 
-    //Decrement guild count in Prometheus
-    guildGauge.dec()
+        bot.createMessage(ownerDM.id, f('Hi, someone (perhaps you) just kicked me from you server %s, I\'m sorry you weren\'t satisfied with my performance! When you have a moment if you could send me some feedback I would appreciate it! (send as one message here)'), guild.name)
+
+        const feedback = (message) => {
+            bot.createMessage(config.feedbackID, f('Feedback from: %s\n%s', message.author.mention, message.content))
+            bot.createMessage(ownerDM.id, 'Thank you for your feedback! We will take it under advisement and hope that a future version of the bot will once again be able to server you.')
+            bot.removeListener('messageCreate', feedback)
+        }
+
+        bot.on('messageCreate', feedback)
+
+        //Decrement guild count in Prometheus
+        guildGauge.dec()
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 //Connect to Discord
