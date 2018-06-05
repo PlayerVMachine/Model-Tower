@@ -104,6 +104,8 @@ bot.on('guildDelete', async (guild) => {
         //Request and submit feedback
         let ownerDM = await bot.getDMChannel(guild.ownerID)
 
+        console.log(ownerDM.id)
+
         bot.createMessage(ownerDM.id, f('Hi, someone (perhaps you) just kicked me from you server %s, I\'m sorry you weren\'t satisfied with my performance! When you have a moment if you could send me some feedback I would appreciate it! (send as one message here)'), guild.name)
 
         const feedback = (message) => {
