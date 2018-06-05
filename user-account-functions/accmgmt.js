@@ -6,43 +6,53 @@ const config = require('../config.json')
 const reply = require('../proto_messages.json')
 
 //Create a user in the db
-exports.create = async (msg, bot, client) => {
-    const col = client.db(config.db).collection('Users')
+exports.create = {
+    generator: async (msg, args) => {
+        const col = client.db(config.db).collection('Users')
 
-    //Check if
-    let account = await col.findOne({user: msg.author.id})
-    if (account == null) {
+        //Check if
+        let account = await col.findOne({user: msg.author.id})
+        if (account == null) {
 
-        let userDM = await msg.author.getDMChannel()
+            let userDM = await msg.author.getDMChannel()
 
-        const userdata = {
-            id: msg.author.id,
-            status: 'active',
-            sendTo: userDM.id,
-            joined: new Date(),
-            premium: 0
-        }
+            const userdata = {
+                id: msg.author.id,
+                status: 'active',
+                sendTo: userDM.id,
+                joined: new Date(),
+                premium: 0
+            }
 
-        let created = await col.insertOne(userdata)
-        if (created.insertedCount === 1) {
-            bot.createMessage(msg.channel.id, f(reply.create.success, msg.author.username))
-            bot.createMessage(config.logChannelID, msg.author.mention + ' has created an account')
+            let created = await col.insertOne(userdata)
+            if (created.insertedCount === 1) {
+                bot.createMessage(msg.channel.id, f(reply.create.success, msg.author.username))
+                bot.createMessage(config.logChannelID, msg.author.mention + ' has created an account')
+            } else {
+                bot.createMessage(msg.channel.id, f(reply.create.error, msg.author.username))
+            }
+        } else if (found.status === 'closed'){
+            let unClose = await col.updateOne({user: msg.author.id}, {$set: {status: 'active'}})
+
+            if (unClose.result.ok === 1) {
+                bot.createMessage(msg.channel.id, f('%s, your account has been reopened with all your settings where they last were.', msg.author.username))
+            } else {
+                bot.createMessage(msg.channel.id, f('%s, sorry an error ocurred reopening your account.', msg.author.username))
+            }
         } else {
-            bot.createMessage(msg.channel.id, f(reply.create.error, msg.author.username))
+            bot.createMessage(msg.channel.id, f(reply.create.alreadyHasAccount, msg.author.username))
         }
-    } else if (found.status === 'closed'){
-        let unClose = await col.updateOne({user: msg.author.id}, {$set: {status: 'active'}})
-
-        if (unClose.result.ok === 1) {
-            bot.createMessage(msg.channel.id, f('%s, your account has been reopened with all your settings where they last were.', msg.author.username))
-        } else {
-            bot.createMessage(msg.channel.id, f('%s, sorry an error ocurred reopening your account.', msg.author.username))
-        }
-    } else {
-        bot.createMessage(msg.channel.id, f(reply.create.alreadyHasAccount, msg.author.username))
+    },
+    options: {
+        aliases: ['signup', 'register'],
+        cooldown: 10000,
+        description: reply.create.description,
+        fullDescription: reply.create.fullDescription,
+        usage: reply.create.usage
     }
 }
 
+/*
 exports.close = async (msg, bot, client) => {
     const col = client.db(config.db).collection('Users')
 
@@ -89,3 +99,4 @@ exports.close = async (msg, bot, client) => {
     //register event listener for close confirmation/cancel
     bot.on('messageCreate', confirmation)
 }
+*/

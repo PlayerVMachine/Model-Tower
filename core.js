@@ -140,51 +140,8 @@ const ping = bot.registerCommand('ping', (msg, args) => {
     })
 })
 
-const glitch = bot.registerCommand('glitch', `congrats you'm'st done broken the tower, test it on monday.`, {
-    cooldown: 5000,
-    hidden: true
-})
+const register = bot.registerCommand('create', amgmt.create.generator, amgmt.create.options)
 
-const raven = bot.registerCommand('Night', (msg, args) => {
-    return f('Raven, %s', args.join(' '))
-}, {
-    cooldown: 5000,
-    hidden: true
-})
-
-const createAccount = bot.registerCommand('create', async (msg, args) => {
-    try {
-        let client = await MongoClient.connect(url)
-        amgmt.create(msg, bot, client)
-    } catch (err) {
-        console.log(err)
-        bot.createMessage(config.logChannelID, err.message)
-        bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
-    }
-}, {
-    aliases: ['signup', 'register'],
-    cooldown: 10000,
-    description: reply.create.description,
-    fullDescription: reply.create.fullDescription,
-    usage: reply.create.usage
-})
-
-const deleteAccount = bot.registerCommand('close', async (msg, args) => {
-    try {
-        let client = await MongoClient.connect(url)
-        amgmt.close(msg, bot, client)
-    } catch (err) {
-        console.log(err)
-        bot.createMessage(config.logChannelID, err.message)
-        bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
-    }
-}, {
-    aliases: ['delete', 'rm', 'del'],
-    cooldown: 10000,
-    description: reply.close.description,
-    fullDescription: reply.close.fullDescription,
-    usage: reply.close.usage
-})
 
 /////////////////////////////////////////////
 //THINGS TO DO ON START UP                //
