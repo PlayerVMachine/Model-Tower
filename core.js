@@ -131,6 +131,7 @@ bot.on('guildDelete', async (guild) => {
 //COMMANDS                                //
 ///////////////////////////////////////////
 
+//Ping, used to reassure people that the bot is up and to check latency
 const ping = bot.registerCommand('ping', (msg, args) => {
     let start = Date.now()
 
@@ -140,7 +141,10 @@ const ping = bot.registerCommand('ping', (msg, args) => {
     })
 })
 
-const register = bot.registerCommand('create', amgmt.create.generator, amgmt.create.options)
+//Set an announcement channel that people can subscribe to
+const setAnnouncer = bot.registerCommand('announcer', (msg, args) => {
+
+})
 
 
 /////////////////////////////////////////////
