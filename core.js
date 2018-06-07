@@ -10,7 +10,7 @@ const config = require('./config.json')
 
 //Project files
 //const reply = require('./proto_messages.json')
-const amgmt = require('./user-account-functions/accmgmt.js')
+//const amgmt = require('./user-account-functions/accmgmt.js')
 
 //Express server to push metrics to
 const server = express()
