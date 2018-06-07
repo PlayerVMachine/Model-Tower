@@ -142,7 +142,7 @@ const ping = bot.registerCommand('ping', (msg, args) => {
 })
 
 //Create a webhook
-const registerGuildChannel = bot.registerCommand('makeHook', await (msg, args) => {
+const registerGuildChannel = bot.registerCommand('makeHook', async (msg, args) => {
 
     let webhook = await msg.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
     console.log(webhook)
