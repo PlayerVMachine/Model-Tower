@@ -9,7 +9,7 @@ const prometheus = require('prom-client')
 const config = require('./config.json')
 
 //Project files
-const reply = require('./proto_messages.json')
+//const reply = require('./proto_messages.json')
 const amgmt = require('./user-account-functions/accmgmt.js')
 
 //Express server to push metrics to
