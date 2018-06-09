@@ -141,13 +141,15 @@ const ping = bot.registerCommand('ping', (msg, args) => {
     })
 })
 
-//Create a webhook
-const registerGuildChannel = bot.registerCommand('makeHook', async (msg, args) => {
 
-    let webhook = await msg.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
-    console.log(webhook)
-})
 
+/////////////////////////////////////////////
+//SCHEDULED TASKS                         //
+///////////////////////////////////////////
+const getNews = () => {
+    news.pullNews(redis)
+}
+setInterval(getNews, 15*60*1000) //get News every 15 minutes
 
 /////////////////////////////////////////////
 //THINGS TO DO ON START UP                //
