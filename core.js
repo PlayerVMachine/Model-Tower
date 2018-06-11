@@ -11,6 +11,7 @@ const config = require('./config.json')
 //Project files
 //const reply = require('./proto_messages.json')
 //const amgmt = require('./user-account-functions/accmgmt.js')
+const news = require('./news.js')
 
 //Express server to push metrics to
 const server = express()
@@ -141,15 +142,21 @@ const ping = bot.registerCommand('ping', (msg, args) => {
     })
 })
 
+const ping = bot.registerCommand('test', (msg, args) => {
+    news.subscribeToNews(msg, bot)
+})
 
 
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
 ///////////////////////////////////////////
+
+/*
 const getNews = () => {
     news.pullNews(redis)
 }
 setInterval(getNews, 15*60*1000) //get News every 15 minutes
+*/
 
 /////////////////////////////////////////////
 //THINGS TO DO ON START UP                //
