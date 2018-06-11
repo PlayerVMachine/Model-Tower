@@ -165,4 +165,4 @@ setInterval(getNews, 15*60*1000) //get News every 15 minutes
 //Connect to Discord
 bot.connect()
 //Endpoint for Prometheus to scrape from
-server.listen(9010)
+//server.listen(9010)
