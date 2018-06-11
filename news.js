@@ -19,6 +19,7 @@ request.post('https://discordapp.com/api/webhooks/{id}/{token}
 */
 
 //Collect types of news from RSS feeds and put them somewhere?
+/*
 exports.pullNews = async (redis) => {
     //get and set last time news wasll pulled from RSS feeds in redis
     let lastPull = await redis.getset('lastPulledNewsDate', new Date())
@@ -51,6 +52,7 @@ exports.pullNews = async (redis) => {
     //New RSS items added to lists that can then be pushed to webhooks could probably just push to webhooks tbh
 
 }
+*/
 
 //Function for subscribing to news
 exports.subscribeToNews = async (msg, bot) => {
