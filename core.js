@@ -142,7 +142,7 @@ const ping = bot.registerCommand('ping', (msg, args) => {
     })
 })
 
-const ping = bot.registerCommand('test', (msg, args) => {
+const test = bot.registerCommand('test', (msg, args) => {
     news.subscribeToNews(msg, bot)
 })
 
