@@ -75,8 +75,7 @@ exports.subscribeToNews = async (msg, bot) => {
             console.log('reply recieved')
             if (reply.author.id == msg.author.id) {
                 bot.removeListener('messageCreate', reply1)
-                console.log(msg.content.trim().toUpperCase())
-                if (msg.content.trim().toUpperCase() == 'Y') {
+                if (reply.content.trim().toUpperCase() == 'Y') {
                     question1.delete('Menu close.')
                     botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
 
