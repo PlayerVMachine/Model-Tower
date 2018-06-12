@@ -11,5 +11,5 @@ exports.replyHandler = async (bot, msg, question, doWork) => {
         }
     }
 
-    bot.on('messageCreate', replyHandler)
+    bot.on('messageCreate', handleReply)
 }
