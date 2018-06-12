@@ -147,7 +147,7 @@ const test = bot.registerCommand('test', (msg, args) => {
     news.subscribeToNews(msg, bot)
 })
 
-const new = bot.registerCommand('new', (msg, args) => {
+const test2 = bot.registerCommand('new', (msg, args) => {
     let data = {
         this:'sucks'
     }
