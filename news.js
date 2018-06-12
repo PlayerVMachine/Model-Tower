@@ -110,6 +110,12 @@ exports.subscribeToNews = async (msg, bot) => {
         let doWork = async (reply) => {
             if (reply.content.trim().toUpperCase() == 'Y') {
                     botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
+
+                    let question2 = `\`\`\`xl\nSelect the news feed you wish to subscribe to:\n\n1. General News\n2. Tech News\n9. Leave menu\`\`\``
+                    let doMoreWork = (reply) => {
+                        console.log(reply.content)
+                    }
+                    rh.replyHandler(bot, msg, question2, doMoreWork)
             } else {
                 //They chose not to proceed
             }
