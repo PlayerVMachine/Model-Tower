@@ -150,10 +150,11 @@ const test = bot.registerCommand('test', (msg, args) => {
 const test2 = bot.registerCommand('new', (msg, args) => {
     let data = {
         this:'sucks'
-    }
-    let key = msg.author.id
+    };
+    let key = msg.author.id;
 
-    const conf = new Configstore('Test', {key: data});
+    const conf = new Configstore('Test');
+    conf.set(key, data);
 
     return conf.get(key);
 })
