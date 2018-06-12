@@ -82,7 +82,7 @@ exports.subscribeToNews = async (msg, bot) => {
                     //continue to ask what news they want
                     //TO DO
 
-                    let question2 = await bot.createMessage(msg.channel.id, `\`\`\`\nSelect the news feed you wish to subscribe to\n1. General News\n 2. Tech News\n9.Leave menu\`\`\``)
+                    let question2 = await bot.createMessage(msg.channel.id, `\`\`\`xl\nSelect the news feed you wish to subscribe to\n1. General News\n2. Tech News\n9.Leave menu\`\`\``)
 
                 } else {
                     //They chose not to proceed
