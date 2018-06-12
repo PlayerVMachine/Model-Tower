@@ -147,17 +147,6 @@ const test = bot.registerCommand('test', (msg, args) => {
     news.subscribeToNews(msg, bot)
 })
 
-const test2 = bot.registerCommand('new', (msg, args) => {
-    let data = {
-        this:'sucks'
-    };
-    let key = msg.author.id;
-
-    const conf = new Configstore('Test', {[key]:JSON.stringify(data)});
-
-    return conf.get(key);
-})
-
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
 ///////////////////////////////////////////
