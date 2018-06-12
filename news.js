@@ -58,6 +58,19 @@ exports.pullNews = async (redis) => {
 exports.subscribeToNews = async (msg, bot) => {
     let botHook = null
 
+    //handle selecting topics to subscribe to
+/*    const addSubscription = async () => {
+        let question2 = await bot.createMessage(msg.channel.id, `\`\`\`xl\nSelect the news feed you wish to subscribe to:\n\n1. General News\n2. Tech News\n9. Leave menu\`\`\``)
+
+        const reply2 = async (reply) => {
+            if (reply.author.id == msg.author.id) {
+
+            }
+        }
+
+        bot.on('messageCreate', relpy2)
+    }*/
+
     //check if channel has our webhook, if so set botHook to our hook
     let webhooks = await msg.channel.getWebhooks()
     if (webhooks.length > 0) {
@@ -79,10 +92,8 @@ exports.subscribeToNews = async (msg, bot) => {
                     question1.delete('Menu close.') // delete first question
                     botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
 
-                    //continue to ask what news they want
-                    //TO DO
+                    //continue to ask what news they want to subscribe to
 
-                    let question2 = await bot.createMessage(msg.channel.id, `\`\`\`xl\nSelect the news feed you wish to subscribe to:\n\n1. General News\n2. Tech News\n9. Leave menu\n\`\`\``)
 
                 } else {
                     //They chose not to proceed

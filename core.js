@@ -4,6 +4,7 @@ const Eris = require('eris')
 const Redis = require('ioredis')
 const express = require('express')
 const prometheus = require('prom-client')
+const Configstore = require('configstore')
 
 //config files
 const config = require('./config.json')
@@ -146,6 +147,16 @@ const test = bot.registerCommand('test', (msg, args) => {
     news.subscribeToNews(msg, bot)
 })
 
+const new = bot.registerCommand('new', (msg, args) => {
+    let data = {
+        this:'sucks'
+    }
+    let key = msg.author.id
+
+    const conf = new Configstore('Test', {[key]: data});
+
+    return conf.get(key);
+})
 
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
