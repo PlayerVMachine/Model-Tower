@@ -3,6 +3,8 @@ const Parser = require('rss-parser')
 
 let feedReader = new Parser()
 
+const rh = require('./replyHandler')
+
 //News related functions, like RSS and ???
 
 // CREATE WEBHOOK
@@ -82,7 +84,7 @@ exports.subscribeToNews = async (msg, bot) => {
     }
 
     if (botHook == null) {
-        let question1 = await bot.createMessage(msg.channel.id, `\`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``)
+/*        let question1 = await bot.createMessage(msg.channel.id, `\`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``)
 
         const reply1 = async (reply) => {
             if (reply.author.id == msg.author.id) {
@@ -102,6 +104,21 @@ exports.subscribeToNews = async (msg, bot) => {
             }
         }
         bot.on('messageCreate', reply1)
+*/
+
+        let question = \`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``
+        let doWork = async (reply) => {
+            if (reply.content.trim().toUpperCase() == 'Y') {
+                    question1.delete('Menu close.') // delete first question
+                    botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
+            } else {
+                //They chose not to proceed
+                question1.delete('Menu close.')
+            }
+        }
+
+        rh.replyHandler(bot, msg, question, doWork)
+
     } else {
         //user may want to update hook
     }
