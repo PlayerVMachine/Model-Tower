@@ -10,4 +10,6 @@ exports.replyHandler = async (bot, msg, question, doWork) => {
             doWork(reply)
         }
     }
+
+    bot.on('messageCreate', replyHandler)
 }
