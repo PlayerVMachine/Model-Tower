@@ -109,11 +109,9 @@ exports.subscribeToNews = async (msg, bot) => {
         let question = `\`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``
         let doWork = async (reply) => {
             if (reply.content.trim().toUpperCase() == 'Y') {
-                    question1.delete('Menu close.') // delete first question
                     botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
             } else {
                 //They chose not to proceed
-                question1.delete('Menu close.')
             }
         }
 
