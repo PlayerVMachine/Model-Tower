@@ -153,8 +153,7 @@ const test2 = bot.registerCommand('new', (msg, args) => {
     };
     let key = msg.author.id;
 
-    const conf = new Configstore('Test');
-    conf.set(key, JSON.stringify(data));
+    const conf = new Configstore('Test', {[key]:JSON.stringify(data)});
 
     return conf.get(key);
 })
