@@ -72,15 +72,19 @@ exports.subscribeToNews = async (msg, bot) => {
         let question1 = await bot.createMessage(msg.channel.id, `\`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``)
 
         const reply1 = async (reply) => {
-            console.log('reply recieved')
             if (reply.author.id == msg.author.id) {
-                bot.removeListener('messageCreate', reply1)
+                bot.removeListener('messageCreate', reply1) //remove message listener
+
                 if (reply.content.trim().toUpperCase() == 'Y') {
-                    question1.delete('Menu close.')
+                    question1.delete('Menu close.') // delete first question
                     botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
 
                     //continue to ask what news they want
                     //TO DO
+
+                    let question2 = await bot.createMessage(msg.channel.id, `\`\`\`\nSelect the news feed you wish to subscribe to\n
+                        1. General News\n 2. Tech News\n9.Leave menu\`\`\``)
+
                 } else {
                     //They chose not to proceed
                     question1.delete('Menu close.')
