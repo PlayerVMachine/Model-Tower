@@ -60,19 +60,6 @@ exports.pullNews = async (redis) => {
 exports.subscribeToNews = async (msg, bot) => {
     let botHook = null
 
-    //handle selecting topics to subscribe to
-/*    const addSubscription = async () => {
-        let question2 = await bot.createMessage(msg.channel.id, `\`\`\`xl\nSelect the news feed you wish to subscribe to:\n\n1. General News\n2. Tech News\n9. Leave menu\`\`\``)
-
-        const reply2 = async (reply) => {
-            if (reply.author.id == msg.author.id) {
-
-            }
-        }
-
-        bot.on('messageCreate', relpy2)
-    }*/
-
     //check if channel has our webhook, if so set botHook to our hook
     let webhooks = await msg.channel.getWebhooks()
     if (webhooks.length > 0) {
@@ -84,38 +71,25 @@ exports.subscribeToNews = async (msg, bot) => {
     }
 
     if (botHook == null) {
-/*        let question1 = await bot.createMessage(msg.channel.id, `\`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``)
-
-        const reply1 = async (reply) => {
-            if (reply.author.id == msg.author.id) {
-                bot.removeListener('messageCreate', reply1) //remove message listener
-
-                if (reply.content.trim().toUpperCase() == 'Y') {
-                    question1.delete('Menu close.') // delete first question
-                    botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
-
-                    //continue to ask what news they want to subscribe to
-
-
-                } else {
-                    //They chose not to proceed
-                    question1.delete('Menu close.')
-                }
-            }
-        }
-        bot.on('messageCreate', reply1)
-*/
 
         let question = `\`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``
         let doWork = async (reply) => {
             if (reply.content.trim().toUpperCase() == 'Y') {
                     botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
 
-                    let question2 = `\`\`\`xl\nSelect the news feed you wish to subscribe to:\n\n1. General News\n2. Tech News\n9. Leave menu\`\`\``
+                    let newsOptions = `\`\`\`xl\nSelect the news feed you wish to subscribe to:\n\n1. General News\n2. Tech News\n9. Leave menu\`\`\``
                     let doMoreWork = (reply) => {
-                        console.log(reply.content)
+                        if (reply.content == '9') {
+                            // do nothing menu is closed
+                        } else {
+                            //push the created webhook to the selected news list
+                            
+
+                            //call this again
+                            rh.replyHandler(bot, msg, newsOptions, doMoreWork)
+                        }
                     }
-                    rh.replyHandler(bot, msg, question2, doMoreWork)
+                    rh.replyHandler(bot, msg, newsOptions, doMoreWork)
             } else {
                 //They chose not to proceed
             }
