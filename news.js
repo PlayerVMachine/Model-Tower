@@ -106,7 +106,7 @@ exports.subscribeToNews = async (msg, bot) => {
         bot.on('messageCreate', reply1)
 */
 
-        let question = \`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``
+        let question = `\`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``
         let doWork = async (reply) => {
             if (reply.content.trim().toUpperCase() == 'Y') {
                     question1.delete('Menu close.') // delete first question
