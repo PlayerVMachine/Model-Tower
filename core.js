@@ -155,7 +155,7 @@ const test2 = bot.registerCommand('new', (msg, args) => {
 
     const conf = new Configstore('Test', {[key]: data});
 
-    return conf.get(key);
+    return conf.get([key]);
 })
 
 /////////////////////////////////////////////
