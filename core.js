@@ -1,27 +1,17 @@
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
 const Eris = require('eris')
-const Redis = require('ioredis')
-const express = require('express')
-const prometheus = require('prom-client')
-const Configstore = require('configstore')
 
 //config files
 const config = require('./config.json')
 
 //Project files
-//const reply = require('./proto_messages.json')
-//const amgmt = require('./user-account-functions/accmgmt.js')
 const news = require('./news.js')
 
-//Express server to push metrics to
-const server = express()
 
 // mongodb login
-const user = encodeURIComponent(config.user)
-const password = encodeURIComponent(config.pass)
-const authMechanism = 'DEFAULT'
-const url = f('mongodb://%s:%s@127.0.0.1:36505/admin?authMechanism=%s', user, password, authMechanism)
+
+const url = 'mongodb://127.0.0.1:36505'
 
 //redis instance
 const redis = new Redis();
@@ -30,21 +20,6 @@ const redis = new Redis();
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-/////////////////////////////////////////////
-//PROMETHEUS TRACKERS                     //
-///////////////////////////////////////////
-
-//Collect the basic metrics like memory consumption
-prometheus.collectDefaultMetrics()
-
-//Gauge representing guild count
-const guildGauge = new prometheus.Gauge({name: 'Guild_Count', help: 'Number of guilds the bot is currently in.'})
-
-server.get('/metrics', (req, res) => {
-    res.set('Content-Type', prometheus.register.contentType)
-    res.end(prometheus.register.metrics())
-})
 
 /////////////////////////////////////////////
 //COMMAND CLIENT                          //
@@ -153,7 +128,7 @@ const test = bot.registerCommand('test', (msg, args) => {
 
 /*
 const getNews = () => {
-    news.pullNews(redis)
+    news.pullNews()
 }
 setInterval(getNews, 15*60*1000) //get News every 15 minutes
 */
@@ -164,5 +139,3 @@ setInterval(getNews, 15*60*1000) //get News every 15 minutes
 
 //Connect to Discord
 bot.connect()
-//Endpoint for Prometheus to scrape from
-//server.listen(9010)

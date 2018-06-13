@@ -21,40 +21,15 @@ request.post('https://discordapp.com/api/webhooks/{id}/{token}
 */
 
 //Collect types of news from RSS feeds and put them somewhere?
-/*
-exports.pullNews = async (redis) => {
-    //get and set last time news wasll pulled from RSS feeds in redis
-    let lastPull = await redis.getset('lastPulledNewsDate', new Date())
+exports.pullNews = async (client) => {
+    let fifteenMinutesAgo = new Date(Date.now() - 15*60*1000)
 
     //pull RSS updates and store in REDIS?
     let generalNews = await feedReader.parseURL('http://feeds.bbci.co.uk/news/rss.xml')
     let generalTech = await feedReader.parseURL('https://www.cnet.com/rss/news/')
 
-    let newGeneralNews = []
-    let newGeneralTech = []
-
-    //check for news posted since last pull time
-    generalNews.items.forEach(item => {
-        //get list of general news webhook subscribers
-        let subHooks = await redis.get('generalNewsHooks')
-
-        let itemDate = new Date(item.isoDate)
-        if (itemDate > lastPull) {
-            newGeneralNews.push(item)
-        }
-    })
-
-    generalTech.items.forEach(item => {
-        let itemDate = new Date(item.isoDate)
-        if (itemDate > lastPull) {
-            newGeneralTech.push(item)
-        }
-    })
-
-    //New RSS items added to lists that can then be pushed to webhooks could probably just push to webhooks tbh
 
 }
-*/
 
 //Function for subscribing to news
 exports.subscribeToNews = async (msg, bot) => {
@@ -83,7 +58,7 @@ exports.subscribeToNews = async (msg, bot) => {
                             // do nothing menu is closed
                         } else {
                             //push the created webhook to the selected news list
-                            
+
 
                             //call this again
                             rh.replyHandler(bot, msg, newsOptions, doMoreWork)
