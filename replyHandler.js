@@ -3,7 +3,7 @@
 exports.replyHandler = async (bot, msg, question, doWork) => {
     let qMessage = await bot.createMessage(msg.channel.id, question)
 
-    let menuTimeout = setTimeout(await () => {
+    let menuTimeout = setTimeout(async () => {
         bot.removeListener('messageCreate', handleReply)
         qMessage.delete('Menu Timeout.')
         let timeoutmsg = await bot.createMessage(msg.channel.id, 'Menu timed out.')
