@@ -10,11 +10,8 @@ const news = require('./news.js')
 
 
 // mongodb login
-
 const url = 'mongodb://127.0.0.1:36505'
 
-//redis instance
-const redis = new Redis();
 
 //sleep func
 function sleep(ms) {
