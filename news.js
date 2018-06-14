@@ -60,7 +60,7 @@ exports.subscribeToNews = async (msg, bot, client) => {
                             //push the created webhook to the selected news list
                             let col = client.db('RSS').collection('Channels')
 
-                            let feedID = parseInt(message.content)
+                            let feedID = parseInt(reply.content)
 
                             if (feedID == NaN) {
 
