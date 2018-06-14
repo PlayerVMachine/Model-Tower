@@ -24,15 +24,15 @@ request.post('https://discordapp.com/api/webhooks/{id}/{token}
 exports.pullNews = async (client) => {
     let fifteenMinutesAgo = new Date(Date.now() - 15*60*1000)
 
-    //pull RSS updates and store in REDIS?
     let generalNews = await feedReader.parseURL('http://feeds.bbci.co.uk/news/rss.xml')
     let generalTech = await feedReader.parseURL('https://www.cnet.com/rss/news/')
+
 
 
 }
 
 //Function for subscribing to news
-exports.subscribeToNews = async (msg, bot) => {
+exports.subscribeToNews = async (msg, bot, client) => {
     let botHook = null
 
     //check if channel has our webhook, if so set botHook to our hook
@@ -58,6 +58,17 @@ exports.subscribeToNews = async (msg, bot) => {
                             // do nothing menu is closed
                         } else {
                             //push the created webhook to the selected news list
+                            let col = client.db('RSS').collection('Channels')
+
+                            let feedID = parseInt(message.content)
+
+                            if (feedID == NaN) {
+
+                            } else {
+                                let webhookFeed = f('https://discordapp.com/api/webhooks/%s/%s', botHook.id, botHook.token)
+                                col.updateOne({_id:feedID}, {$push: {subscribers:webhookFeed}})
+                                console.log('added ' + webhookFeed)
+                            }
 
 
                             //call this again

@@ -115,8 +115,9 @@ const ping = bot.registerCommand('ping', (msg, args) => {
     })
 })
 
-const test = bot.registerCommand('test', (msg, args) => {
-    news.subscribeToNews(msg, bot)
+const test = bot.registerCommand('test', async (msg, args) => {
+    let client = await MongoClient.connect(url)
+    news.subscribeToNews(msg, bot, client)
 })
 
 /////////////////////////////////////////////
