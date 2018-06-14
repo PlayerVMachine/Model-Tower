@@ -28,6 +28,35 @@ exports.pullNews = async (client) => {
     let generalNews = await feedReader.parseURL('http://feeds.bbci.co.uk/news/rss.xml')
     let generalTech = await feedReader.parseURL('https://www.cnet.com/rss/news/')
 
+    let feeds = {
+        generalNews: generalNews,
+        generalTech: generalTech
+    }
+
+    let col = client.db('RSS').collection('channels')
+
+    let channels = await col.find().toArray()
+
+    channels.forEach(channel => {
+        feeds[channel.name].items.forEach(item => {
+            channel.subscribers.forEach(subscriber => {
+
+                request.post(subscriber)
+                .set('Content-Type', 'application/json')
+                .send({'embeds':[{embed: { 
+                    title: item.title,
+                    description: item.content,
+                    url: item.link,
+                    timestamp: item.isoDate
+                    }
+                }]})
+                .then((res) => {
+                    console.log(res.status)
+                })
+
+            })
+        })
+    })
 
 
 }

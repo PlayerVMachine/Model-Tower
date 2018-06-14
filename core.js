@@ -124,12 +124,13 @@ const test = bot.registerCommand('test', async (msg, args) => {
 //SCHEDULED TASKS                         //
 ///////////////////////////////////////////
 
-/*
-const getNews = () => {
-    news.pullNews()
+
+const getNews = async () => {
+    let client = await MongoClient.connect(url)
+    news.pullNews(client)
 }
-setInterval(getNews, 15*60*1000) //get News every 15 minutes
-*/
+setInterval(getNews, 60*1000) //get News every 15 minutes
+
 
 /////////////////////////////////////////////
 //THINGS TO DO ON START UP                //
