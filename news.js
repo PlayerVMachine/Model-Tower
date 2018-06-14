@@ -1,5 +1,6 @@
 const request = require('superagent')
 const Parser = require('rss-parser')
+const f = require('util').format
 
 let feedReader = new Parser()
 
