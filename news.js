@@ -68,7 +68,7 @@ exports.subscribeToNews = async (msg, bot, client) => {
                             } else {
                                 let webhookFeed = f('https://discordapp.com/api/webhooks/%s/%s', botHook.id, botHook.token)
                                 let addWF = await col.findOneAndUpdate({_id:feedID}, {$addToSet: {subscribers:webhookFeed}})
-                                console.log('added ' + webhookFeed)
+                                console.log(addWF)
                             }
 
 
