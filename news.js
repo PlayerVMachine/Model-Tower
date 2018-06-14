@@ -54,7 +54,7 @@ exports.subscribeToNews = async (msg, bot, client) => {
                     botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
 
                     let newsOptions = `\`\`\`xl\nSelect the news feed you wish to subscribe to:\n\n1. General News\n2. Tech News\n9. Leave menu\`\`\``
-                    let doMoreWork = (reply) => {
+                    let doMoreWork = async (reply) => {
                         if (reply.content == '9') {
                             // do nothing menu is closed
                         } else {
