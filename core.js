@@ -129,7 +129,7 @@ const getNews = async () => {
     let client = await MongoClient.connect(url)
     news.pullNews(bot, client)
 }
-setInterval(getNews, 60*1000) //get News every 15 minutes
+setInterval(getNews, 30*60*1000) //get News every 30 minutes
 
 
 /////////////////////////////////////////////

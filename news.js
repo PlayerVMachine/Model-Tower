@@ -23,10 +23,11 @@ request.post('https://discordapp.com/api/webhooks/{id}/{token}
 
 //Collect types of news from RSS feeds and put them somewhere?
 exports.pullNews = async (bot, client) => {
-    let fifteenMinutesAgo = new Date(Date.now() - 15*60*1000)
+    let thirtyMinutesAgo = new Date(Date.now() - 30*60*1000)
 
     let generalNews = await feedReader.parseURL('http://feeds.bbci.co.uk/news/rss.xml')
     let generalTech = await feedReader.parseURL('https://www.cnet.com/rss/news/')
+    
 
     let feeds = {
         generalNews: generalNews,
@@ -40,12 +41,14 @@ exports.pullNews = async (bot, client) => {
     channels.forEach(channel => {
         let embeds = []
         feeds[channel.name].items.forEach(item => {
-            embeds.push({
-                title: item.title,
-                description: item.content,
-                url: item.link,
-                timestamp: item.isoDate
-            })
+            if(Date.parse(item.isoDate > Date.parse(thirtyMinutesAgo))) {
+                embeds.push({
+                    title: item.title,
+                    description: item.content,
+                    url: item.link,
+                    timestamp: item.isoDate
+                })
+            }
         })
 
         channel.subscribers.forEach(subscriber => {
