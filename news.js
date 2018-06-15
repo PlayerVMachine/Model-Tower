@@ -38,23 +38,18 @@ exports.pullNews = async (client) => {
     let channels = await col.find().toArray()
 
     channels.forEach(channel => {
+        let embeds = []
         feeds[channel.name].items.forEach(item => {
-            channel.subscribers.forEach(subscriber => {
-
-                request.post(subscriber)
-                .set('Content-Type', 'application/json')
-                .send({'embeds':[{embed: { 
-                    title: item.title,
-                    description: item.content,
-                    url: item.link,
-                    timestamp: item.isoDate
-                    }
-                }]})
-                .then((res) => {
-                    console.log(res.status)
-                })
-
+            embeds.push(embed: {
+                title: item.title,
+                description: item.content,
+                url: item.link,
+                timestamp: item.isoDate
             })
+        })
+
+        channel.subscribers.forEach(subscriber => {
+            bot.executeWebhook(subscriber.id, subscriber.token, {embeds: embeds})
         })
     })
 
@@ -95,8 +90,7 @@ exports.subscribeToNews = async (msg, bot, client) => {
                             if (feedID == NaN) {
 
                             } else {
-                                let webhookFeed = f('https://discordapp.com/api/webhooks/%s/%s', botHook.id, botHook.token)
-                                let addWF = await col.findOneAndUpdate({_id:feedID}, {$addToSet: {subscribers:webhookFeed}})
+                                let addWF = await col.findOneAndUpdate({_id:feedID}, {$addToSet: {subscribers:{id:botHook.id, token:botHook.token}})
                                 console.log(addWF)
                             }
 
