@@ -90,7 +90,7 @@ exports.subscribeToNews = async (msg, bot, client) => {
                             if (feedID == NaN) {
 
                             } else {
-                                let addWF = await col.findOneAndUpdate({_id:feedID}, {$addToSet: {subscribers:{id:botHook.id, token:botHook.token}})
+                                let addWF = await col.findOneAndUpdate({_id:feedID}, {$addToSet: {subscribers:{id:botHook.id, token:botHook.token}}})
                                 console.log(addWF)
                             }
 
