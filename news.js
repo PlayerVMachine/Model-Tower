@@ -27,7 +27,7 @@ exports.pullNews = async (bot, client) => {
 
     let generalNews = await feedReader.parseURL('http://feeds.bbci.co.uk/news/rss.xml')
     let generalTech = await feedReader.parseURL('https://www.cnet.com/rss/news/')
-    
+
 
     let feeds = {
         generalNews: generalNews,
@@ -41,7 +41,7 @@ exports.pullNews = async (bot, client) => {
     channels.forEach(channel => {
         let embeds = []
         feeds[channel.name].items.forEach(item => {
-            if(Date.parse(item.isoDate > Date.parse(thirtyMinutesAgo))) {
+            if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
                 embeds.push({
                     title: item.title,
                     description: item.content,
