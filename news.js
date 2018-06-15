@@ -40,7 +40,7 @@ exports.pullNews = async (client) => {
     channels.forEach(channel => {
         let embeds = []
         feeds[channel.name].items.forEach(item => {
-            embeds.push(embed: {
+            embeds.push({
                 title: item.title,
                 description: item.content,
                 url: item.link,
