@@ -127,7 +127,7 @@ const test = bot.registerCommand('test', async (msg, args) => {
 
 const getNews = async () => {
     let client = await MongoClient.connect(url)
-    news.pullNews(client)
+    news.pullNews(bot, client)
 }
 setInterval(getNews, 60*1000) //get News every 15 minutes
 

@@ -22,7 +22,7 @@ request.post('https://discordapp.com/api/webhooks/{id}/{token}
 */
 
 //Collect types of news from RSS feeds and put them somewhere?
-exports.pullNews = async (client) => {
+exports.pullNews = async (bot, client) => {
     let fifteenMinutesAgo = new Date(Date.now() - 15*60*1000)
 
     let generalNews = await feedReader.parseURL('http://feeds.bbci.co.uk/news/rss.xml')
