@@ -41,6 +41,7 @@ exports.pullNews = async (bot, client) => {
     channels.forEach(channel => {
         let embeds = []
         feeds[channel.name].items.forEach(item => {
+            console.log(item.isoDate + ': ' + item.title)
             if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
                 embeds.push({
                     title: item.title,
@@ -52,7 +53,9 @@ exports.pullNews = async (bot, client) => {
         })
 
         channel.subscribers.forEach(subscriber => {
-            bot.executeWebhook(subscriber.id, subscriber.token, {embeds: embeds})
+            if (embeds.length > 0) { 
+                bot.executeWebhook(subscriber.id, subscriber.token, {embeds: embeds})
+            }
         })
     })
 
