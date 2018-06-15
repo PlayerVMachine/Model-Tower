@@ -54,7 +54,7 @@ exports.pullNews = async (bot, client) => {
 
         channel.subscribers.forEach(subscriber => {
             if (embeds.length > 0) { 
-                bot.executeWebhook(subscriber.id, subscriber.token, {embeds: embeds})
+                bot.executeWebhook(subscriber.id, subscriber.token, {embeds: embeds.reverse()})
             }
         })
     })
