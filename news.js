@@ -107,7 +107,7 @@ exports.subscribeToNews = async (msg, bot, client) => {
                     }
                     rh.replyHandler(bot, msg, newsOptions, doMoreWork)
             } else {
-                //They chose not to proceed
+                bot.createMessage(msg.channel.id, `\`\`\`\nWebhook creation cancelled.\`\`\``)
             }
         }
 
