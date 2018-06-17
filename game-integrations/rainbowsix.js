@@ -5,7 +5,7 @@ const R6 = new RainbowSixApi();
 
 // project files required
 const config = require('../config.json')
-const bot = require('../core.js').bot
+const bot = require('../core.js')//.bot
 
 
 exports.getOverallStats = async (msg, args) => {
