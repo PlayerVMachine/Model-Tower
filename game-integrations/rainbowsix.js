@@ -8,6 +8,8 @@ const config = require('../config.json')
 const bot = require('../core.js')
 
 
+
+
 exports.getOverallStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
@@ -161,6 +163,9 @@ exports.getRankedStats = async (msg, args) => {
     let desc = f('Clearance level: %d, XP: %d\n', statistics.player.stats.progression.level, statistics.player.stats.progression.xp)
 
     let operatorStats = await R6.stats(username, platform, true)
+    operatorStats.operator_records.sort((a,b) => {
+        return b.stats.playtime - a.stats.playtime
+    })
     if (operatorStats.operator_records !== undefined) {
         let rawURL = operatorStats.operator_records[0].operator.images.badge
         let url = rawURL.split('\\')[0]
@@ -217,6 +222,9 @@ exports.getTopOp = async (msg, args) => {
 
     //Get stats on the user on that platform
     let operatorStats = await R6.stats(username, platform, true)
+    operatorStats.operator_records.sort((a,b) => {
+        return b.stats.playtime - a.stats.playtime
+    })
     if (operatorStats.operator_records !== undefined) {
         let rawURL = operatorStats.operator_records[top].operator.images.bust
         let url = rawURL.split('\\')[0]
