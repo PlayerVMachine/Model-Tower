@@ -2,12 +2,10 @@
 const f = require('util').format
 const RainbowSixApi = require('rainbowsix-api-node');
 const R6 = new RainbowSixApi();
-const bot = require('../core.js').bot
 
 // project files required
 const config = require('../config.json')
-const reply = require('../proto_messages.json')
-
+const bot = require('../core.js').bot
 
 
 exports.getOverallStats = async (msg, args) => {
