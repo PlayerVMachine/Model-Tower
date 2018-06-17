@@ -130,7 +130,6 @@ exports.getCasualStats = async (msg, args) => {
     bot.bot.createMessage(msg.channel.id, embed)
 }
 
-
 exports.getRankedStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {

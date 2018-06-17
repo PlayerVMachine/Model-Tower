@@ -130,6 +130,9 @@ const setNews = bot.registerCommand('news', async (msg, args) => {
 //RS COMMANDS
 
 const r6cas = bot.registerCommand('r6cas', r6.getCasualStats, {})
+const r6rnk = bot.registerCommand('r6rnk', r6.getRankedStats, {})
+const r6top = bot.registerCommand('r6op', r6.getTopOp, {})
+const rsoal = bot.registerCommand('r6oall', r6.getOverallStats, {})
 
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
