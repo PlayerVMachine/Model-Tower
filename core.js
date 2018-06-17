@@ -7,6 +7,7 @@ const config = require('./config.json')
 
 //Project files
 const news = require('./news.js')
+const r6 = require('./game-integrations/rainbowsix.js')
 
 
 // mongodb login
@@ -31,9 +32,14 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
     owner:'PlayerVMachine#6223',
     prefix: ['m.'],
     defaultCommandOptions: {
-        //to do
+        caseInsensitive: true,
+        invalidUsageMessage: `Sorry my responses are limited you must use the right commands.`,
+        permissionMessage: `Unauthorized user!`
     }
 })
+
+//EXPORT BOT
+exports.bot = bot
 
 /////////////////////////////////////////////
 //EVENTS TO REACT TO                      //
@@ -115,21 +121,26 @@ const ping = bot.registerCommand('ping', (msg, args) => {
     })
 })
 
+//Used to configure the RSS webhook options
 const setNews = bot.registerCommand('news', async (msg, args) => {
     let client = await MongoClient.connect(url)
     news.subscribeToNews(msg, bot, client)
 })
 
+//RS COMMANDS
+
+const r6cas = bot.registerCommand('r6cas', r6.getCasualStats, {})
+
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
 ///////////////////////////////////////////
 
-
+//GET news from RSS feeds every 30 minutes and send to subscribed webhooks
 const getNews = async () => {
     let client = await MongoClient.connect(url)
     news.pullNews(bot, client)
 }
-setInterval(getNews, 30*60*1000) //get News every 30 minutes
+setInterval(getNews, 30*60*1000)
 
 
 /////////////////////////////////////////////

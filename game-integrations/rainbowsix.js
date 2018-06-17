@@ -2,6 +2,7 @@
 const f = require('util').format
 const RainbowSixApi = require('rainbowsix-api-node');
 const R6 = new RainbowSixApi();
+const bot = require('core.js').bot
 
 // project files required
 const config = require('../config.json')
@@ -9,7 +10,7 @@ const reply = require('../proto_messages.json')
 
 
 
-exports.getOverallStats = async (msg, args, bot) => {
+exports.getOverallStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
         bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
@@ -58,7 +59,7 @@ exports.getOverallStats = async (msg, args, bot) => {
     bot.createMessage(msg.channel.id, embed)
 }
 
-exports.getCasualStats = async (msg, args, bot) => {
+exports.getCasualStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
         bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
@@ -132,7 +133,7 @@ exports.getCasualStats = async (msg, args, bot) => {
 }
 
 
-exports.getRankedStats = async (msg, args, bot) => {
+exports.getRankedStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
         bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
@@ -204,7 +205,7 @@ exports.getRankedStats = async (msg, args, bot) => {
     bot.createMessage(msg.channel.id, embed)
 }
 
-exports.getTopOp = async (msg, args, bot) => {
+exports.getTopOp = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
         bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
