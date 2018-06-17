@@ -30,11 +30,7 @@ exports.getOverallStats = async (msg, args) => {
     }
 
     let overall = statistics.player.stats.overall
-    if (overall.suicides > 0) {
-        desc = f('Try killing yourself less you might improve your winrate! Suicides: %d', overall.suicides)
-    } else {
-        desc = f('Good job not killing yourself on the field!')
-    }
+        desc = f('Suicides: %d', overall.suicides)
 
     let hitrate = (overall.bullets_hit / overall.bullets_fired)
     hitrate = hitrate.toFixed(2)
@@ -90,6 +86,9 @@ exports.getCasualStats = async (msg, args) => {
     let desc = f('Clearance level: %d, XP: %d\n', statistics.player.stats.progression.level, statistics.player.stats.progression.xp)
 
     let operatorStats = await R6.stats(username, platform, true)
+    operatorStats.operator_records.sort((a,b) => {
+        return b.stats.playtime - a.stats.playtime
+    })
     if (operatorStats.operator_records !== undefined) {
         let rawURL = operatorStats.operator_records[0].operator.images.badge
         let url = rawURL.split('\\')[0]
@@ -218,7 +217,9 @@ exports.getTopOp = async (msg, args) => {
 
     let username = args[0];
     let platform = args[1];
-    let top = parseInt(args[2]) - 1;
+    let top = 1
+    if (args.length > 1)
+        top = parseInt(args[2]) - 1;
 
     //Get stats on the user on that platform
     let operatorStats = await R6.stats(username, platform, true)
@@ -240,7 +241,7 @@ exports.getTopOp = async (msg, args) => {
         }
     }
 
-    let desc = f('Name: %s\tCTU: %s\tRole: %s', operatorStats.operator_records[top].operator.name, operatorStats.operator_records[top].operator.ctu, operatorStats.operator_records[0].operator.role)
+    let desc = f('Name: %s\tCTU: %s\tRole: %s', operatorStats.operator_records[top].operator.name, operatorStats.operator_records[top].operator.ctu, operatorStats.operator_records[top].operator.role)
     let wr = operatorStats.operator_records[top].stats.wins / operatorStats.operator_records[top].stats.losses
     let kd = operatorStats.operator_records[top].stats.kills / operatorStats.operator_records[top].stats.deaths
     let pt = operatorStats.operator_records[top].stats.playtime / 60 / 60
