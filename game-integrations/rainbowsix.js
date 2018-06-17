@@ -250,4 +250,6 @@ exports.getTopOp = async (msg, args) => {
             footer: {text: f('Total playtime: %dh', pt.toFixed(2))}
         }
     }
+
+    bot.bot.createMessage(msg.channel.id, embed)
 }
