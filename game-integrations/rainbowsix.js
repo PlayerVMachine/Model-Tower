@@ -8,8 +8,6 @@ const config = require('../config.json')
 const bot = require('../core.js')
 
 
-
-
 exports.getOverallStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
@@ -217,7 +215,7 @@ exports.getTopOp = async (msg, args) => {
 
     let username = args[0];
     let platform = args[1];
-    let top = 1
+    let top = 0
     if (args.length > 1)
         top = parseInt(args[2]) - 1;
 
