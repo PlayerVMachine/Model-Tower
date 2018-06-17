@@ -53,7 +53,7 @@ exports.pullNews = async (bot, client) => {
         })
 
         channel.subscribers.forEach(subscriber => {
-            if (embeds.length > 0) { 
+            if (embeds.length > 0) {
                 bot.executeWebhook(subscriber.id, subscriber.token, {embeds: embeds.reverse()})
             }
         })
@@ -94,14 +94,12 @@ exports.subscribeToNews = async (msg, bot, client) => {
                             let feedID = parseInt(reply.content)
 
                             if (feedID == NaN) {
-
+                                bot.createMessage(msg.channel.id, `\`\`\`\nPlease enter a number.\`\`\``)
                             } else {
                                 let addWF = await col.findOneAndUpdate({_id:feedID}, {$addToSet: {subscribers:{id:botHook.id, token:botHook.token}}})
                                 console.log(addWF)
                             }
-
-
-                            //call this again
+                            //call again if the reply wasn't 9
                             rh.replyHandler(bot, msg, newsOptions, doMoreWork)
                         }
                     }
