@@ -137,8 +137,9 @@ const r6top = bot.registerCommand('r6op', r6.getTopOp, {})
 const rsoal = bot.registerCommand('r6oall', r6.getOverallStats, {})
 
 /////////////////////////////////////////////
-//WHAT NEXT??                             //
+//NOTIFICATION SUBSCRIBERS                //
 ///////////////////////////////////////////
+
 
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
