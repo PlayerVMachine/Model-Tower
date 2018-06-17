@@ -5,7 +5,7 @@ const R6 = new RainbowSixApi();
 
 // project files required
 const config = require('../config.json')
-const bot = require('../core.js')//.bot
+const bot = require('../core.js').bot
 
 
 exports.getOverallStats = async (msg, args) => {
@@ -64,7 +64,7 @@ exports.getCasualStats = async (msg, args) => {
         return
     }
 
-    bot.bot.sendChannelTyping(msg.channel.id)
+    bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0];
     let platform = args[1];
