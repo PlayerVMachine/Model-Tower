@@ -39,7 +39,7 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 })
 
 //EXPORT BOT
-module.exports = bot
+exports.bot = bot
 
 /////////////////////////////////////////////
 //EVENTS TO REACT TO                      //
