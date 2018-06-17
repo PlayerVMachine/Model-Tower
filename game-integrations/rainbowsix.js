@@ -5,17 +5,17 @@ const R6 = new RainbowSixApi();
 
 // project files required
 const config = require('../config.json')
-const bot = require('../core.js').bot
+const bot = require('../core.js')
 
 
 exports.getOverallStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
-        bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
         return
     }
 
-    bot.sendChannelTyping(msg.channel.id)
+    bot.bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0];
     let platform = args[1];
@@ -23,7 +23,7 @@ exports.getOverallStats = async (msg, args) => {
     //Get stats on the user on that platform
     let statistics = await R6.stats(username, platform)
     if (statistics.player === undefined) {
-        bot.createMessage(msg.channel.id, 'An error ocurred getting stats')
+        bot.bot.createMessage(msg.channel.id, 'An error ocurred getting stats')
         return
     }
 
@@ -54,17 +54,17 @@ exports.getOverallStats = async (msg, args) => {
         }
     }
 
-    bot.createMessage(msg.channel.id, embed)
+    bot.bot.createMessage(msg.channel.id, embed)
 }
 
 exports.getCasualStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
-        bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
         return
     }
 
-    bot.sendChannelTyping(msg.channel.id)
+    bot.bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0];
     let platform = args[1];
@@ -72,13 +72,13 @@ exports.getCasualStats = async (msg, args) => {
     //Get stats on the user on that platform
     let statistics = await R6.stats(username, platform)
     if (statistics.player === undefined) {
-        bot.createMessage(msg.channel.id, 'An error ocurred getting stats, make sure that you entered the username correctly.')
+        bot.bot.createMessage(msg.channel.id, 'An error ocurred getting stats, make sure that you entered the username correctly.')
         return
     }
     let casualStats = statistics.player.stats.casual
 
     if (!casualStats.has_played) {
-        bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
+        bot.bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
         return
     }
     let playTime = parseInt(casualStats.playtime)
@@ -127,18 +127,18 @@ exports.getCasualStats = async (msg, args) => {
         }
     }
 
-    bot.createMessage(msg.channel.id, embed)
+    bot.bot.createMessage(msg.channel.id, embed)
 }
 
 
 exports.getRankedStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
-        bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
         return
     }
 
-    bot.sendChannelTyping(msg.channel.id)
+    bot.bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0];
     let platform = args[1];
@@ -146,13 +146,13 @@ exports.getRankedStats = async (msg, args) => {
     //Get stats on the user on that platform
     let statistics = await R6.stats(username, platform)
     if (statistics.player === undefined) {
-        bot.createMessage(msg.channel.id, 'An error ocurred getting stats, make sure that you entered the username correctly.')
+        bot.bot.createMessage(msg.channel.id, 'An error ocurred getting stats, make sure that you entered the username correctly.')
         return
     }
     let rankedStats = statistics.player.stats.ranked
 
     if (!rankedStats.has_played) {
-        bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
+        bot.bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
         return
     }
     let playTime = parseInt(rankedStats.playtime)
@@ -200,17 +200,17 @@ exports.getRankedStats = async (msg, args) => {
         }
     }
 
-    bot.createMessage(msg.channel.id, embed)
+    bot.bot.createMessage(msg.channel.id, embed)
 }
 
 exports.getTopOp = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
-        bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
         return
     }
 
-    bot.sendChannelTyping(msg.channel.id)
+    bot.bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0];
     let platform = args[1];
