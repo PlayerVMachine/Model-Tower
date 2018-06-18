@@ -72,9 +72,9 @@ const addSubscription = async (user, subscription, context) => {
 
     if (validateMailbox) {
         if (subscription.type == 'user')
-            let sub = resolver.user(context, subscription.val)
+            sub = resolver.user(context, subscription.val)
         else (subscription.type == 'channel')
-            let sub = resolver.channel(context, subscription.val)
+            sub = resolver.channel(context, subscription.val)
 
         if (!sub) {
             console.log(f(`Could not subscribe to %s for %s`, subscription, user))
