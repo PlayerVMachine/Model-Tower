@@ -54,7 +54,7 @@ exports.user = (context, user) => {
     }
 
     // nickname match
-    const nickNameSearch = context.find(u => if(u.nick != null) u.nick.match(new RegExp(`^${escapedUser}.*`, 'i')) != undefined)
+    const nickNameSearch = context.find(u => u.nick ? u.nick.match(new RegExp(`^${escapedUser}.*`, 'i')) != undefined : null)
     if (nickNameSearch) {
         return nickNameSearch
     }
