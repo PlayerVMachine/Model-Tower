@@ -109,9 +109,9 @@ exports.registerGuildAnnouncementChannel = async (msg, args) => {
     if(!checkForGuild) {
         let register = await col.insertOne({_id:guild.id, channel:channel.id})
         if (register.insertedCount == 1)
-            f(`%s is now set as this server's announcement channel.`, channel.mention)
+            return f(`%s is now set as this server's announcement channel.`, channel.mention)
         else
-            f(`There was an error setting %s as this server's announcement channel.`, channel.mention)
+            return f(`There was an error setting %s as this server's announcement channel.`, channel.mention)
 
     } else {
         let existingChannel = await resolver.channel(guild.channels, checkForGuild.channel)
