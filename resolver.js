@@ -1,12 +1,12 @@
-//
+//Excape regular expression characters
 const regEscape = (text) => {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-//Resolve user but not nicknames
+// Resolve user and nicknames
 exports.user = (context, user) => {
 
-    //Is user a metion?
+    // Is user a metion?
     const exact = '<@!?([0-9]+)>$'
     const partial = '<@!?([0-9]+)>'
     let mentionId = new RegExp(exact, 'g').exec(user)
@@ -60,4 +60,39 @@ exports.user = (context, user) => {
     }
 
     return null
+}
+
+// Resolve channel
+exports.channel = (context, channel) => {
+    // Is channel a metion?
+    const exact = '<#!?([0-9]+)>$'
+    const partial = '<#!?([0-9]+)>'
+    let mentionId = new RegExp(exact, 'g').exec(channel)
+    if (mentionId === null) {
+        mentionId = new RegExp(partial, 'g').exec(channel)
+    }
+    if (mentionId && mentionId.length > 1) {
+        return context.find(c => c.id === mentionId[1])
+    }
+
+    // Is channel an id?
+    if (channel.match(/^([0-9]+)$/)) {
+        const channelIdSearch = context.find(c => c.id === channel);
+        if (channelIdSearch) {
+            return channelIdSearch;
+        }
+    }
+
+    // Is channel the exact username?
+    const exactNameSearch = context.find(c => c.name === channel);
+    if (exactNameSearch) {
+        return exactNameSearch;
+    }
+
+    const escapedChannel = regEscape(channel);
+    // channelname match
+    const channelNameSearch = context.find(c => c.name.match(new RegExp(`^${escapedChannel}.*`, 'i')) != undefined)
+    if (channelNameSearch) {
+        return channelNameSearch
+    }
 }

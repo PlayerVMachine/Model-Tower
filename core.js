@@ -128,8 +128,8 @@ const setNews = bot.registerCommand('news', async (msg, args) => {
 })
 
 const test = bot.registerCommand('test', (msg, args) => {
-    let user = resolver.user(msg.channel.guild.members, args[0])
-    return '```json\n' + JSON.stringify(user) + '\n```'
+    let channel = resolver.channel(msg.channel.guild.channels, args[0])
+    return '```json\n' + JSON.stringify(channel) + '\n```'
 })
 
 /////////////////////////////////////////////
