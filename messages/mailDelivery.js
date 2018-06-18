@@ -94,7 +94,7 @@ const addSubscription = async (user, subscription, context) => {
 
 exports.registerGuildAnnouncementChannel = async (msg, args) => {
     let guild = msg.channel.guild
-    let channel = resolver.channel(guild, args[0])
+    let channel = resolver.channel(guild.channels, args[0])
 
     if (!channel) {
         return `Sorry I couldn't find that channel in this server!`
@@ -114,7 +114,7 @@ exports.registerGuildAnnouncementChannel = async (msg, args) => {
             f(`There was an error setting %s as this server's announcement channel.`, channel.mention)
 
     } else {
-        let existingChannel = await resolver.channel(checkForGuild.channel)
+        let existingChannel = await resolver.channel(guild.channels, checkForGuild.channel)
         return f(`%s is already configured as this server's announcement channel.`, existingChannel.mention)
     }
 }
