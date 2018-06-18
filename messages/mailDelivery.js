@@ -5,7 +5,7 @@ const f = require('util').format
 //project files required
 const config = require('../config.json')
 const bot = require('../core.js')
-const resolver = require('./resolver.js')
+const resolver = require('../resolver.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -89,5 +89,32 @@ const addSubscription = async (user, subscription, context) => {
 
     } else {
         console.log(f(`Could not subscribe to %s for %s`, subscription, user))
+    }
+}
+
+exports.registerGuildAnnouncementChannel = async (msg, args) => {
+    let guild = msg.channel.guild
+    let channel = resolver.channel(guild, args[0])
+
+    if (!channel) {
+        return `Sorry I couldn't find that channel in this server!`
+    }
+
+    //Add the guild and channel to a collection
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('guild_announcers')
+
+    let checkForGuild = await col.findOne({_id:guild.id})
+
+    if(!checkForGuild) {
+        let register = await col.insertOne({_id:guild.id, channel:channel.id})
+        if (register.insertedCount == 1)
+            f(`%s is now set as this server's announcement channel.`, channel.mention)
+        else
+            f(`There was an error setting %s as this server's announcement channel.`, channel.mention)
+
+    } else {
+        let existingChannel = await resolver.channel(checkForGuild.channel)
+        return f(`%s is already configured as this server's announcement channel.`, existingChannel.mention)
     }
 }

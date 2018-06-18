@@ -8,10 +8,10 @@ const config = require('./config.json')
 //Project files
 const news = require('./news.js')
 const r6 = require('./game-integrations/rainbowsix.js')
+const postManager = require('./messages/mailDelivery.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
-
 
 //sleep func
 function sleep(ms) {
@@ -139,6 +139,7 @@ const rsoal = bot.registerCommand('r6oall', r6.getOverallStats, {})
 //NOTIFICATION SUBSCRIBERS                //
 ///////////////////////////////////////////
 
+const setServerAnnouncementChannel = bot.registerCommand('setan', postManager.registerGuildAnnouncementChannel, {})
 
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //

@@ -8,11 +8,11 @@ exports.user = (context, user) => {
 
     // Is user a metion?
     const exact = '<@!?([0-9]+)>$'
-    const partial = '<@!?([0-9]+)>'
+    //const partial = '<@!?([0-9]+)>'
     let mentionId = new RegExp(exact, 'g').exec(user)
-    if (mentionId === null) {
-        mentionId = new RegExp(partial, 'g').exec(user)
-    }
+    // if (mentionId === null) {
+    //    mentionId = new RegExp(partial, 'g').exec(user)
+    //}
     if (mentionId && mentionId.length > 1) {
         return context.find(u => u.id === mentionId[1])
     }
@@ -66,11 +66,11 @@ exports.user = (context, user) => {
 exports.channel = (context, channel) => {
     // Is channel a metion?
     const exact = '<#!?([0-9]+)>$'
-    const partial = '<#!?([0-9]+)>'
+    //const partial = '<#!?([0-9]+)>'
     let mentionId = new RegExp(exact, 'g').exec(channel)
-    if (mentionId === null) {
-        mentionId = new RegExp(partial, 'g').exec(channel)
-    }
+    //if (mentionId === null) {
+    //    mentionId = new RegExp(partial, 'g').exec(channel)
+    //}
     if (mentionId && mentionId.length > 1) {
         return context.find(c => c.id === mentionId[1])
     }
