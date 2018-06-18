@@ -47,5 +47,17 @@ exports.user = (context, user) => {
         return userNameSearch
     }
 
+    // Is user an exact nickname?
+    const exactNickSearch = context.find(u => u.nick === user);
+    if (exactNickSearch) {
+        return exactNickSearch;
+    }
+
+    // nickname match
+    const nickNameSearch = context.find(u => u.nick.match(new RegExp(`^${escapedUser}.*`, 'i')) != undefined)
+    if (nickNameSearch) {
+        return nickNameSearch
+    }
+
     return null
 }
