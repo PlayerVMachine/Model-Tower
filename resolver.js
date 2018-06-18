@@ -1,3 +1,7 @@
+//
+const regEscape = (text) => {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
 
 //Resolve user but not nicknames
 exports.user = (context, user) => {
@@ -36,7 +40,7 @@ exports.user = (context, user) => {
         return exactNameSearch;
     }
 
-    const escapedUser = utils.regEscape(user);
+    const escapedUser = regEscape(user);
     // username match
     const userNameSearch = context.find(u => u.username.match(new RegExp(`^${escapedUser}.*`, 'i')) != undefined)
     if (userNameSearch) {
