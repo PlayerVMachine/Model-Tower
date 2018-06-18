@@ -31,14 +31,14 @@ exports.user = (context, user) => {
     }
 
     // Is user the exact username?
-    const exactNameSearch = users.find(u => u.username === user);
+    const exactNameSearch = context.find(u => u.username === user);
     if (exactNameSearch) {
         return exactNameSearch;
     }
 
     const escapedUser = utils.regEscape(user);
     // username match
-    const userNameSearch = users.find(u => u.username.match(new RegExp(`^${escapedUser}.*`, 'i')) != undefined)
+    const userNameSearch = context.find(u => u.username.match(new RegExp(`^${escapedUser}.*`, 'i')) != undefined)
     if (userNameSearch) {
         return userNameSearch
     }
