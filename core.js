@@ -8,7 +8,6 @@ const config = require('./config.json')
 //Project files
 const news = require('./news.js')
 const r6 = require('./game-integrations/rainbowsix.js')
-const resolver = require('./resolver.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -125,11 +124,6 @@ const ping = bot.registerCommand('ping', (msg, args) => {
 const setNews = bot.registerCommand('news', async (msg, args) => {
     let client = await MongoClient.connect(url)
     news.subscribeToNews(msg, bot, client)
-})
-
-const test = bot.registerCommand('test', (msg, args) => {
-    let channel = resolver.channel(msg.channel.guild.channels, args[0])
-    return '```json\n' + JSON.stringify(channel) + '\n```'
 })
 
 /////////////////////////////////////////////

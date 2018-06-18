@@ -5,6 +5,7 @@ const f = require('util').format
 //project files required
 const config = require('../config.json')
 const bot = require('../core.js')
+const resolver = require('./resolver.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -18,34 +19,6 @@ const url = 'mongodb://127.0.0.1:36505'
 * }
 */
 
-//Check if input is a user or channel known to the bot
-const isValidID = (msg) => {
-    let sliceOn = msg.indexOf(' ') + 1
-    let check = msg.slice(sliceOn)
-    let checkID = check
-
-    if(check.indexOf('@') == 0 || check.indexOf'#' == 0)
-        checkID = check.slice(1)
-
-    if (msg.channel.guild.members.find(m => m.username == check)) { //find by username
-        let user = msg.channel.guild.members.find(m => m.username == check);
-        return user.id
-    } else if (msg.channel.guild.members.find(m => m.id == checkID)) { //find by user id
-        let user = msg.channel.guild.members.find(m => m.id == checkID);
-        return user.id
-    } else if (msg.channel.guild.members.find(m => m.nick == check)) { //find by nickname
-        let member = msg.channel.guild.members.find(m => m.nick == check);
-        return member.id
-    } else if (msg.channel.guild.members.find(m => m.username.startsWith(check))) { //find by partial username
-        let member = msg.channel.guild.members.find(m => m.id == checkID);
-        return member.id
-    } else if (msg.channel.guild.channels.find(m => m.name == check)) { //find by channel name
-
-    } else if (msg.channel.guild.channels.find(m => m.id == checkID)) { //find by channel id
-
-    }
-}
-
 //Register mailbox for a user if it does not exist
 const registerMailbox = async (userid) => {
     let client = await MongoClient.connect(url)
@@ -53,6 +26,7 @@ const registerMailbox = async (userid) => {
 
     let mailbox = {
         _id: userid,
+        subscriptions: [],
         news: []
     }
 
@@ -92,44 +66,28 @@ const deliverMail = async (src, dest, content) => {
     }
 }
 
-//Create user's mailing list, store user id, destintation id, and list of subscriptions
-const createMailingList = async (userid) => {
-    let client = await MongoClient.connect(url)
-    let col = client.db('model_tower').collection('mailingLists')
+//Subscribe to a user or channel
+const addSubscription = async (user, subscription, context) => {
+    let validateMailbox = await registerMailbox(user)
 
-    let mailingList = {
-        _id: userid,
-        subscriptions: []
-    }
+    if (validateMailbox) {
+        if (subscription.type == 'user')
+            let sub = resolver.user(context, subscription.val)
+        else (subscription.type == 'channel')
+            let sub = resolver.channel(context, subscription.val)
 
-    let findUser = await col.findOne({_id:userid})
-    if(!findUser) {
-        let register = await col.insertOne(mailingList)
-        if (register.insertedCount == 1)
-            return true
-        else
-            return false
+        if (!sub) {
+            console.log(f(`Could not subscribe to %s for %s`, subscription, user))
+            return
+        }
+
+        let client = await MongoClient.connect(url)
+        let col = client.db('model_tower').collection('mailboxes')
+        let subscribe = await col.updateOne({_id:user}, {$addToSet: {subscriptions:sub.id}})
+        if (subscribe.result.ok != 1)
+            console.log(f(`Could not deliver message from %s to %s`, src, dest))
 
     } else {
-        return true
-    }
-}
-
-
-//subscribe to a person or channel
-exports.subscribe = async (msg, args) => {
-    let client = await MongoClient.connect(url)
-    let col = client.db('model_tower').collection('mailingLists')
-
-    //TO DO: validate source in message
-
-    let validateList = await createMailingList(msg.author.id)
-
-    if (validateList) {
-        let subbed = await col.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:source}})
-        if (subbed.result.ok != 1)
-            console.log(f(`Could not subscribe to %s for %s`, source, msg.author.id))
-    } else {
-        console.log(f(`Could not subscribe to %s for %s`, source, msg.author.id))
+        console.log(f(`Could not subscribe to %s for %s`, subscription, user))
     }
 }
