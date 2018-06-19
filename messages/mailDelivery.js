@@ -13,7 +13,6 @@ const url = 'mongodb://127.0.0.1:36505'
 /*
 * var message = {
 *   source: {type:'user' || 'channel', id: id}
-*   destination: {type:'user' || 'channel', id: id}
 *   content: string
 *   sent: Date()
 * }
@@ -43,14 +42,15 @@ const registerMailbox = async (userid) => {
     }
 }
 
-//Send a message to a mailbox
+//TO DO: take recieved message get list of mailboxes subscribed to x message and run deliver message on every mailbox
+
+//Send a message to a mailbox TO:DO double check  logic
 const deliverMail = async (src, dest, content) => {
     let client = await MongoClient.connect(url)
     let col = client.db('model_tower').collection('mailboxes')
 
     let message = {
         source: src,
-        destination: dest,
         content:content,
         sent: Date()
     }
@@ -67,8 +67,7 @@ const deliverMail = async (src, dest, content) => {
 }
 
 exports.registerGuildAnnouncementChannel = async (msg, args) => {
-    let member = msg.channel.guild.members.get(msg.author.id)
-    if (!member.permission.has('manageChannels')) {
+    if (!msg.member.permission.has('manageChannels')) {
         return
     }
 
@@ -99,8 +98,7 @@ exports.registerGuildAnnouncementChannel = async (msg, args) => {
 }
 
 exports.unregisterGuildAnnouncementChannel = async (msg, args) => {
-    let member = msg.channel.guild.members.get(msg.author.id)
-    if (!member.permission.has('manageChannels')) {
+    if (!msg.member.permission.has('manageChannels')) {
         return
     }
 
@@ -209,7 +207,7 @@ exports.unsubscribeFromUser = async (msg, args) => {
         if (subscribe.result.ok != 1) {
             console.log(f(`Could not unsubscribe from %s for %s`, user.id, msg.author.id))
         } else {
-            return f(`Unsubscribed to %s's posts!`, user.username)
+            return f(`Unsubscribed from %s's posts!`, user.username)
         }
     } else {
         return f(`Could not find user: %s`, args[0])

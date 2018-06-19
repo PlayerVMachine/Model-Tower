@@ -22,19 +22,9 @@ function sleep(ms) {
 //COMMAND CLIENT REWRITE WITH JUST CLIENT //
 ///////////////////////////////////////////
 
-const bot = new Eris.CommandClient(config.BOT_TOKEN, {
+const bot = new Eris.Client(config.BOT_TOKEN, {
+    messageLimit: 20,
     defaultImageSize:256
-}, {
-    defaultHelpCommand: false,
-    description:'Discord bot providing social media functions',
-    name:'Broadcast Tower',
-    owner:'PlayerVMachine#6223',
-    prefix: ['m.'],
-    defaultCommandOptions: {
-        caseInsensitive: true,
-        invalidUsageMessage: `Sorry my responses are limited you must use the right commands.`,
-        permissionMessage: `Unauthorized user!`
-    }
 })
 
 //EXPORT BOT
@@ -106,45 +96,77 @@ bot.on('guildDelete', async (guild) => {
     }
 })
 
+//////////////////////////////////////////////
+//GUILD PREFIX CONFIG                      //
+////////////////////////////////////////////
+
+const getGuildPrefix = async (guild) => {
+    //message channel is a DM not a guild channel
+    if (!guild) {
+        return `m.`
+    }
+
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('guild_configs')
+
+    let guildConfig = col.findOne({_id:guild.id})
+    if(guildConfig) {
+        return guildConfig.prefix
+    } else {
+        return `m.`
+    }
+}
+
 /////////////////////////////////////////////
 //COMMANDS                                //
 ///////////////////////////////////////////
 
-//Ping, used to reassure people that the bot is up and to check latency
-const ping = bot.registerCommand('ping', (msg, args) => {
-    let start = Date.now()
+bot.on('messageCreate', async (msg) => {
+    //check the origin guild to set prefix
+    prefix = await getGuildPrefix(msg.channel.guild)
 
-    bot.createMessage(msg.channel.id, 'Pong!').then(msg => {
-        let diff = Date.now() - start
-        return msg.edit(f('Pong! `%dms`', diff))
-    })
+    if (msg.content.startsWith(prefix + `ping`)) {
+        //Ping, used to reassure people that the bot is up and to check latency
+        let start = Date.now()
+
+        bot.createMessage(msg.channel.id, 'Pong!').then(msg => {
+            let diff = Date.now() - start
+            return msg.edit(f('Pong! `%dms`', diff))
+        })
+    } else if (msg.content.startsWith(prefix + `r6cas`)) {
+        let args = msg.content.slice(prefix.length + 5 + 1).split(' ')
+        r6.getCasualStats(msg, args)
+    } else if (msg.content.startsWith(prefix + `r6rnk`)) {
+        let args = msg.content.slice(prefix.length + 5 + 1).split(' ')
+        r6.getRankedStats(msg, args)
+    } else if (msg.content.startsWith(prefix + `r6op`)) {
+        let args = msg.content.slice(prefix.length + 4 + 1).split(' ')
+        r6.getTopOp(msg, args)
+    } else if (msg.content.startsWith(prefix + `r6misc`)) {
+        let args = msg.content.slice(prefix.length + 6 + 1).split(' ')
+        r6.getOverallStats(msg, args)
+    }
+
 })
+
+
 
 //Used to configure the RSS webhook options
-const setNews = bot.registerCommand('news', async (msg, args) => {
-    let client = await MongoClient.connect(url)
-    news.subscribeToNews(msg, bot, client)
-})
-
-/////////////////////////////////////////////
-//R6 STATS COMMAND                        //
-///////////////////////////////////////////
-
-const r6cas = bot.registerCommand('r6cas', r6.getCasualStats, {})
-const r6rnk = bot.registerCommand('r6rnk', r6.getRankedStats, {})
-const r6top = bot.registerCommand('r6op', r6.getTopOp, {})
-const rsoal = bot.registerCommand('r6oall', r6.getOverallStats, {})
+// const setNews = bot.registerCommand('news', async (msg, args) => {
+//     let client = await MongoClient.connect(url)
+//     news.subscribeToNews(msg, bot, client)
+// })
 
 /////////////////////////////////////////////
 //NOTIFICATION SUBSCRIBERS                //
 ///////////////////////////////////////////
 
-const setServerAnnouncementChannel = bot.registerCommand('setan', postManager.registerGuildAnnouncementChannel, {})
-const unsetServerAnnouncementChannel = bot.registerCommand('unsetan', postManager.unregisterGuildAnnouncementChannel, {})
-const subscribeToGuildAnnouncementChannel = bot.registerCommand('updates', postManager.subscribeToGuildAnnouncementChannel, {})
-const unsubscribeFromGuildAnnouncementChannel = bot.registerCommand('noupdates', postManager.unsubscribeFromGuildAnnouncementChannel, {})
-const subscribeToUsersPosts = bot.registerCommand('subscribe', postManager.subscribeToUser, {})
-const unsubscribeFromUsersPosts = bot.registerCommand('unsubscribe', postManager.unsubscribeFromUser, {})
+// const setServerAnnouncementChannel = bot.registerCommand('setan', postManager.registerGuildAnnouncementChannel, {})
+// const unsetServerAnnouncementChannel = bot.registerCommand('unsetan', postManager.unregisterGuildAnnouncementChannel, {})
+// const subscribeToGuildAnnouncementChannel = bot.registerCommand('updates', postManager.subscribeToGuildAnnouncementChannel, {})
+// const unsubscribeFromGuildAnnouncementChannel = bot.registerCommand('noupdates', postManager.unsubscribeFromGuildAnnouncementChannel, {})
+// const subscribeToUsersPosts = bot.registerCommand('subscribe', postManager.subscribeToUser, {})
+// const unsubscribeFromUsersPosts = bot.registerCommand('unsubscribe', postManager.unsubscribeFromUser, {})
 
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
