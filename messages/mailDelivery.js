@@ -157,5 +157,7 @@ exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
         } else {
             return f(`Subscribed to %s's announcement channel!`, msg.channel.guild.name)
         }
+    } else {
+        return f(`%s does not have an announcement channel!`, msg.channel.guild.name)
     }
 }
