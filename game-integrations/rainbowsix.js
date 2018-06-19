@@ -7,8 +7,9 @@ const R6 = new RainbowSixApi();
 const config = require('../config.json')
 const bot = require('../coreClient.js')
 
+exports.commandList = [`r6Cas`, `r6rnk`, `r6op`, `r6misc`]
 
-exports.getOverallStats = async (msg, args) => {
+exports.getMiscStats = async (msg, args) => {
 
     if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
         bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')

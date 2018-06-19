@@ -120,10 +120,16 @@ const getGuildPrefix = async (guild) => {
 /////////////////////////////////////////////
 //COMMANDS                                //
 ///////////////////////////////////////////
+let r6Commands = r6.commandList
 
 bot.on('messageCreate', async (msg) => {
     //check the origin guild to set prefix
     prefix = await getGuildPrefix(msg.channel.guild)
+
+    if (msg.content.startsWith(prefix)) {
+        let command = msg.content.slice(prefix.length, msg.content.indexOf(` `))
+        console.log(command)
+    }
 
     if (msg.content.startsWith(prefix + `ping`)) {
         //Ping, used to reassure people that the bot is up and to check latency
@@ -144,7 +150,7 @@ bot.on('messageCreate', async (msg) => {
         r6.getTopOp(msg, args)
     } else if (msg.content.startsWith(prefix + `r6misc`)) {
         let args = msg.content.slice(prefix.length + 6 + 1).split(' ')
-        r6.getOverallStats(msg, args)
+        r6.getMiscStats(msg, args)
     }
 
 })
