@@ -10,6 +10,15 @@ const resolver = require('../resolver.js')
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
 
+exports.commandList = {
+    setan:`registerGuildAnnouncementChannel`,
+    unsetan:`unregisterGuildAnnouncementChannel`,
+    updates:`subscribeToGuildAnnouncementChannel`,
+    noupdates:`unsubscribeFromGuildAnnouncementChannel`,
+    subscribe:`subscribeToUser`,
+    unsubscribe:`unsubscribeFromUser`
+}
+
 /*
 * var message = {
 *   source: {type:'user' || 'channel', id: id}
@@ -75,7 +84,7 @@ exports.registerGuildAnnouncementChannel = async (msg, args) => {
     let channel = resolver.channel(guild.channels, args[0])
 
     if (!channel) {
-        return `Sorry I couldn't find that channel in this server!`
+        bot.bot.createMessage(msg.channel.id, `Sorry I couldn't find that channel in this server!`)
     }
 
     //Add the guild and channel to a collection
@@ -87,13 +96,13 @@ exports.registerGuildAnnouncementChannel = async (msg, args) => {
     if(!checkForGuild) {
         let register = await col.insertOne({_id:guild.id, channel:channel.id})
         if (register.insertedCount == 1)
-            return f(`%s is now set as this server's announcement channel.`, channel.mention)
+            bot.bot.createMessage(msg.channel.id, f(`%s is now set as this server's announcement channel.`, channel.mention))
         else
-            return f(`There was an error setting %s as this server's announcement channel.`, channel.mention)
+            bot.bot.createMessage(msg.channel.id, f(`There was an error setting %s as this server's announcement channel.`, channel.mention))
 
     } else {
         let existingChannel = await resolver.channel(guild.channels, checkForGuild.channel)
-        return f(`%s is already configured as this server's announcement channel.`, existingChannel.mention)
+        bot.bot.createMessage(msg.channel.id, f(`%s is already configured as this server's announcement channel.`, existingChannel.mention))
     }
 }
 
@@ -109,14 +118,14 @@ exports.unregisterGuildAnnouncementChannel = async (msg, args) => {
     let col = client.db('model_tower').collection('guild_announcers')
 
     if (!channel) {
-        return `Sorry I couldn't find that channel in this server!`
+        bot.bot.createMessage(msg.channel.id, `Sorry I couldn't find that channel in this server!`)
     }
 
     let removeGuild = await col.deleteOne({_id:guild.id})
     if(removeGuild.result.n == 1) {
-        return f(`%s is no longer configured as this server's announcement channel.`, channel.mention)
+        bot.bot.createMessage(msg.channel.id, f(`%s is no longer configured as this server's announcement channel.`, channel.mention))
     } else {
-        return f(`There was no announcement channel.`)
+        bot.bot.createMessage(msg.channel.id, f(`There was no announcement channel.`))
     }
 }
 
@@ -124,7 +133,7 @@ exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
-        return `Sorry could not register subscription.`
+        bot.bot.createMessage(msg.channel.id, `Sorry could not register subscription.`)
     }
 
     let client = await MongoClient.connect(url)
@@ -137,10 +146,10 @@ exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
         if (subscribe.result.ok != 1) {
             console.log(f(`Could not subscribe to %s for %s`, guild_announcer.channel, msg.author.id))
         } else {
-            return f(`Subscribed to %s's announcement channel!`, msg.channel.guild.name)
+            bot.bot.createMessage(msg.channel.id, f(`Subscribed to %s's announcement channel!`, msg.channel.guild.name))
         }
     } else {
-        return f(`%s does not have an announcement channel!`, msg.channel.guild.name)
+        bot.bot.createMessage(msg.channel.id, f(`%s does not have an announcement channel!`, msg.channel.guild.name))
     }
 }
 
@@ -148,7 +157,7 @@ exports.unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
-        return `Sorry could not unsubscribe.`
+        bot.bot.createMessage(msg.channel.id, `Sorry could not unsubscribe.`)
     }
 
     let client = await MongoClient.connect(url)
@@ -161,10 +170,10 @@ exports.unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
         if (subscribe.result.ok != 1) {
             console.log(f(`Could not unsubscribe from %s for %s`, guild_announcer.channel, msg.author.id))
         } else {
-            return f(`Unsubscribed from %s's announcement channel!`, msg.channel.guild.name)
+            bot.bot.createMessage(msg.channel.id, f(`Unsubscribed from %s's announcement channel!`, msg.channel.guild.name))
         }
     } else {
-        return f(`%s does not have an announcement channel!`, msg.channel.guild.name)
+        bot.bot.createMessage(msg.channel.id, f(`%s does not have an announcement channel!`, msg.channel.guild.name))
     }
 }
 
@@ -172,7 +181,7 @@ exports.subscribeToUser = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
-        return `Sorry could not register subscription.`
+        bot.bot.createMessage(msg.channel.id, `Sorry could not register subscription.`)
     }
 
     let client = await MongoClient.connect(url)
@@ -184,10 +193,10 @@ exports.subscribeToUser = async (msg, args) => {
         if (subscribe.result.ok != 1) {
             console.log(f(`Could not subscribe to %s for %s`, user.id, msg.author.id))
         } else {
-            return f(`Subscribed to %s's posts!`, user.username)
+            bot.bot.createMessage(msg.channel.id, f(`Subscribed to %s's posts!`, user.username))
         }
     } else {
-        return f(`Could not find user: %s`, args[0])
+        bot.bot.createMessage(msg.channel.id, f(`Could not find user: %s`, args[0]))
     }
 }
 
@@ -195,7 +204,7 @@ exports.unsubscribeFromUser = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
-        return `Sorry could not unsubscribe.`
+        bot.bot.createMessage(msg.channel.id, `Sorry could not unsubscribe.`)
     }
 
     let client = await MongoClient.connect(url)
@@ -207,9 +216,9 @@ exports.unsubscribeFromUser = async (msg, args) => {
         if (subscribe.result.ok != 1) {
             console.log(f(`Could not unsubscribe from %s for %s`, user.id, msg.author.id))
         } else {
-            return f(`Unsubscribed from %s's posts!`, user.username)
+            bot.bot.createMessage(msg.channel.id, f(`Unsubscribed from %s's posts!`, user.username))
         }
     } else {
-        return f(`Could not find user: %s`, args[0])
+        bot.bot.createMessage(msg.channel.id, f(`Could not find user: %s`, args[0]))
     }
 }

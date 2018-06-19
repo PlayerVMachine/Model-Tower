@@ -5,7 +5,7 @@ const R6 = new RainbowSixApi();
 
 // project files required
 const config = require('../config.json')
-const bot = require('../coreClient.js')
+const bot = require('../core.js')
 
 exports.commandList = {
     r6cas:`getCasualStats`,

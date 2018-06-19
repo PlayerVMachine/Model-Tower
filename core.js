@@ -6,7 +6,7 @@ const Eris = require('eris')
 const config = require('./config.json')
 
 //Project files
-const news = require('./news.js')
+//const news = require('./news.js')
 const r6 = require('./game-integrations/rainbowsix.js')
 const postManager = require('./messages/mailDelivery.js')
 
@@ -22,19 +22,9 @@ function sleep(ms) {
 //COMMAND CLIENT REWRITE WITH JUST CLIENT //
 ///////////////////////////////////////////
 
-const bot = new Eris.CommandClient(config.BOT_TOKEN, {
+const bot = new Eris.Client(config.BOT_TOKEN, {
+    messageLimit: 20,
     defaultImageSize:256
-}, {
-    defaultHelpCommand: false,
-    description:'Discord bot providing social media functions',
-    name:'Broadcast Tower',
-    owner:'PlayerVMachine#6223',
-    prefix: ['m.'],
-    defaultCommandOptions: {
-        caseInsensitive: true,
-        invalidUsageMessage: `Sorry my responses are limited you must use the right commands.`,
-        permissionMessage: `Unauthorized user!`
-    }
 })
 
 //EXPORT BOT
@@ -106,45 +96,88 @@ bot.on('guildDelete', async (guild) => {
     }
 })
 
+//////////////////////////////////////////////
+//GUILD PREFIX CONFIG                      //
+////////////////////////////////////////////
+
+const getGuildPrefix = async (guild) => {
+    //message channel is a DM not a guild channel
+    if (!guild) {
+        return `m.`
+    }
+
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('guild_configs')
+
+    let guildConfig = await col.findOne({_id:guild.id})
+    if(guildConfig) {
+        return guildConfig.prefix
+    }
+
+    return `m.`
+}
+
 /////////////////////////////////////////////
 //COMMANDS                                //
 ///////////////////////////////////////////
+let r6Commands = r6.commandList
+let pmCommands = postManager.commandList
 
-//Ping, used to reassure people that the bot is up and to check latency
-const ping = bot.registerCommand('ping', (msg, args) => {
-    let start = Date.now()
+bot.on('messageCreate', async (msg) => {
 
-    bot.createMessage(msg.channel.id, 'Pong!').then(msg => {
-        let diff = Date.now() - start
-        return msg.edit(f('Pong! `%dms`', diff))
-    })
+    //Ignore other bots and itself
+    if (msg.author.bot) {
+        return
+    }
+
+    //Check the origin guild to set prefix
+    prefix = await getGuildPrefix(msg.channel.guild)
+
+    //bad get rid of later
+    if (msg.content.startsWith(prefix + `ping`)) {
+        //Ping, used to reassure people that the bot is up and to check latency
+        let start = Date.now()
+
+        bot.createMessage(msg.channel.id, 'Pong!').then(msg => {
+            let diff = Date.now() - start
+            return msg.edit(f('Pong! `%dms`', diff))
+        })
+    }
+
+    //Check if the message sent was a command intended for the bot
+    if (msg.content.startsWith(prefix)) {
+        //Get the command after the prefix and before any arguments
+        let command = msg.content.slice(prefix.length, msg.content.indexOf(` `))
+
+        //Check if the command is a rainbow six siege stats command
+        if (Object.keys(r6Commands).indexOf(command) > -1) {
+
+            let key = Object.keys(r6Commands)[Object.keys(r6Commands).indexOf(command)]
+            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //run the function corresponding to the command name and pass it the message and its args
+            r6[r6Commands[key]](msg, args)
+
+        //Check if the command is a postManager Command
+        } else if (Object.keys(pmCommands).indexOf(command) > -1) {
+
+            let key = Object.keys(pmCommands)[Object.keys(pmCommands).indexOf(command)]
+            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //run the function corresponding to the command name and pass it the message and its args
+            postManager[pmCommands[key]](msg, args)
+
+        }
+    }
+
 })
+
+
 
 //Used to configure the RSS webhook options
-const setNews = bot.registerCommand('news', async (msg, args) => {
-    let client = await MongoClient.connect(url)
-    news.subscribeToNews(msg, bot, client)
-})
+// const setNews = bot.registerCommand('news', async (msg, args) => {
+//     let client = await MongoClient.connect(url)
+//     news.subscribeToNews(msg, bot, client)
+// })
 
-/////////////////////////////////////////////
-//R6 STATS COMMAND                        //
-///////////////////////////////////////////
-
-const r6cas = bot.registerCommand('r6cas', r6.getCasualStats, {})
-const r6rnk = bot.registerCommand('r6rnk', r6.getRankedStats, {})
-const r6top = bot.registerCommand('r6op', r6.getTopOp, {})
-const rsoal = bot.registerCommand('r6oall', r6.getOverallStats, {})
-
-/////////////////////////////////////////////
-//NOTIFICATION SUBSCRIBERS                //
-///////////////////////////////////////////
-
-const setServerAnnouncementChannel = bot.registerCommand('setan', postManager.registerGuildAnnouncementChannel, {})
-const unsetServerAnnouncementChannel = bot.registerCommand('unsetan', postManager.unregisterGuildAnnouncementChannel, {})
-const subscribeToGuildAnnouncementChannel = bot.registerCommand('updates', postManager.subscribeToGuildAnnouncementChannel, {})
-const unsubscribeFromGuildAnnouncementChannel = bot.registerCommand('noupdates', postManager.unsubscribeFromGuildAnnouncementChannel, {})
-const subscribeToUsersPosts = bot.registerCommand('subscribe', postManager.subscribeToUser, {})
-const unsubscribeFromUsersPosts = bot.registerCommand('unsubscribe', postManager.unsubscribeFromUser, {})
 
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
