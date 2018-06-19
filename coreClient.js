@@ -127,7 +127,7 @@ bot.on('messageCreate', async (msg) => {
     prefix = await getGuildPrefix(msg.channel.guild)
 
     if (msg.content.startsWith(prefix)) {
-        let command = msg.content.slice(prefix.length, msg.content.indexOf(` `) + 1)
+        let command = msg.content.slice(prefix.length, msg.content.indexOf(` `))
         console.log(command + ` ` + command.length)
 
         console.log(Object.keys(r6Commands))
