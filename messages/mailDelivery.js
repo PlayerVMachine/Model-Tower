@@ -137,3 +137,22 @@ exports.unregisterGuildAnnouncementChannel = async (msg, args) => {
         return f(`There was no announcement channel.`)
     }
 }
+
+exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
+    let validateMailbox = await registerMailbox(msg.author.id)
+
+    if (!validateMailbox) {
+        return `Sorry could not register subscription.`
+    }
+
+    let client = await MongoClient.connect(url)
+    let mailboxes = client.db('model_tower').collection('mailboxes')
+    let guild_announcers = client.db('model_tower').collection('guild_announcers')
+
+    let guild_announcer = await guild_announcers.findOne({_id:msg.channel.guild.id})
+    if(guild_announcer) {
+        let subscribe = await mailboxes.updateOne({_id:user}, {$addToSet: {subscriptions:guild_announcer.channel}})
+        if (subscribe.result.ok != 1)
+            console.log(f(`Could not subscribe to %s for %S`, src, dest))
+    }
+}
