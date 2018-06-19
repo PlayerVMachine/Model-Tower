@@ -67,6 +67,11 @@ const deliverMail = async (src, dest, content) => {
 }
 
 exports.registerGuildAnnouncementChannel = async (msg, args) => {
+    let member = msg.channel.guild.members.get(msg.author.id)
+    if (!member.permission.has('manageChannels')) {
+        return
+    }
+
     let guild = msg.channel.guild
     let channel = resolver.channel(guild.channels, args[0])
 
@@ -94,6 +99,11 @@ exports.registerGuildAnnouncementChannel = async (msg, args) => {
 }
 
 exports.unregisterGuildAnnouncementChannel = async (msg, args) => {
+    let member = msg.channel.guild.members.get(msg.author.id)
+    if (!member.permission.has('manageChannels')) {
+        return
+    }
+
     let guild = msg.channel.guild
     let channel = resolver.channel(guild.channels, args[0])
 
@@ -127,9 +137,33 @@ exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
     if(guild_announcer) {
         let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:guild_announcer.channel}})
         if (subscribe.result.ok != 1) {
-            console.log(f(`Could not subscribe to %s for %S`, guild_announcer.channel, msg.author.id))
+            console.log(f(`Could not subscribe to %s for %s`, guild_announcer.channel, msg.author.id))
         } else {
             return f(`Subscribed to %s's announcement channel!`, msg.channel.guild.name)
+        }
+    } else {
+        return f(`%s does not have an announcement channel!`, msg.channel.guild.name)
+    }
+}
+
+exports.unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
+    let validateMailbox = await registerMailbox(msg.author.id)
+
+    if (!validateMailbox) {
+        return `Sorry could not unsubscribe.`
+    }
+
+    let client = await MongoClient.connect(url)
+    let mailboxes = client.db('model_tower').collection('mailboxes')
+    let guild_announcers = client.db('model_tower').collection('guild_announcers')
+
+    let guild_announcer = await guild_announcers.findOne({_id:msg.channel.guild.id})
+    if(guild_announcer) {
+        let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$pull: {subscriptions:guild_announcer.channel}})
+        if (subscribe.result.ok != 1) {
+            console.log(f(`Could not unsubscribe from %s for %s`, guild_announcer.channel, msg.author.id))
+        } else {
+            return f(`Unsubscribed from %s's announcement channel!`, msg.channel.guild.name)
         }
     } else {
         return f(`%s does not have an announcement channel!`, msg.channel.guild.name)
@@ -150,9 +184,32 @@ exports.subscribeToUser = async (msg, args) => {
     if (user) {
         let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:user.id}})
         if (subscribe.result.ok != 1) {
-            console.log(f(`Could not subscribe to %s for %S`, user.id, msg.author.id))
+            console.log(f(`Could not subscribe to %s for %s`, user.id, msg.author.id))
         } else {
             return f(`Subscribed to %s's posts!`, user.username)
+        }
+    } else {
+        return f(`Could not find user: %s`, args[0])
+    }
+}
+
+exports.unsubscribeFromUser = async (msg, args) => {
+    let validateMailbox = await registerMailbox(msg.author.id)
+
+    if (!validateMailbox) {
+        return `Sorry could not unsubscribe.`
+    }
+
+    let client = await MongoClient.connect(url)
+    let mailboxes = client.db('model_tower').collection('mailboxes')
+
+    let user = resolver.user(bot.bot.users, args[0])
+    if (user) {
+        let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$pull: {subscriptions:user.id}})
+        if (subscribe.result.ok != 1) {
+            console.log(f(`Could not unsubscribe from %s for %s`, user.id, msg.author.id))
+        } else {
+            return f(`Unsubscribed to %s's posts!`, user.username)
         }
     } else {
         return f(`Could not find user: %s`, args[0])
