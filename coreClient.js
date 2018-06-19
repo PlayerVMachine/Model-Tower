@@ -112,6 +112,7 @@ const getGuildPrefix = async (guild) => {
     let guildConfig = await col.findOne({_id:guild.id})
     if(guildConfig) {
         return guildConfig.prefix
+    }
 
     return `m.`
 }
