@@ -133,9 +133,10 @@ bot.on('messageCreate', async (msg) => {
         console.log(Object.keys(r6Commands))
 
         let cmd = Object.keys(r6Commands).indexOf(command)
+        console.log(cmd)
         if (cmd > -1) {
             let key = Object.keys(r6Commands)[cmd]
-            console.log(key)
+            console.log(r6Commands[key])
             let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             r6[r6Commands[key]](msg, args)
         }
