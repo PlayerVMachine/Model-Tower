@@ -118,3 +118,19 @@ exports.registerGuildAnnouncementChannel = async (msg, args) => {
         return f(`%s is already configured as this server's announcement channel.`, existingChannel.mention)
     }
 }
+
+exports.unregisterGuildAnnouncementChannel = async (msg, args) => {
+    let guild = msg.channel.guild
+    let channel = resolver.channel(guild.channels, args[0])
+
+    if (!channel) {
+        return `Sorry I couldn't find that channel in this server!`
+    }
+
+    let removeGuild = await col.deleteOne({_id:guild.id})
+    if(removeGuild.result.n == 1) {
+        return f(`%s is no longer configured as this server's announcement channel.`, channel.mention)
+    } else {
+        return f(`There was no announcement channel.`)
+    }
+}
