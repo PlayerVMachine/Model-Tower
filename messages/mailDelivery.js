@@ -146,7 +146,7 @@ exports.subscribeToUser = async (msg, args) => {
     let client = await MongoClient.connect(url)
     let mailboxes = client.db('model_tower').collection('mailboxes')
 
-    let user = resolver.user(bot.users, args[0])
+    let user = resolver.user(bot.bot.users, args[0])
     if (user) {
         let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:user.id}})
         if (subscribe.result.ok != 1) {
