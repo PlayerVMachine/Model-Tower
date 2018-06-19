@@ -128,14 +128,16 @@ bot.on('messageCreate', async (msg) => {
 
     if (msg.content.startsWith(prefix)) {
         let command = msg.content.slice(prefix.length, msg.content.indexOf(` `) + 1)
+        console.log(command)
 
-        if (Object.keys(r6Commands).includes(command)) {
-            Object.keys(r6Commands).forEach(cmd => {
-                if (cmd == command) {
-                    let args = msg.content.slice(prefix.length + cmd.length + 1).split(' ')
-                    r6[r6Commands[cmd]](msg, args)
-                }
-            })
+        console.log(Object.keys(r6Commands))
+
+        let cmd = Object.keys(r6Commands).indexOf(command)
+        if (cmd > -1) {
+            let key = Object.keys(r6Commands)[cmd]
+            console.log(key)
+            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            r6[r6Commands[key]](msg, args)
         }
     }
 
