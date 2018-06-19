@@ -123,6 +123,9 @@ exports.unregisterGuildAnnouncementChannel = async (msg, args) => {
     let guild = msg.channel.guild
     let channel = resolver.channel(guild.channels, args[0])
 
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('guild_announcers')
+
     if (!channel) {
         return `Sorry I couldn't find that channel in this server!`
     }
