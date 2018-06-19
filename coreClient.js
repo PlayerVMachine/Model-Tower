@@ -129,11 +129,11 @@ bot.on('messageCreate', async (msg) => {
     if (msg.content.startsWith(prefix)) {
         let command = msg.content.slice(prefix.length, msg.content.indexOf(` `) + 1)
 
-        if (r6Commands.includes(command)) {
-            rsCommands.forEach(cmd => {
+        if (Object.keys(r6Commands).includes(command)) {
+            Object.keys(r6Commands).forEach(cmd => {
                 if (cmd == command) {
                     let args = msg.content.slice(prefix.length + cmd.length + 1).split(' ')
-                    r6[cmd](msg, args)
+                    r6[r6Commands[cmd]](msg, args)
                 }
             })
         }

@@ -7,7 +7,12 @@ const R6 = new RainbowSixApi();
 const config = require('../config.json')
 const bot = require('../coreClient.js')
 
-exports.commandList = [`r6Cas`, `r6rnk`, `r6op`, `r6misc`]
+exports.commandList = {
+    r6cas:`getCasualStats`,
+    r6rnk:`getRankedStats`,
+    r6op:`getTopOp`,
+    r6misc:`getMiscStats`
+}
 
 exports.getMiscStats = async (msg, args) => {
 
