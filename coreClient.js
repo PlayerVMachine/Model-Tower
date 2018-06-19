@@ -128,7 +128,7 @@ bot.on('messageCreate', async (msg) => {
 
     if (msg.content.startsWith(prefix)) {
         let command = msg.content.slice(prefix.length, msg.content.indexOf(` `) + 1)
-        console.log(command)
+        console.log(command + ` ` + command.length)
 
         console.log(Object.keys(r6Commands))
 
