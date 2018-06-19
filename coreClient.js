@@ -109,12 +109,11 @@ const getGuildPrefix = async (guild) => {
     let client = await MongoClient.connect(url)
     let col = client.db('model_tower').collection('guild_configs')
 
-    let guildConfig = col.findOne({_id:guild.id})
+    let guildConfig = await col.findOne({_id:guild.id})
     if(guildConfig) {
         return guildConfig.prefix
-    } else {
-        return `m.`
-    }
+
+    return `m.`
 }
 
 /////////////////////////////////////////////
