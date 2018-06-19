@@ -127,8 +127,16 @@ bot.on('messageCreate', async (msg) => {
     prefix = await getGuildPrefix(msg.channel.guild)
 
     if (msg.content.startsWith(prefix)) {
-        let command = msg.content.slice(prefix.length, msg.content.indexOf(` `))
-        console.log(command)
+        let command = msg.content.slice(prefix.length, msg.content.indexOf(` `) + 1)
+
+        if (r6Commands.includes(command)) {
+            rsCommands.forEach(cmd => {
+                if (cmd == command) {
+                    let args = msg.content.slice(prefix.length + cmd.length + 1).split(' ')
+                    r6[cmd](msg, args)
+                }
+            })
+        }
     }
 
     if (msg.content.startsWith(prefix + `ping`)) {
@@ -139,7 +147,7 @@ bot.on('messageCreate', async (msg) => {
             let diff = Date.now() - start
             return msg.edit(f('Pong! `%dms`', diff))
         })
-    } else if (msg.content.startsWith(prefix + `r6cas`)) {
+    }/* else if (msg.content.startsWith(prefix + `r6cas`)) {
         let args = msg.content.slice(prefix.length + 5 + 1).split(' ')
         r6.getCasualStats(msg, args)
     } else if (msg.content.startsWith(prefix + `r6rnk`)) {
@@ -151,7 +159,7 @@ bot.on('messageCreate', async (msg) => {
     } else if (msg.content.startsWith(prefix + `r6misc`)) {
         let args = msg.content.slice(prefix.length + 6 + 1).split(' ')
         r6.getMiscStats(msg, args)
-    }
+    }*/
 
 })
 
