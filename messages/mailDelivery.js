@@ -152,7 +152,10 @@ exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
     let guild_announcer = await guild_announcers.findOne({_id:msg.channel.guild.id})
     if(guild_announcer) {
         let subscribe = await mailboxes.updateOne({_id:user}, {$addToSet: {subscriptions:guild_announcer.channel}})
-        if (subscribe.result.ok != 1)
-            console.log(f(`Could not subscribe to %s for %S`, src, dest))
+        if (subscribe.result.ok != 1) {
+            console.log(f(`Could not subscribe to %s for %S`, guild_announcer.channel, msg.author.id))
+        } else {
+            return f(`Subscribed to %s's announcement channel!`, msg.channel.guild.name)
+        }
     }
 }
