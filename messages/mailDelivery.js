@@ -66,32 +66,6 @@ const deliverMail = async (src, dest, content) => {
     }
 }
 
-//Subscribe to a user or channel
-const addSubscription = async (user, subscription, context) => {
-    let validateMailbox = await registerMailbox(user)
-
-    if (validateMailbox) {
-        if (subscription.type == 'user')
-            sub = resolver.user(context, subscription.val)
-        else (subscription.type == 'channel')
-            sub = resolver.channel(context, subscription.val)
-
-        if (!sub) {
-            console.log(f(`Could not subscribe to %s for %s`, subscription, user))
-            return
-        }
-
-        let client = await MongoClient.connect(url)
-        let col = client.db('model_tower').collection('mailboxes')
-        let subscribe = await col.updateOne({_id:user}, {$addToSet: {subscriptions:sub.id}})
-        if (subscribe.result.ok != 1)
-            console.log(f(`Could not deliver message from %s to %s`, src, dest))
-
-    } else {
-        console.log(f(`Could not subscribe to %s for %s`, subscription, user))
-    }
-}
-
 exports.registerGuildAnnouncementChannel = async (msg, args) => {
     let guild = msg.channel.guild
     let channel = resolver.channel(guild.channels, args[0])
@@ -159,5 +133,28 @@ exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
         }
     } else {
         return f(`%s does not have an announcement channel!`, msg.channel.guild.name)
+    }
+}
+
+exports.subscribeToUser = async (msg, args) => {
+    let validateMailbox = await registerMailbox(msg.author.id)
+
+    if (!validateMailbox) {
+        return `Sorry could not register subscription.`
+    }
+
+    let client = await MongoClient.connect(url)
+    let mailboxes = client.db('model_tower').collection('mailboxes')
+
+    let user = resolver.user(bot.users, args[0])
+    if (user) {
+        let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:user.id}})
+        if (subscribe.result.ok != 1) {
+            console.log(f(`Could not subscribe to %s for %S`, user.id, msg.author.id))
+        } else {
+            return f(`Subscribed to %s's posts!`, user.username)
+        }
+    } else {
+        return f(`Could not find user: %s`, args[0])
     }
 }

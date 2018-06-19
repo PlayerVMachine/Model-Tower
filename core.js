@@ -142,6 +142,7 @@ const rsoal = bot.registerCommand('r6oall', r6.getOverallStats, {})
 const setServerAnnouncementChannel = bot.registerCommand('setan', postManager.registerGuildAnnouncementChannel, {})
 const unsetServerAnnouncementChannel = bot.registerCommand('unsetan', postManager.unregisterGuildAnnouncementChannel, {})
 const subscribeToGuildAnnouncementChannel = bot.registerCommand('updates', postManager.subscribeToGuildAnnouncementChannel, {})
+const subscribeToUsersPosts = bot.registerCommand('subscribe', postManager.subscribeToUser, {})
 
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
