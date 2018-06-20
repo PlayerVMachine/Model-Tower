@@ -17,6 +17,7 @@ exports.commandList = {
     noupdates:`unsubscribeFromGuildAnnouncementChannel`,
     subscribe:`subscribeToUser`,
     unsubscribe:`unsubscribeFromUser`
+    pull:`getPostsFromMailbox`
 }
 
 //Register mailbox for a user if it does not exist
