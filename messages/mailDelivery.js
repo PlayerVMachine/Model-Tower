@@ -182,16 +182,24 @@ exports.unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
 }
 
 exports.subscribeToUser = async (msg, args) => {
+    let user = resolver.user(bot.bot.users, args[0])
+
+    if(msg.author.id == user.id) {
+        bot.bot.createMessage(msg.channel.id, `Cannot subscribe to yourself!`)
+        return
+    }
+
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
         bot.bot.createMessage(msg.channel.id, `Sorry could not register subscription.`)
+        return
     }
 
     let client = await MongoClient.connect(url)
     let mailboxes = client.db('model_tower').collection('mailboxes')
 
-    let user = resolver.user(bot.bot.users, args[0])
+    
     if (user) {
         let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:user.id}})
         if (subscribe.result.ok != 1) {
@@ -237,6 +245,7 @@ exports.getPostsFromMailbox = async (msg, args) => {
     let client = await MongoClient.connect(url)
     let col = client.db('model_tower').collection('mailboxes')
     let mailbox = await col.findOne({_id:msg.author.id})
+    let clearMail = await col.updateOne({_id:msg.author.id}, {$set: {news: []}})
 
     let numberOfSubscriptions = mailbox.subscriptions.length
     let numberOfPosts = mailbox.news.length

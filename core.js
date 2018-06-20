@@ -97,7 +97,7 @@ bot.on('guildDelete', async (guild) => {
 })
 
 //////////////////////////////////////////////
-//GUILD PREFIX CONFIG                      //
+//GUILD CONFIGS.                           //
 ////////////////////////////////////////////
 
 const getGuildPrefix = async (guild) => {
@@ -184,7 +184,11 @@ bot.on('messageCreate', async (msg) => {
             postManager[pmCommands[key]](msg, args)
 
         }
+
+
+
     } else {
+        //check if message is from an announcement channel
         if (isChannelGuildAnnouncer(msg.channel.id)) {
             postManager.deliverPost(`channel`, msg)
         }
@@ -192,6 +196,14 @@ bot.on('messageCreate', async (msg) => {
 
 })
 
+
+/////////////////////////////////////////////
+//STREAM NOTIFICATIONS                    //
+///////////////////////////////////////////
+
+bot.on(`presenceUpdate`, async (other, old) => {
+    console.log(JSON.stringify(other.game, undefined, 4))
+})
 
 
 //Used to configure the RSS webhook options
