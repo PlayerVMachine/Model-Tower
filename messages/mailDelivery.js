@@ -241,8 +241,6 @@ exports.getPostsFromMailbox = async (msg, args) => {
     let numberOfSubscriptions = mailbox.subscriptions.length
     let numberOfPosts = mailbox.news.length
 
-    console.log(numberOfSubscriptions, numberOfPosts)
-
     let lines = []
 
     if (numberOfPosts > 0) {
@@ -257,8 +255,7 @@ exports.getPostsFromMailbox = async (msg, args) => {
     let characterCount = description.length
     let start = 0, end = 1999
     while (characterCount > 0) {
-        console.log(`reached`)
-        bot.createMessage(msg.channel.id, {embed: {
+        bot.bot.createMessage(msg.channel.id, {embed: {
             title: `New posts for you:`,
             description: description.slice(start,end),
             footer: {text: f(`You are subscribed to %s users & channels`, numberOfSubscriptions)}
