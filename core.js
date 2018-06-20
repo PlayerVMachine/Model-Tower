@@ -160,6 +160,11 @@ bot.on('messageCreate', async (msg) => {
         postManager.deliverPost(`user`, msg)
     }
 
+    if (msg.content.startsWith(prefix + `test`)) {
+        let integrations = await bot.getGuildIntegrations(msg.channel.guild.id)
+        console.log(JSON.stringify(integrations, undefined, 4))
+    }
+
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
         //Get the command after the prefix and before any arguments
