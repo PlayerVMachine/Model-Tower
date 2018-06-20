@@ -61,7 +61,7 @@ exports.deliverPost = async (srcType, msg) => {
         message.content = msg.content
         srcID = msg.channel.id
     } else { //type is user
-        message.source = msg.author.username + `#` + msg.author.discrim
+        message.source = msg.author.username + `#` + msg.author.discriminator
         message.content = msg.content.slice(msg.content.indexOf(' ') + 1)
     }
 
@@ -241,6 +241,8 @@ exports.getPostsFromMailbox = async (msg, args) => {
     let numberOfSubscriptions = mailbox.subscriptions.length
     let numberOfPosts = mailbox.news.length
 
+    console.log(numberOfSubscriptions, numberOfPosts)
+
     let lines = []
 
     if (numberOfPosts > 0) {
@@ -255,6 +257,7 @@ exports.getPostsFromMailbox = async (msg, args) => {
     let characterCount = description.length
     let start = 0, end = 1999
     while (characterCount > 0) {
+        console.log(`reached`)
         bot.createMessage(msg.channel.id, {embed: {
             title: `New posts for you:`,
             description: description.slice(start,end),
