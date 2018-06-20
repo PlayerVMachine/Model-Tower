@@ -202,7 +202,21 @@ bot.on('messageCreate', async (msg) => {
 ///////////////////////////////////////////
 
 bot.on(`presenceUpdate`, async (other, old) => {
-    console.log(JSON.stringify(other, undefined, 4))
+    //Is the presence update to streaming?
+    if(other.game) {
+        if(other.game == 1) {
+
+        } else if (other.game == 2) {
+
+        } else {
+            return
+        }
+
+        //send post to followers
+
+        //if guild has a streamer role configured send in stream announcement channel
+
+    } 
 })
 
 
