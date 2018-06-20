@@ -192,9 +192,6 @@ bot.on('messageCreate', async (msg) => {
 
 })
 
-
-<<<<<<< HEAD
-=======
 /////////////////////////////////////////////
 //STREAM NOTIFICATIONS                    //
 ///////////////////////////////////////////
@@ -214,10 +211,8 @@ bot.on(`presenceUpdate`, async (other, old) => {
 
         //if guild has a streamer role configured send in stream announcement channel
 
-    } 
+    }
 })
-
->>>>>>> 327810187f3e4bbb7569c4a77df287468a1ce6a9
 
 //Used to configure the RSS webhook options
 // const setNews = bot.registerCommand('news', async (msg, args) => {
