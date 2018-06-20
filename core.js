@@ -163,7 +163,8 @@ bot.on('messageCreate', async (msg) => {
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
         //Get the command after the prefix and before any arguments
-        let command = msg.content.slice(prefix.length, msg.content.indexOf(` `))
+        let endIndex = msg.content.indexOf(` `) === -1 ? msg.length : msg.content.indexOf(` `)
+        let command = msg.content.slice(prefix.length, endIndex)
         console.log(command)
 
         //Check if the command is a rainbow six siege stats command
