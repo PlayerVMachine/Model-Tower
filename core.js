@@ -97,7 +97,7 @@ bot.on('guildDelete', async (guild) => {
 })
 
 //////////////////////////////////////////////
-//GUILD CONFIGS.                           //
+//GUILD PREFIX CONFIG                      //
 ////////////////////////////////////////////
 
 const getGuildPrefix = async (guild) => {
@@ -160,11 +160,6 @@ bot.on('messageCreate', async (msg) => {
         postManager.deliverPost(`user`, msg)
     }
 
-    if (msg.content.startsWith(prefix + `test`)) {
-        let integrations = await bot.getGuildIntegrations(msg.channel.guild.id)
-        console.log(JSON.stringify(integrations, undefined, 4))
-    }
-
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
         //Get the command after the prefix and before any arguments
@@ -189,11 +184,7 @@ bot.on('messageCreate', async (msg) => {
             postManager[pmCommands[key]](msg, args)
 
         }
-
-
-
     } else {
-        //check if message is from an announcement channel
         if (isChannelGuildAnnouncer(msg.channel.id)) {
             postManager.deliverPost(`channel`, msg)
         }
@@ -201,14 +192,6 @@ bot.on('messageCreate', async (msg) => {
 
 })
 
-
-/////////////////////////////////////////////
-//STREAM NOTIFICATIONS                    //
-///////////////////////////////////////////
-
-bot.on(`presenceUpdate`, async (other, old) => {
-    console.log(JSON.stringify(other, undefined, 4))
-})
 
 
 //Used to configure the RSS webhook options
