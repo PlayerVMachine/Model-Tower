@@ -202,7 +202,7 @@ bot.on('messageCreate', async (msg) => {
 ///////////////////////////////////////////
 
 bot.on(`presenceUpdate`, async (other, old) => {
-    console.log(JSON.stringify(other.game, undefined, 4))
+    console.log(JSON.stringify(other, undefined, 4))
 })
 
 
