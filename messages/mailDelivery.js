@@ -16,7 +16,7 @@ exports.commandList = {
     updates:`subscribeToGuildAnnouncementChannel`,
     noupdates:`unsubscribeFromGuildAnnouncementChannel`,
     subscribe:`subscribeToUser`,
-    unsubscribe:`unsubscribeFromUser`
+    unsubscribe:`unsubscribeFromUser`,
     pull:`getPostsFromMailbox`
 }
 
