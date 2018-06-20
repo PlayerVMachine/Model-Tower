@@ -8,7 +8,7 @@ exports.test = () => {
     api.Summoner.gettingByName('PlayerVM').then(data => {
         console.log(JSON.stringify(data, undefined, 4));
     })
-    api.League.gettingBySummoner(48214900).then(data => {
+    api.League.gettingPositionsForSummonerId(48214900).then(data => {
         console.log(JSON.stringify(data, undefined, 4));
     })
 }
