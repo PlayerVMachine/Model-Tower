@@ -8,6 +8,7 @@ const config = require('./config.json')
 //Project files
 //const news = require('./news.js')
 const r6 = require('./game-integrations/rainbowsix.js')
+const lol = require('./game-integrations/leagueoflegends.js')
 const postManager = require('./messages/mailDelivery.js')
 
 // mongodb login
@@ -160,6 +161,11 @@ bot.on('messageCreate', async (msg) => {
         postManager.deliverPost(`user`, msg)
     }
 
+    if (msg.content.startsWith(prefix + `test`)) {
+        lol.test()
+    }
+
+
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
         //Get the command after the prefix and before any arguments
@@ -189,7 +195,6 @@ bot.on('messageCreate', async (msg) => {
             postManager.deliverPost(`channel`, msg)
         }
     }
-
 })
 
 /////////////////////////////////////////////
