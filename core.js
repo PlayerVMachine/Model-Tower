@@ -117,6 +117,18 @@ const getGuildPrefix = async (guild) => {
     return `m.`
 }
 
+const isChannelGuildAnnouncer = async (id) => {
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('guild_announcers')
+
+    let findChannel = await col.findOne({channel:id})
+    if (findChannel) {
+        return true
+    } else {
+        return false
+    }
+}
+
 /////////////////////////////////////////////
 //COMMANDS                                //
 ///////////////////////////////////////////
@@ -144,6 +156,10 @@ bot.on('messageCreate', async (msg) => {
         })
     }
 
+    if (msg.content.startsWith(prefix + `post`)) {
+        postManager.deliverPost(`user`, msg)
+    }
+
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
         //Get the command after the prefix and before any arguments
@@ -165,6 +181,10 @@ bot.on('messageCreate', async (msg) => {
             //run the function corresponding to the command name and pass it the message and its args
             postManager[pmCommands[key]](msg, args)
 
+        }
+    } else {
+        if (isChannelGuildAnnouncer(msg.channel.id)) {
+            postManager.deliverPost(`channel`, msg)
         }
     }
 
