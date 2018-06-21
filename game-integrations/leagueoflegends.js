@@ -12,5 +12,5 @@ exports.getSummoner = async (msg, args) => {
     let level = summoner.summonerLevel
     let profileIcons = await league.Static.ProfileIcon.list()
     console.log(JSON.stringify(summoner, undefined, 2))
-    console.log(JSON.stringify(profileIcons, undefined, 2))
+    console.log(JSON.stringify(Object.keys(profileIcons), undefined, 2))
 }
