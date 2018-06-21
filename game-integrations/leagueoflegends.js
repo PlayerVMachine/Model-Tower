@@ -18,9 +18,29 @@ exports.getSummoner = async (msg, args) => {
 
     console.log(JSON.stringify(summonerPostion, undefined, 2))
 
+    let rank = f(`%s %s`, summonerPostion[0].tier, summonerPostion[0].rank)
+    let lp = summonerPostion[0].leaguePoints
+    let winrate = summonerPostion[0].wins / (summonerPostion[0].wins + summonerPostion[0].losses)
+    winrate = (winrate * 100).toFixed(4)
+
+    let noteText = ''
+    if (summonerPostion[0].veteran)
+        noteText + 'Veteran of the league'
+    else if (summonerPostion[0].freshBlood)
+        noteText + 'Fresh blood in the league'
+    if(summonerPostion[0].hotStreak)
+        noteText + ' and is on a hotStreak'
+
+
     let embed = {
         embed: {
             title: `Summoner info:` + args[0],
+            description: noteText,
+            fields: [
+                {name: `Rank`, value: rank, inline: true},
+                {name: `LP`, value: lp, inline: true},
+                {name: `Win Rate`, value: winrate, inline: true}
+            ]
             thumbnail: {url: f('http://ddragon.leagueoflegends.com/cdn/%s/img/profileicon/%s.png', version, summoner.profileIconId), height: 256, width: 256}
         }
     }
