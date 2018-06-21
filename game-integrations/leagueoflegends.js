@@ -19,7 +19,7 @@ exports.getSummoner = async (msg, args) => {
     let rank = f(`%s %s`, summonerPostion[0].tier, summonerPostion[0].rank)
     let lp = summonerPostion[0].leaguePoints
     let winrate = summonerPostion[0].wins / (summonerPostion[0].wins + summonerPostion[0].losses)
-    winrate = (winrate * 100).toFixed(4)
+    winrate = (winrate * 100).toFixed(2)
 
     let noteText = ''
     if (summonerPostion[0].veteran)
@@ -32,12 +32,12 @@ exports.getSummoner = async (msg, args) => {
 
     let embed = {
         embed: {
-            title: `Summoner info:` + args[0],
+            title: args[0] + `'s summoner card:`,
             description: noteText,
             fields: [
                 {name: `Rank`, value: rank, inline: true},
-                {name: `LP`, value: lp, inline: true},
-                {name: `Win Rate`, value: winrate, inline: true}
+                {name: `Win Rate`, value: winrate + '%', inline: true},
+                {name: `LP`, value: lp, inline: true}
             ],
             thumbnail: {url: f('http://ddragon.leagueoflegends.com/cdn/%s/img/profileicon/%s.png', version, summoner.profileIconId), height: 256, width: 256}
         }
