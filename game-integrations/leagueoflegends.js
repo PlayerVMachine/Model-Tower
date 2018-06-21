@@ -8,6 +8,10 @@ const league = Kayn(config.RIOT_KEY)({
     region: REGIONS.NORTH_AMERICA
 })
 
+exports.commandList = {
+    loluser:`getSummoner`
+}
+
 exports.getSummoner = async (msg, args) => {
     let versionList = await league.Static.Version.list()
     let version = versionList[0]
@@ -15,9 +19,6 @@ exports.getSummoner = async (msg, args) => {
     let summonerPostion = await league.LeaguePositions.by.summonerID(summoner.id)
     let level = summoner.summonerLevel
     let profileIcons = await league.Static.ProfileIcon.list()
-
-    let matchList = await league.Matchlist.by.accountID(summoner.id)
-    console.log(JSON.stringify(matchList, undefined, 2))
 
     let rank = f(`%s %s`, summonerPostion[0].tier, summonerPostion[0].rank)
     let lp = summonerPostion[0].leaguePoints
