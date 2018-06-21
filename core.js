@@ -9,6 +9,7 @@ const config = require('./config.json')
 //const news = require('./news.js')
 const r6 = require('./game-integrations/rainbowsix.js')
 const lol = require('./game-integrations/leagueoflegends.js')
+const fortnite = require('./game-integrations/fortnite.js')
 const postManager = require('./messages/mailDelivery.js')
 
 // mongodb login
@@ -135,7 +136,7 @@ const isChannelGuildAnnouncer = async (id) => {
 ///////////////////////////////////////////
 let r6Commands = r6.commandList
 let pmCommands = postManager.commandList
-let lolComands = lol.commandList
+let lolCommands = lol.commandList
 
 bot.on('messageCreate', async (msg) => {
 
@@ -163,7 +164,8 @@ bot.on('messageCreate', async (msg) => {
     }
 
     if (msg.content.startsWith(prefix + `test`)) {
-
+        let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+        fortnite.test(msg, args)
     }
 
 
@@ -222,6 +224,9 @@ bot.on(`presenceUpdate`, async (other, old) => {
         //send post to followers
 
         //if guild has a streamer role configured send in stream announcement channel
+
+        //https://static-cdn.jtvnw.net/previews-ttv/live_user_TWITCHNAME-108x60.jpg TWITCH LINK
+        //https://static-cdn.jtvnw.net/previews-ttv/live_user_TWITCHNAME-108x60.jpg WHEN NOT STREAMING
 
     }
 })
