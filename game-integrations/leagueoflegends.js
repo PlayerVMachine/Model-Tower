@@ -29,6 +29,7 @@ exports.getSummoner = async (msg, args) => {
     if(summonerPostion[0].hotStreak)
         noteText + ' and is on a hotStreak'
 
+    console.log(noteText)
 
     let embed = {
         embed: {
