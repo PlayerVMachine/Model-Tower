@@ -29,7 +29,7 @@ exports.getSummoner = async (msg, args) => {
     if(summonerPostion[0].hotStreak)
         noteText + ' and is on a hotStreak'
 
-    console.log(noteText)
+    console.log(summonerPostion[0].veteran)
 
     let embed = {
         embed: {
@@ -40,7 +40,7 @@ exports.getSummoner = async (msg, args) => {
                 {name: `Win Rate`, value: winrate + '%', inline: true},
                 {name: `LP`, value: lp, inline: true}
             ],
-            thumbnail: {url: f('http://ddragon.leagueoflegends.com/cdn/%s/img/profileicon/%s.png', version, summoner.profileIconId), height: 256, width: 256}
+            thumbnail: {url: f('http://ddragon.leagueoflegends.com/cdn/%s/img/profileicon/%s.png', version, summoner.profileIconId), height: 128, width: 128}
         }
     }
     bot.bot.createMessage(msg.channel.id, embed)
