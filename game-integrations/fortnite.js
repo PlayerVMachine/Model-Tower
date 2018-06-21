@@ -9,7 +9,10 @@ const fnite = new Fortnite([
     config.FORTNITE_PWD,
     config.FORTNITE_CLT,
     config.FORTNITE_CT
-    ])
+    ],
+    {
+        debug: true
+    })
 
 exports.test = async (msg, args) => {
     console.log(args[0])
