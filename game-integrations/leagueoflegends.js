@@ -23,16 +23,13 @@ exports.getSummoner = async (msg, args) => {
 
     let noteText = ''
     if (summonerPostion[0].veteran) {
-        noteText + 'Veteran of the league'
-        console.log(noteText)
+        noteText += 'Veteran of the league'
     } else if (summonerPostion[0].freshBlood) {
-        noteText + 'Fresh blood in the league'
+        noteText += 'Fresh blood in the league'
     }
     if(summonerPostion[0].hotStreak) {
-        noteText + ' and is on a hotStreak'
+        noteText += ' and is on a hotStreak'
     }
-
-
 
     let embed = {
         embed: {
