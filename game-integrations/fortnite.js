@@ -1,8 +1,10 @@
- const Fortnite = require('fortnite-api')
+const f = require('util').format
+const Fortnite = require('fortnite-api')
 
- const config = require('../config.json')
+const config = require('../config.json')
+const bot = require('../core.js')
 
- const fnite = new Fortnite([
+const fnite = new Fortnite([
     config.FORTNITE_EA,
     config.FORTNITE_PWD,
     config.FORTNITE_CLT,

@@ -164,7 +164,7 @@ bot.on('messageCreate', async (msg) => {
     }
 
     if (msg.content.startsWith(prefix + `test`)) {
-        let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+        let args = msg.content.slice(prefix.length + 5).split(' ')
         fortnite.test(msg, args)
     }
 
