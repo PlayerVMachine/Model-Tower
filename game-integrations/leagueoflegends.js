@@ -22,14 +22,17 @@ exports.getSummoner = async (msg, args) => {
     winrate = (winrate * 100).toFixed(2)
 
     let noteText = ''
-    if (summonerPostion[0].veteran)
+    if (summonerPostion[0].veteran) {
         noteText + 'Veteran of the league'
-    else if (summonerPostion[0].freshBlood)
+        console.log(noteText)
+    } else if (summonerPostion[0].freshBlood) {
         noteText + 'Fresh blood in the league'
-    if(summonerPostion[0].hotStreak)
+    }
+    if(summonerPostion[0].hotStreak) {
         noteText + ' and is on a hotStreak'
+    }
 
-    console.log(summonerPostion[0].veteran)
+
 
     let embed = {
         embed: {
