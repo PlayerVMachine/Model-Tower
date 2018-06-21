@@ -12,6 +12,7 @@ const fnite = new Fortnite([
     ])
 
 exports.test = async (msg, args) => {
+    console.log(args[0])
     fnite.checkPlayer(args[0], 'pc')
     .then(stats => {
         console.log(stats)

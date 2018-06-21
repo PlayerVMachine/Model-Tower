@@ -157,17 +157,19 @@ bot.on('messageCreate', async (msg) => {
             let diff = Date.now() - start
             return msg.edit(f('Pong! `%dms`', diff))
         })
+        return
     }
 
     if (msg.content.startsWith(prefix + `post`)) {
         postManager.deliverPost(`user`, msg)
+        return
     }
 
     if (msg.content.startsWith(prefix + `test`)) {
         let args = msg.content.slice(prefix.length + 5).split(' ')
         fortnite.test(msg, args)
+        return
     }
-
 
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
@@ -192,7 +194,7 @@ bot.on('messageCreate', async (msg) => {
             //run the function corresponding to the command name and pass it the message and its args
             postManager[pmCommands[key]](msg, args)
 
-        } else if (Object.keys(lolComands).indexOf(command) > - 1) {
+        } else if (Object.keys(lolCommands).indexOf(command) > - 1) {
 
             let key = Object.keys(lolCommands)[Object.keys(lolCommands).indexOf(command)]
             let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
