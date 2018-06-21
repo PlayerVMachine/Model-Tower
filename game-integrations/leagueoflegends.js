@@ -22,5 +22,6 @@ exports.getSummoner = async (msg, args) => {
             image: {url: f('http://ddragon.leagueoflegends.com/cdn/%s/img/profileicon/%s.png', version, summoner.profileIconId), height: 256, width: 256}
         }
     }
+    console.log(embed.embed.image.url)
     bot.bot.createMessage(msg.channel.id, embed)
 }
