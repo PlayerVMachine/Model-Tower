@@ -1,3 +1,4 @@
+const f = require('util').format
 const {Kayn, REGIONS} = require('kayn')
 
 const config = require('../config.json')
