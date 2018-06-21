@@ -16,7 +16,7 @@ exports.getSummoner = async (msg, args) => {
     let level = summoner.summonerLevel
     let profileIcons = await league.Static.ProfileIcon.list()
 
-    let championMasteries = await championMastery.list(summoner.id)
+    let championMasteries = await league.ChampionMastery.list(summoner.id)
     console.log(JSON.stringify(championMasteries, undefined, 2))
 
     let rank = f(`%s %s`, summonerPostion[0].tier, summonerPostion[0].rank)
