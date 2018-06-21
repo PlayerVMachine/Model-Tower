@@ -9,8 +9,10 @@ const league = Kayn(config.RIOT_KEY)({
 })
 
 exports.getSummoner = async (msg, args) => {
-    let version = await league.Static.Version.list()[data][0]
+    let version = await league.Static.Version.list()
     let summoner = await league.Summoner.by.name(args[0])
+
+    console.log(version)
 
     let level = summoner.summonerLevel
     let profileIcons = await league.Static.ProfileIcon.list()
