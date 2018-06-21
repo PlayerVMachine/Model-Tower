@@ -36,9 +36,9 @@ exports.getSummoner = async (msg, args) => {
             title: args[0] + `'s summoner card:`,
             description: noteText,
             fields: [
-                {name: `Rank`, value: rank, inline: true},
-                {name: `Win Rate`, value: winrate + '%', inline: true},
-                {name: `LP`, value: lp, inline: true}
+                {name: `Rank`, value: rank, inline: false},
+                {name: `Win Rate`, value: winrate + '%', inline: false},
+                {name: `LP`, value: lp, inline: false}
             ],
             thumbnail: {url: f('http://ddragon.leagueoflegends.com/cdn/%s/img/profileicon/%s.png', version, summoner.profileIconId), height: 128, width: 128}
         }
