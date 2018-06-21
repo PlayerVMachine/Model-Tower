@@ -16,8 +16,6 @@ exports.getSummoner = async (msg, args) => {
     let level = summoner.summonerLevel
     let profileIcons = await league.Static.ProfileIcon.list()
 
-    console.log(JSON.stringify(summonerPostion, undefined, 2))
-
     let rank = f(`%s %s`, summonerPostion[0].tier, summonerPostion[0].rank)
     let lp = summonerPostion[0].leaguePoints
     let winrate = summonerPostion[0].wins / (summonerPostion[0].wins + summonerPostion[0].losses)
@@ -40,7 +38,7 @@ exports.getSummoner = async (msg, args) => {
                 {name: `Rank`, value: rank, inline: true},
                 {name: `LP`, value: lp, inline: true},
                 {name: `Win Rate`, value: winrate, inline: true}
-            ]
+            ],
             thumbnail: {url: f('http://ddragon.leagueoflegends.com/cdn/%s/img/profileicon/%s.png', version, summoner.profileIconId), height: 256, width: 256}
         }
     }
