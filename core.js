@@ -162,7 +162,8 @@ bot.on('messageCreate', async (msg) => {
     }
 
     if (msg.content.startsWith(prefix + `test`)) {
-        lol.test()
+        let args = msg.content.slice(prefix.length + 5).split(' ')
+        lol.getSummoner(msg, args)
     }
 
 

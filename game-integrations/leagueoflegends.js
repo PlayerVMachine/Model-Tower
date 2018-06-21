@@ -1,14 +1,16 @@
-const LeagueJs = require('leaguejs');
+const {Kayn, REGIONS} = require('kayn')
 
 const config = require('../config.json')
 
-const api = new LeagueJs(config.RIOT_KEY);
+const league = Kayn(config.RIOT_KEY)({
+    region: REGIONS.NORTH_AMERICA
+})
 
-exports.test = () => {
-    api.Summoner.gettingByName('Dyrus').then(data => {
-        console.log(JSON.stringify(data, undefined, 4));
-        api.League.gettingPositionsForSummonerId(data.id).then(data2 => {
-            console.log(JSON.stringify(data2, undefined, 4));
-        })
-    })
+exports.getSummoner = async (msg, args) => {
+    let summoner = await league.Summoner.by.name(args[0])
+
+    let level = summoner.summonerLevel
+    let profileIcons = await league.Static.ProfileIcon.list()
+    console.log(JSON.stringify(summoner, undefined, 2))
+    console.log(JSON.stringify(profileIcons[summoner.profileIconId], undefined, 2))
 }
