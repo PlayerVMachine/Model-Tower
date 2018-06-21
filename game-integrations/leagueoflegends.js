@@ -9,6 +9,7 @@ const league = Kayn(config.RIOT_KEY)({
 })
 
 exports.getSummoner = async (msg, args) => {
+    let version = await league.Static.Version.list()[data][0]
     let summoner = await league.Summoner.by.name(args[0])
 
     let level = summoner.summonerLevel
@@ -16,7 +17,7 @@ exports.getSummoner = async (msg, args) => {
     console.log(JSON.stringify(summoner, undefined, 2))
     let embed = {
         embed: {
-            image: {url: f('http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/%s.png', summoner.profileIconId), height: 256, width: 256}
+            image: {url: f('http://ddragon.leagueoflegends.com/cdn/%s/img/profileicon/%s.png', version, summoner.profileIconId), height: 256, width: 256}
         }
     }
     bot.bot.createMessage(msg.channel.id, embed)
