@@ -190,7 +190,7 @@ bot.on('messageCreate', async (msg) => {
             //run the function corresponding to the command name and pass it the message and its args
             postManager[pmCommands[key]](msg, args)
 
-        } else if (Object,keys(lolComands).indexOf(command) > - 1) {
+        } else if (Object.keys(lolComands).indexOf(command) > - 1) {
 
             let key = Object.keys(lolCommands)[Object.keys(lolCommands).indexOf(command)]
             let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
