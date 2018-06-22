@@ -10,8 +10,10 @@ const config = require('./config.json')
 const r6 = require('./game-integrations/rainbowsix.js')
 const lol = require('./game-integrations/leagueoflegends.js')
 //const fortnite = require('./game-integrations/fortnite.js')
-const destiny = require('./game-integrations/destiny.js')
+//const destiny = require('./game-integrations/destiny.js')
+const pubg = require('./game-integrations/pubg.js')
 const postManager = require('./messages/mailDelivery.js')
+
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -168,7 +170,7 @@ bot.on('messageCreate', async (msg) => {
 
     if (msg.content.startsWith(prefix + `test`)) {
         let args = msg.content.slice(prefix.length + 5).split(' ')
-        destiny.test(msg, args)
+        pubg.test(msg, args)
         return
     }
 
