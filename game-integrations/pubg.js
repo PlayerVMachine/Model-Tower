@@ -12,7 +12,7 @@ exports.getPlayerStats = async (msg, args) => {
 
     let stats = await pubg.getPlayerSeasonStats('pc-na', player.data[0].id, season.id)
 
-    console.log(JSON.stringify(stats.data.attributes.gameModeStats))
+    console.log(JSON.stringify(stats.data.attributes.gameModeStats.duo))
 
     //bot.bot.createMessage(msg.channel.id, stats.data.attributes.gameModeStats.duo)
 }
