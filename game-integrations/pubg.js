@@ -8,7 +8,7 @@ exports.getPlayerStats = async (msg, args) => {
     let player = await pubg.getPlayerByName('pc-na', args[0])
     let seasons = await pubg.getSeasons('pc-na')
 
-    console.log(seasons.data[0])
+    console.log(seasons)
 
     let stats = await pubg.getPlayerSeasonStats('pc-na', player.data[0].id, seasons.data[0].id)
 
