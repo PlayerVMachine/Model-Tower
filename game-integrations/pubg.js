@@ -1,17 +1,16 @@
 const f = require('util').format
-const client = require('superagent')
 
-const config = require('../config.json')
-const bot = require('../core.js')
+const bot = require('../core.js').bot
+const pubgapi = require('./pubg-api-wrapper.js')
 
-//Base url for PC-NA: https://api.playbattlegrounds.com/shards/pc-na
 
-exports.test = async (msg, args) => {
-    let player = await client.get(`https://api.playbattlegrounds.com/shards/pc-na/players`)
-    .set('Authorization', 'Bearer ' + config.PUBG_KEY)
-    .set('Accept','application/vnd.api+json')
-    .query({'filter[playerNames]':args[0]})
+exports.getPlayerStats = async (msg, args) => {
+    let player = await pubg.getPlayerByName('na-pc', args[0])
+    let seasons = await pubg.getSeasons('na-pc')
 
-    let playerObj = JSON.parse(player.text)
-    console.log(JSON.stringify(playerObj, undefined, 4))
+    console.log(seasons.data[0])
+
+    let stats = await pubg.getPlayerSeasonStats('na-pc', player.data[0].id, seasons.data[0].id)
+
+    bot.createMessage(msg.channel.id, stats.data.attributes.gameModeStats.duo)
 }
