@@ -44,7 +44,7 @@ exports.getPlayerStats = async (msg, args) => {
                 {name: `Accuracy`, value: f(`%d%%`, accuracy), inline: false},
                 {name: `Max Kills`, value: modeStats.roundMostKills, inline:true},
                 {name: `Max Kill Streak`, value: modeStats.maxKillStreaks, inline:true},
-                {name: `Longest Kill`, value: f(`%dM`modeStats.longestKill.toFixed(2)), inline:true}
+                {name: `Longest Kill`, value: f(`%dM`, modeStats.longestKill.toFixed(2)), inline:true}
             ]
         }
     }
