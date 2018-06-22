@@ -12,5 +12,5 @@ exports.test = async (msg, args) => {
     .set('Accept','application/vnd.api+json')
     .query({'filter[playerNames]':args[0]})
 
-    console.log(JSON.stringify(player.text, undefined, 3))
+    console.log(JSON.stringify(player.text, undefined, 4))
 }
