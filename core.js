@@ -9,7 +9,8 @@ const config = require('./config.json')
 //const news = require('./news.js')
 const r6 = require('./game-integrations/rainbowsix.js')
 const lol = require('./game-integrations/leagueoflegends.js')
-const fortnite = require('./game-integrations/fortnite.js')
+//const fortnite = require('./game-integrations/fortnite.js')
+const destiny = require('./game-integrations/destiny.js')
 const postManager = require('./messages/mailDelivery.js')
 
 // mongodb login
@@ -167,7 +168,7 @@ bot.on('messageCreate', async (msg) => {
 
     if (msg.content.startsWith(prefix + `test`)) {
         let args = msg.content.slice(prefix.length + 5).split(' ')
-        fortnite.test(msg, args)
+        destiny.test(msg, args)
         return
     }
 
