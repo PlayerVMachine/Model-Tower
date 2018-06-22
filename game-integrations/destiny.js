@@ -8,6 +8,7 @@ const destinyClient = new destiny.DestinyClient(config.BUNGIE_KEY)
 
 exports.test = async (msg, args) => {
     destinyClient.search('1', 'Carsten').then( response => {
-        console.log(JSON.stringify(response, undefined, 2))
+        //console.log(JSON.stringify(response, undefined, 2))
+        console.log(response)
     });
 }
