@@ -2,7 +2,6 @@ const f = require('util').format
 const Memcached = require('memcached')
 
 const bot = require('../core.js')
-const check = require('../safetyChecks.js')
 const pubg = require('./pubg-api-wrapper.js')
 
 const cache = new Memcached('127.0.0.1.11222')
