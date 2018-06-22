@@ -13,5 +13,5 @@ exports.test = async (msg, args) => {
     .query({'filter[playerNames]':args[0]})
 
     let playerObj = JSON.parse(player.text)
-    console.log(playerObj)
+    console.log(JSON.stringify(playerObj, undefined, 4))
 }
