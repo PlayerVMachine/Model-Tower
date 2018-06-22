@@ -2,12 +2,19 @@ const f = require('util').format
 const Memcached = require('memcached')
 
 const bot = require('../core.js')
+const check = require('../safetyChecks.js')
 const pubg = require('./pubg-api-wrapper.js')
 
 const cache = new Memcached('127.0.0.1.11222')
 
 exports.getPlayerStats = async (msg, args) => {
+    if (args.length == 0) {
+        bot.createMessage(f(`**%s**, you need to provide a region, user, and game type`))
+        return
+    }
+
     let player = await cache.get('pc-na' + args[0])
+    console.log(player)
     if (!player) {
         console.log('from api')
         player = await pubg.getPlayerByName('pc-na', args[0])
@@ -22,13 +29,7 @@ exports.getPlayerStats = async (msg, args) => {
     }
 
     let season = seasons.data[seasons.data.length -1]
-
-    let stats = await cache.get('pc-na-pstats' + args[0])
-    if (!stats) {
-        console.log('from api')
-        stats = await pubg.getPlayerSeasonStats('pc-na', player.data[0].id, season.id)
-        cache.set('pc-na-pstats' + args[0], stats, 30*60)
-    }
+    let stats = await pubg.getPlayerSeasonStats('pc-na', player.data[0].id, season.id)
 
     let modeStats = stats.data.attributes.gameModeStats[args[1]]
     let accuracy = ((modeStats.headshotKills / modeStats.kills) * 100).toFixed(2)
