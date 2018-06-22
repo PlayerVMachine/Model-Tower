@@ -9,13 +9,9 @@ const config = require('../config.json')
 exports.getSeasons = async (region) => {
     let url = f(`https://api.playbattlegrounds.com/shards/%s/seasons`, region)
 
-    console.log('season')
-
     let seasons = await client.get(url)
     .set('Authorization', 'Bearer ' + config.PUBG_KEY)
     .set('Accept','application/vnd.api+json')
-
-    console.log('season')
 
     return JSON.parse(seasons.text)
 }
