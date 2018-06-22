@@ -37,7 +37,8 @@ exports.getPlayerStats = async (msg, args) => {
     let embed = {
         embed : {
             title: f(`Overall PUBG Stats for %s this season:`, args[0]),
-            description: f(`You've won **%s** games, finished top 10 in **%s** games, out of the **%s** games you've played so far this season, with a k/d of **%s%%**`, modeStats.wins, modeStats.top10s, modeStats.roundsPlayed, kd),
+            description: f(`You've won **%s** games and finished top 10 in **%s** games out of the **%s** games you've played so far this season with a k/d ratio of **%s%%**`, modeStats.wins, modeStats.top10s, modeStats.roundsPlayed, kd),
+            color: parseInt('F2A900', 16),
             fields: [
                 {name: `Kills`, value: modeStats.kills, inline: true},
                 {name: `Headshots`, value: modeStats.headshotKills, inline: true},
