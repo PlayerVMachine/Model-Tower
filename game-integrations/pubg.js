@@ -8,6 +8,11 @@ const bot = require('../core.js')
 const client = new pubg.Client(config.PUBG_KEY, 'pc-na');
 
 exports.test = async (msg, args) => {
-    let player = await client.getPlayer({name:args[0]})
-    console.log(JSON.stringify(player, undefined, 3))
+    try {
+    client.getPlayer({name:args[0]}).then(player => {
+        console.log(JSON.stringify(player, undefined, 3))
+    })
+    } catch (err) {
+        console.log(err)
+    }
 }
