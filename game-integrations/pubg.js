@@ -14,14 +14,14 @@ exports.getPlayerStats = async (msg, args) => {
 
     let player = await cache.get('pc-na' + args[0])
     console.log(player)
-    if (!player) {
+    if (player == undefined) {
         console.log('from api')
         player = await pubg.getPlayerByName('pc-na', args[0])
         cache.set('pc-na' + args[0], player, 24*60*60)
     }
 
     let seasons = await cache.get('pc-na-seasons')
-    if (!seasons) {
+    if (seasons == undefined) {
         console.log('from api')
         seasons = await pubg.getSeasons('pc-na')
         cache.set('pc-na-seasons', seasons, 24*60*60)
