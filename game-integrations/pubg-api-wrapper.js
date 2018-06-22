@@ -23,14 +23,10 @@ exports.getSeasons = async (region) => {
 exports.getPlayerByName = async (region, name) => {
     let url = f(`https://api.playbattlegrounds.com/shards/%s/players`, region)
 
-    console.log('player')
-
     let player = await client.get(url)
     .set('Authorization', 'Bearer ' + config.PUBG_KEY)
     .set('Accept','application/vnd.api+json')
     .query({'filter[playerNames]':name})
-
-    console.log('player')
 
     return JSON.parse(player.text)
 }
@@ -48,13 +44,9 @@ exports.getPlayerByID = async (region, id) => {
 exports.getPlayerSeasonStats = async (region, player, season) => {
     let url = f(`https://api.playbattlegrounds.com/shards/%s/players/%s/seasons/%s`, region, player, season)
 
-    console.log('stats')
-
     let stats = await client.get(url)
     .set('Authorization', 'Bearer ' + config.PUBG_KEY)
     .set('Accept','application/vnd.api+json')
-
-    console.log('stats')
 
     return JSON.parse(stats.text)
 }
