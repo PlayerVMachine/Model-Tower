@@ -1,7 +1,7 @@
 const f = require('util').format
 
 const bot = require('../core.js').bot
-const pubgapi = require('./pubg-api-wrapper.js')
+const pubg = require('./pubg-api-wrapper.js')
 
 
 exports.getPlayerStats = async (msg, args) => {
