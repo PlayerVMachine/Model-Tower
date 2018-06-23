@@ -136,10 +136,11 @@ const isChannelGuildAnnouncer = async (id) => {
 //COMMANDS                                //
 ///////////////////////////////////////////
 let r6Commands = r6.commandList
-let pmCommands = postManager.commandList
+let owCommands = ow.commandList
 let lolCommands = lol.commandList
 let pubgCommands = pubg.commandList
 let noteCommands = notes.commandList
+let pmCommands = postManager.commandList
 
 bot.on('messageCreate', async (msg) => {
 
@@ -214,6 +215,12 @@ bot.on('messageCreate', async (msg) => {
             let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             notes[noteCommands[key]](msg, args)
+        } else if (Object.keys(owCommands).indexOf(command) > - 1) {
+
+            let key = Object.keys(owCommands)[Object.keys(owCommands).indexOf(command)]
+            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //run the function corresponding to the command name and pass it the message and its args
+            ow[owCommands[key]](msg, args)
         }
 
     } else {

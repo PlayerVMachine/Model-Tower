@@ -3,6 +3,12 @@ const ow = require('owapi')
 
 const bot = require('../core.js')
 
+exports.commandList = {
+    owStats:`getOverallStats`,
+    owMedals: `getMedals`,
+    owHero: `getHeroStats`
+}
+
 exports.getOverallStats = async (msg, args) => {
 
     if (args.length < 3) {
@@ -110,7 +116,6 @@ exports.getMedals = async (msg, args) => {
             return
         }
     }
-
 }
 
 exports.getHeroStats = async (msg, args) => {
