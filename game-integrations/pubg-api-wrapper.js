@@ -28,7 +28,6 @@ exports.getPlayerByName = async (region, name) => {
     .set('Accept','application/vnd.api+json')
     .query({'filter[playerNames]':name})
 
-    console.log(player)
     if (player.code = 200)
         return JSON.parse(player.text)
     else
