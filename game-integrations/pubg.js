@@ -26,6 +26,11 @@ exports.getPlayerStats = async (msg, args) => {
     let player = await pubg.getPlayerByName(args[0], args [1])
     let seasons = await pubg.getSeasons(args[0])
 
+    if (!player) {
+        bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, couldn't find anyone with that username`, msg.author.username))
+        return
+    }
+
     let season = seasons.data[seasons.data.length -1]
     let stats = await pubg.getPlayerSeasonStats(args[0], player.data[0].id, season.id)
 

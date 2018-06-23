@@ -30,7 +30,7 @@ exports.getPlayerByName = async (region, name) => {
 
         return JSON.parse(player.text)
     } catch (err) {
-        console.log(err)
+        console.log(err.message)
         return null
     }
 }
