@@ -37,7 +37,7 @@ exports.noteToSelf = async (msg, args) => {
 
 exports.getNotes = async (msg, args) => {
     try{
-        let dmChannel = await bot.getDMChannel(msg.author.id)
+        let dmChannel = await bot.bot.getDMChannel(msg.author.id)
 
         let noteMsgs = await dmChannel.getPins()
 
@@ -69,8 +69,7 @@ exports.getNotes = async (msg, args) => {
 
 exports.unNote = async (msg, args, bot) => {
     try{
-
-        let dmChannel = await bot.getDMChannel(msg.author.id)
+        let dmChannel = await bot.bot.getDMChannel(msg.author.id)
         let noteMsgs = await dmChannel.getPins()
 
         let index = parseInt(args[0])
