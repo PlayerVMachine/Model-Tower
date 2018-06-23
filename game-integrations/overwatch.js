@@ -15,7 +15,7 @@ exports.getOverallStats = async (msg, args) => {
         return
     }
 
-    if (!['quickplay', 'competitve'].includes(args[2])) {
+    if (!['quickplay', 'competitive'].includes(args[2])) {
         bot.bot.createMessage(msg.channel.id, f(`**%s**, game type must be quickplay or competitve!`, msg.author.username))
         return
     }
@@ -25,7 +25,7 @@ exports.getOverallStats = async (msg, args) => {
         let account = await ow.getGeneralStats(args[0], args[1])
 
         if (!player.career_stats['ALL HEROES'].Combat) {
-            bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, could not find results for that user on platform %s!`, msg.author.username, args[1]))
+            bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, could not find gampeplay stats for that mode!`, msg.author.username))
             return
         }
 
