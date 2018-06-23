@@ -3,7 +3,7 @@ const f = require('util').format
 const Eris = require('eris')
 const express = require('express')
 const passport = require('passport')
-const session = require('session')
+const session = require('express-session')
 const DiscordStrategy = require('passport-discord').Strategy;
 
 //setup simple site
