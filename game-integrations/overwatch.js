@@ -23,6 +23,8 @@ exports.getOverallStats = async (msg, args) => {
     try {
         let player = await ow.getModeStats(args[0], 'quickplay', 'pc')
 
+        console.log(JSON.stringify(player, undefined, 4))
+
         let embed = {
             embed: {
                 title: f(`%s's Overall %s stats:`, args[0], args[2]),
@@ -36,7 +38,7 @@ exports.getOverallStats = async (msg, args) => {
             }
         }
 
-        console.log(JSON.stringify(player, undefined, 4))
+
 
         bot.bot.createMessage(msg.channel.id, embed)
 
