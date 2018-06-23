@@ -336,4 +336,4 @@ function checkAuth(req, res, next) {
 
 //Connect to Discord
 bot.connect()
-app.listen(3000)
+app.listen(9005)
