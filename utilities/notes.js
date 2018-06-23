@@ -55,7 +55,7 @@ exports.getNotes = async (msg, args) => {
             embed: {
                 author: {name: f(`%s's notes:`, msg.author.username), icon_url: msg.author.avatarURL},
                 fields: notes,
-                color: parseInt(usee.eColor, 16),
+                color: parseInt(config.color, 16),
                 footer: {text: `Powered by the Broadcast Tower`}
             }
         }
@@ -63,7 +63,6 @@ exports.getNotes = async (msg, args) => {
         bot.bot.createMessage(msg.channel.id, embed)
 
     } catch (err) {
-        console.log(err)
         bot.bot.createMessage(msg.channel.id, f(`Sorry %s my pencil broke!`, msg.author.username))
     }
 }
