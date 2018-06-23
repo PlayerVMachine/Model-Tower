@@ -1,6 +1,12 @@
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
 const Eris = require('eris')
+const express = require('express')
+const passport = require('passport')
+const DiscordStrategy = require('passport-discord').Strategy;
+
+//setup simple site
+const app = express()
 
 //config files
 const config = require('./config.json')
@@ -264,6 +270,12 @@ const getNews = async () => {
 }
 setInterval(getNews, 30*60*1000)
 
+/////////////////////////////////////////////
+//EXPRESS SERVER                          //
+///////////////////////////////////////////
+//https://discordapp.com/api/oauth2/authorize?client_id=444943191334977537&permissions=536881152&redirect_uri=http%3A%2F%2F208.113.167.124%3A3000%2Fdiscord&response_type=code&scope=bot
+
+
 
 /////////////////////////////////////////////
 //THINGS TO DO ON START UP                //
@@ -271,3 +283,4 @@ setInterval(getNews, 30*60*1000)
 
 //Connect to Discord
 bot.connect()
+app.listen(3000)
