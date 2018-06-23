@@ -23,7 +23,7 @@ exports.getOverallStats = async (msg, args) => {
     try {
         let player = await ow.getModeStats(args[0], 'quickplay', 'pc')
 
-        console.log(JSON.stringify(player, undefined, 4))
+        console.dir(player, {depth : 3, colors : true})
 
         let embed = {
             embed: {
