@@ -12,7 +12,7 @@ const lol = require('./game-integrations/leagueoflegends.js')
 //const fortnite = require('./game-integrations/fortnite.js')
 //const destiny = require('./game-integrations/destiny.js')
 //const battlerite = require('./game-integrations/battlerite.js')
-const ow = require('./overwatch.js')
+const ow = require('./game-integrations/overwatch.js')
 const pubg = require('./game-integrations/pubg.js')
 const postManager = require('./messages/mailDelivery.js')
 
