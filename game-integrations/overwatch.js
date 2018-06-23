@@ -36,7 +36,7 @@ exports.getOverallStats = async (msg, args) => {
             embed: {
                 title: f(`%s's Overall %s stats:`, args[0], args[2]),
                 thumbnail: {url: account.profile},
-                description: args[2] == 'quickplay' ? qpDescription | cmDescription,
+                description: args[2] == 'quickplay' ? qpDescription : cmDescription,
                 fields: [
                 {name: `Eliminations`, value: player.career_stats['ALL HEROES'].Combat.Eliminations, inline: true},
                 {name: `Deaths`, value: player.career_stats['ALL HEROES'].Combat.Deaths, inline: true},
