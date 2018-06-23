@@ -9,18 +9,18 @@ const regionList = ['xbox-as', 'xbox-eu', 'xbox-na', 'xbox-oc', 'pc-krjp', 'pc-j
 const modeList = ['duo', 'duo-fpp', 'solo', 'solo-fpp', 'squad', 'squad-fpp']
 
 exports.getPlayerStats = async (msg, args) => {
-    if (args.length < 3) {
-        bot.bot.createMessage(f(`**%s**, you need to provide a region, user, and game type`, msg.author.username))
+    if (msg.args.length < 3) {
+        bot.bot.createMessage(msg.channel.id, f(`**%s**, you need to provide a region, user, and game type`, msg.author.username))
         return
     }
 
     if (!regionList.includes(args[0])) {
-        bot.bot.createMessage(f(`**%s**, please specify a region! One of (%s)`, msg.author.username, regionList.join(', ')))
+        bot.bot.createMessage(msg.channel.id, f(`**%s**, please specify a region! One of (%s)`, msg.author.username, regionList.join(', ')))
         return
     }
 
     if (!modeList.includes(args[2])) {
-        bot.bot.createMessage(f(`**%s**, please specify a game mode! One of (%s)`, msg.author.username, modeList.join(', ')))
+        bot.bot.createMessage(msg.channel.id, f(`**%s**, please specify a game mode! One of (%s)`, msg.author.username, modeList.join(', ')))
     }
 
     let player = await pubg.getPlayerByName(args[0], args [1])
@@ -29,7 +29,7 @@ exports.getPlayerStats = async (msg, args) => {
     let season = seasons.data[seasons.data.length -1]
     let stats = await pubg.getPlayerSeasonStats(args[0], player.data[0].id, season.id)
 
-    if (stats == null) {
+    if (!stats) {
         bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, there as an error processing your request! Please Try again later.`, msg.author.username))
         return
     }
