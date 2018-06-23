@@ -170,7 +170,7 @@ bot.on('messageCreate', async (msg) => {
 
     if (msg.content.startsWith(prefix + `test`)) {
         let args = msg.content.slice(prefix.length + 5).split(' ')
-        ow.getMedals(msg, args)
+        ow.getHeroStats(msg, args)
     }
 
     //Check if the message sent was a command intended for the bot
