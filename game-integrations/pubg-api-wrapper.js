@@ -13,7 +13,11 @@ exports.getSeasons = async (region) => {
     .set('Authorization', 'Bearer ' + config.PUBG_KEY)
     .set('Accept','application/vnd.api+json')
 
-    return JSON.parse(seasons.text)
+
+    if (seasons.code = 200)
+        return JSON.parse(seasons.text)
+    else
+        return null
 }
 
 exports.getPlayerByName = async (region, name) => {
@@ -24,7 +28,11 @@ exports.getPlayerByName = async (region, name) => {
     .set('Accept','application/vnd.api+json')
     .query({'filter[playerNames]':name})
 
-    return JSON.parse(player.text)
+    console.log(player)
+    if (player.code = 200)
+        return JSON.parse(player.text)
+    else
+        return null
 }
 
 exports.getPlayerByID = async (region, id) => {
@@ -34,7 +42,10 @@ exports.getPlayerByID = async (region, id) => {
     .set('Authorization', 'Bearer ' + config.PUBG_KEY)
     .set('Accept','application/vnd.api+json')
 
-    return JSON.parse(player.text)
+    if (player.code = 200)
+        return JSON.parse(player.text)
+    else
+        return null
 }
 
 exports.getPlayerSeasonStats = async (region, player, season) => {
@@ -44,7 +55,10 @@ exports.getPlayerSeasonStats = async (region, player, season) => {
     .set('Authorization', 'Bearer ' + config.PUBG_KEY)
     .set('Accept','application/vnd.api+json')
 
-    return JSON.parse(stats.text)
+    if (stats.code = 200)
+        return JSON.parse(stats.text)
+    else
+        return null
 }
 
 exports.getMatch = async (region, id) => {
@@ -54,5 +68,8 @@ exports.getMatch = async (region, id) => {
     .set('Authorization', 'Bearer ' + config.PUBG_KEY)
     .set('Accept','application/vnd.api+json')
 
-    return JSON.parse(match.text)
+    if (match.code = 200)
+        return JSON.parse(match.text)
+    else
+        return null
 }

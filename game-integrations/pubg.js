@@ -1,42 +1,41 @@
 const f = require('util').format
-const Memcached = require('memcached')
+//const Memcached = require('memcached') // Not working
 
 const bot = require('../core.js')
 const pubg = require('./pubg-api-wrapper.js')
 
-const cache = new Memcached('127.0.0.1.11222')
+//const cache = new Memcached('127.0.0.1.11222')
+const regionList = ['xbox-as', 'xbox-eu', 'xbox-na', 'xbox-oc', 'pc-krjp', 'pc-jp', 'pc-na', 'pc-eu', 'pc-ru', 'pc-oc', 'pc-kakao', 'pc-sea', 'pc-sa', 'pc-as']
+const modeList = ['duo', 'duo-fpp', 'solo', 'solo-fpp', 'squad', 'squad-fpp']
 
 exports.getPlayerStats = async (msg, args) => {
-    if (args.length == 0) {
-        bot.createMessage(f(`**%s**, you need to provide a region, user, and game type`))
+    if (args.length < 3) {
+        bot.createMessage(f(`**%s**, you need to provide a region, user, and game type`, msg.author.username))
         return
     }
 
-    let player = await cache.get('pc-na' + args[0])
-    console.log(player)
-    if (player == undefined) {
-        console.log('from api')
-        player = await pubg.getPlayerByName('pc-na', args[0])
-        cache.set('pc-na' + args[0], player, 24*60*60)
+    if (!regionList.includes(args[0])) {
+        bot.createMessage(f(`**%s**, please specify a region! One of (%s)`, msg.author.username, regionList.join(', ')))
+        return
     }
 
-    let seasons = await cache.get('pc-na-seasons')
-    if (seasons == undefined) {
-        console.log('from api')
-        seasons = await pubg.getSeasons('pc-na')
-        cache.set('pc-na-seasons', seasons, 24*60*60)
+    if (!modeList.includes(args[2])) {
+        bot.createMessage(f(`**%s**, please specify a game mode! One of (%s)`, msg.author.username, modeList.join(', ')))
     }
+
+    let player = await pubg.getPlayerByName(args[0], args [1])
+    let seasons = await pubg.getSeasons(args[0])
 
     let season = seasons.data[seasons.data.length -1]
-    let stats = await pubg.getPlayerSeasonStats('pc-na', player.data[0].id, season.id)
+    let stats = await pubg.getPlayerSeasonStats(args[0], player.data[0].id, season.id)
 
-    let modeStats = stats.data.attributes.gameModeStats[args[1]]
+    let modeStats = stats.data.attributes.gameModeStats[args[2]]
     let accuracy = ((modeStats.headshotKills / modeStats.kills) * 100).toFixed(2)
     let kd = ((modeStats.kills / modeStats.losses) * 100).toFixed(2)
 
     let embed = {
         embed : {
-            title: f(`Overall PUBG Stats for %s this season:`, args[0]),
+            title: f(`Overall PUBG Stats for %s this season:`, args[1]),
             description: f(`You've won **%s** games and finished top 10 in **%s** games out of the **%s** games you've played so far this season with a k/d ratio of **%s%%**`, modeStats.wins, modeStats.top10s, modeStats.roundsPlayed, kd),
             color: parseInt('F2A900', 16),
             fields: [
