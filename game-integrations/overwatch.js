@@ -147,14 +147,7 @@ exports.getHeroStats = async (msg, args) => {
             return
         }
 
-        let embed = {
-            embed: {
-                title: f(`%s's stats for %s`, args[0], args[3]),
-                description: f(`\`\`\`js\n%s\n\`\`\``, JSON.stringify(heroStats, undefined, 4)),
-            }
-        }
-
-        bot.bot.createMessage(msg.channel.id, embed)
+        bot.bot.createMessage(msg.channel.id, f(`%s's stats for %s\`\`\`json\n%s\n\`\`\``, args[0], args[3], JSON.stringify(heroStats, undefined, 4))
 
     } catch (err) {
         console.log(err)
