@@ -78,8 +78,6 @@ bot.on('guildCreate', async (guild) => {
             bot.createMessage(ownerDM.id, f('Hi someone (perhaps you) just invited me to your server %s! But they/you haven\'t given me all the permissions I need to do my best work, I\'m missing: %s permissions', guild.name, missing.join(', ')))
         }
 
-        //Increment guild count in Prometheus
-        guildGauge.inc()
     } catch (err) {
         console.log(err)
     }
@@ -102,9 +100,6 @@ bot.on('guildDelete', async (guild) => {
         }
 
         bot.on('messageCreate', feedback)
-
-        //Decrement guild count in Prometheus
-        guildGauge.dec()
     } catch (err) {
         console.log(err)
     }
@@ -274,7 +269,6 @@ setInterval(getNews, 30*60*1000)
 /////////////////////////////////////////////
 //EXPRESS SERVER                          //
 ///////////////////////////////////////////
-//https://discordapp.com/api/oauth2/authorize?client_id=444943191334977537&permissions=536881152&redirect_uri=http%3A%2F%2F208.113.167.124%3A3000%2Fdiscord&response_type=code&scope=bot
 
 //setup passport
 passport.serializeUser(function(user, done) {
@@ -289,7 +283,7 @@ let scopes = ['bot']
 passport.use(new DiscordStrategy({
     clientID: config.BOT_ID,
     clientSecret: config.BOT_SECRET,
-    callbackURL: 'http://208.113.167.124:3000/statscentral',
+    callbackURL: 'http://208.113.167.124:9005/statscentral',
     scope: scopes
 }, function(accessToken, refreshToken, profile, done) {
     process.nextTick(function() {
