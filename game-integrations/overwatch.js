@@ -30,7 +30,7 @@ exports.getOverallStats = async (msg, args) => {
         }
 
         let qpDescription = f(`You're level **%s** and have won **%s** games after playing for **%s** hours.`, account.level, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 5))
-        let cmDescription = f(`You're rank **%s** and have won **%s** games after playing for **%s** hours.`, account.rank_name, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 5))
+        let cmDescription = f(`You're rank **%s** and have won **%s** out of **%s** games played in **%s** hours.`, account.rank_name, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.GamesPlayed, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 5))
 
         let embed = {
             embed: {
