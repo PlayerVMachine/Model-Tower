@@ -22,29 +22,30 @@ exports.getOverallStats = async (msg, args) => {
 
     try {
         let player = await ow.getModeStats(args[0], 'quickplay', 'pc')
+
+        let embed = {
+            embed: {
+                title: f(`%s's Overall %s stats:`, args[0], args[2]),
+                description: '',
+                fields: [
+                {name: `Eliminations`, value: player.career_stats['ALL HEROES'].Combat.Eliminations, inline: true},
+                {name: `Deaths`, value: player.career_stats['ALL HEROES'].Combat.Deaths, inline: true},
+                {name: `Damage Dealt`, value: player.career_stats['ALL HEROES'].Combat.HeroDamageDone, inline: true},
+                {name: `Healing Done`, value: player.career_stats['ALL HEROES'].Assists.HealingDone, inline:true}
+                ]
+            }
+        }
+
+        console.log(JSON.stringify(player, undefined, 4))
+
+        bot.bot.createMessage(msg.channel.id, embed)
+
     } catch (err) {
         if (err == 'PLAYER_NOT_EXIST') {
             bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, could not find results for that user on platform %s!`, msg.author.username, args[1]))
             return
         }
     }
-
-    let embed = {
-        embed: {
-            title: f(`%s's Overall %s stats:`, args[0], args[2]),
-            description: '',
-            fields: [
-                {name: `Eliminations`, value: player.career_stats['ALL HEROES'].Combat.Eliminations, inline: true},
-                {name: `Deaths`, value: player.career_stats['ALL HEROES'].Combat.Deaths, inline: true},
-                {name: `Damage Dealt`, value: player.career_stats['ALL HEROES'].Combat.HeroDamageDone, inline: true},
-                {name: `Healing Done`, value: player.career_stats['ALL HEROES'].Assists.HealingDone, inline:true}
-            ]
-        }
-    }
-
-    console.log(JSON.stringify(player, undefined, 4))
-
-    bot.bot.createMessage(msg.channel.id, embed)
 }
 
 exports.getMedals = async (msg, args) => {
