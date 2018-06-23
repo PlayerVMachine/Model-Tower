@@ -21,14 +21,22 @@ exports.getOverallStats = async (msg, args) => {
     }
 
     try {
-        let player = await ow.getModeStats(args[0], 'quickplay', 'pc')
+        let player = await ow.getModeStats(args[0], args[2], args[1])
+        let account = await ow.getGeneralStats(args[0], args[1])
 
-        console.dir(player, {depth : 3, colors : true})
+        if (!player.career_stats['ALL HEROES'].Combat) {
+            bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, could not find results for that user on platform %s!`, msg.author.username, args[1]))
+            return
+        }
+
+        let qpDescription = f(`You're level **%s** and have won **%s** games after playing for **%s** hours.`, account.level, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 6))
+        let cmDescription = f(`You're rank **%s** and have won **%s** games after playing for **%s** hours.`, account.rank_name, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 6))
 
         let embed = {
             embed: {
                 title: f(`%s's Overall %s stats:`, args[0], args[2]),
-                description: '',
+                thumbnail: {url: account.profile},
+                description: args[2] == 'quickplay' ? qpDescription | cmDescription,
                 fields: [
                 {name: `Eliminations`, value: player.career_stats['ALL HEROES'].Combat.Eliminations, inline: true},
                 {name: `Deaths`, value: player.career_stats['ALL HEROES'].Combat.Deaths, inline: true},
@@ -37,8 +45,6 @@ exports.getOverallStats = async (msg, args) => {
                 ]
             }
         }
-
-
 
         bot.bot.createMessage(msg.channel.id, embed)
 
