@@ -199,7 +199,7 @@ exports.subscribeToUser = async (msg, args) => {
     let client = await MongoClient.connect(url)
     let mailboxes = client.db('model_tower').collection('mailboxes')
 
-    
+
     if (user) {
         let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:user.id}})
         if (subscribe.result.ok != 1) {
@@ -234,6 +234,8 @@ exports.unsubscribeFromUser = async (msg, args) => {
         bot.bot.createMessage(msg.channel.id, f(`Could not find user: %s`, args[0]))
     }
 }
+
+//blockSubscriber
 
 exports.getPostsFromMailbox = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
@@ -274,3 +276,9 @@ exports.getPostsFromMailbox = async (msg, args) => {
         end += 1999
     }
 }
+
+//scheduleMailDelivery
+
+//edit a post
+
+//delete a post

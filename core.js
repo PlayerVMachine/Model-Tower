@@ -14,8 +14,9 @@ const lol = require('./game-integrations/leagueoflegends.js')
 //const battlerite = require('./game-integrations/battlerite.js')
 const ow = require('./game-integrations/overwatch.js')
 const pubg = require('./game-integrations/pubg.js')
-const postManager = require('./messages/mailDelivery.js')
 
+const postManager = require('./messages/mailDelivery.js')
+const notes = require('./utilities/notes.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -138,6 +139,7 @@ let r6Commands = r6.commandList
 let pmCommands = postManager.commandList
 let lolCommands = lol.commandList
 let pubgCommands = pubg.commandList
+let noteCommands = notes.commandList
 
 bot.on('messageCreate', async (msg) => {
 
@@ -206,6 +208,12 @@ bot.on('messageCreate', async (msg) => {
             let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             pubg[pubgCommands[key]](msg, args)
+        } else if (Object.keys(noteCommands).indexOf(command) > - 1) {
+
+            let key = Object.keys(noteCommands)[Object.keys(noteCommands).indexOf(command)]
+            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //run the function corresponding to the command name and pass it the message and its args
+            notes[noteCommands[key]](msg, args)
         }
 
     } else {
