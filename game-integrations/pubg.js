@@ -29,7 +29,7 @@ exports.getPlayerStats = async (msg, args) => {
     let season = seasons.data[seasons.data.length -1]
     let stats = await pubg.getPlayerSeasonStats(args[0], player.data[0].id, season.id)
 
-    if (!stats) {
+    if (stats == null) {
         bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, there as an error processing your request! Please Try again later.`, msg.author.username))
         return
     }
