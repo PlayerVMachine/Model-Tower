@@ -1,7 +1,7 @@
 const f = require('util').format
-const ow = require('overwatch-js')
+const ow = require('owapi')
 
 exports.test = async (msg, args) => {
-    let player = await ow.getOverall('pc', 'eu', args[0])
+    let player = await ow.getGeneralStats('pc', args[0])
     console.dir(player, {depth : 2, colors : true})
 }
