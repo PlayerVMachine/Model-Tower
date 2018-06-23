@@ -29,12 +29,12 @@ exports.getOverallStats = async (msg, args) => {
             return
         }
 
-        let qpDescription = f(`You're level **%s** and have won **%s** games after playing for **%s** hours.`, account.level, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 6))
-        let cmDescription = f(`You're rank **%s** and have won **%s** games after playing for **%s** hours.`, account.rank_name, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 6))
+        let qpDescription = f(`You're level **%s** and have won **%s** games after playing for **%s** hours.`, account.level, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 5))
+        let cmDescription = f(`You're rank **%s** and have won **%s** games after playing for **%s** hours.`, account.rank_name, player.career_stats['ALL HEROES'].Game.GamesWon, player.career_stats['ALL HEROES'].Game.TimePlayed.slice(0, player.career_stats['ALL HEROES'].Game.TimePlayed.length - 5))
 
         let embed = {
             embed: {
-                title: f(`%s's Overall %s stats:`, args[0], args[2]),
+                title: f(`%s's overall %s stats:`, args[0], args[2]),
                 thumbnail: {url: account.profile},
                 description: args[2] == 'quickplay' ? qpDescription : cmDescription,
                 fields: [
