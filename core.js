@@ -1,13 +1,6 @@
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
 const Eris = require('eris')
-const express = require('express')
-const passport = require('passport')
-const session = require('express-session')
-const DiscordStrategy = require('passport-discord').Strategy;
-
-//setup simple site
-const app = express()
 
 //config files
 const config = require('./config.json')
@@ -270,59 +263,7 @@ setInterval(getNews, 30*60*1000)
 //EXPRESS SERVER                          //
 ///////////////////////////////////////////
 
-//setup passport
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
 
-let scopes = ['bot']
-
-passport.use(new DiscordStrategy({
-    clientID: config.BOT_ID,
-    clientSecret: config.BOT_SECRET,
-    callbackURL: 'http://208.113.167.124:9005/statscentral',
-    scope: scopes
-}, function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function() {
-        return done(null, profile);
-    });
-}));
-
-app.use(session({
-    secret: config.SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {maxAge: 60000}
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.get('/login', passport.authenticate('discord', { scope: scopes }), function(req, res) {
-
-});
-
-//Redirects to success or failure page
-app.get('/statscentral',
-    passport.authenticate('discord', { failureRedirect: '/uhoh' }), function(req, res) { res.redirect('/thankyou') } // auth success
-    );
-
-//logout
-app.get('/logout', function(req, res) {
-    res.send('bye');
-});
-
-//page when logged in
-app.get('/thankyou', checkAuth, async (req, res) => {
-    res.send('Thank you')
-});
-
-function checkAuth(req, res, next) {
-    if (req.isAuthenticated()) return next();
-    res.send('bye');
-}
 
 /////////////////////////////////////////////
 //THINGS TO DO ON START UP                //
@@ -330,4 +271,3 @@ function checkAuth(req, res, next) {
 
 //Connect to Discord
 bot.connect()
-app.listen(9005)
