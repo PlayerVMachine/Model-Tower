@@ -63,7 +63,7 @@ exports.getNotes = async (msg, args) => {
         bot.bot.createMessage(msg.channel.id, embed)
 
     } catch (err) {
-        console.log(error)
+        console.log(err)
         bot.bot.createMessage(msg.channel.id, f(`Sorry %s my pencil broke!`, msg.author.username))
     }
 }
