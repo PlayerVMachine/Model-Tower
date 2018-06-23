@@ -286,7 +286,7 @@ passport.deserializeUser(function(obj, done) {
 
 let scopes = ['bot']
 
-passport.use(new Strategy({
+passport.use(new DiscordStrategy({
     clientID: config.BOT_ID,
     clientSecret: config.BOT_SECRET,
     callbackURL: 'http://208.113.167.124:3000/statscentral',
