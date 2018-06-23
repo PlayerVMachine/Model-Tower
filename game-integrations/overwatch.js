@@ -140,7 +140,7 @@ exports.getHeroStats = async (msg, args) => {
             return
         }
 
-        let heroStats = player.career_stats['ALL HEROES'][args[3]]
+        let heroStats = player.career_stats[args[3]]
 
         if (!heroStats || !heroStats.Combat) {
             bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, could not find gampeplay stats for that hero!`, msg.author.username))
