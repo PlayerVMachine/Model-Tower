@@ -63,11 +63,12 @@ exports.getNotes = async (msg, args) => {
         bot.bot.createMessage(msg.channel.id, embed)
 
     } catch (err) {
+        console.log(error)
         bot.bot.createMessage(msg.channel.id, f(`Sorry %s my pencil broke!`, msg.author.username))
     }
 }
 
-exports.unNote = async (msg, args, bot) => {
+exports.unNote = async (msg, args) => {
     try{
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
         let noteMsgs = await dmChannel.getPins()
