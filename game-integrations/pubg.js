@@ -9,7 +9,7 @@ const regionList = ['xbox-as', 'xbox-eu', 'xbox-na', 'xbox-oc', 'pc-krjp', 'pc-j
 const modeList = ['duo', 'duo-fpp', 'solo', 'solo-fpp', 'squad', 'squad-fpp']
 
 exports.getPlayerStats = async (msg, args) => {
-    if (msg.args.length < 3) {
+    if (args.length < 3) {
         bot.bot.createMessage(msg.channel.id, f(`**%s**, you need to provide a region, user, and game type`, msg.author.username))
         return
     }
