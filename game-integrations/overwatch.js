@@ -41,6 +41,7 @@ exports.getOverallStats = async (msg, args) => {
         bot.bot.createMessage(msg.channel.id, embed)
 
     } catch (err) {
+        console.log(err)
         if (err == 'PLAYER_NOT_EXIST') {
             bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, could not find results for that user on platform %s!`, msg.author.username, args[1]))
             return
