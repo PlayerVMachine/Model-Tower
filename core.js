@@ -140,6 +140,7 @@ const isChannelGuildAnnouncer = async (id) => {
 let r6Commands = r6.commandList
 let pmCommands = postManager.commandList
 let lolCommands = lol.commandList
+let pubgCommands = pubg.commandList
 
 bot.on('messageCreate', async (msg) => {
 
@@ -169,9 +170,7 @@ bot.on('messageCreate', async (msg) => {
     }
 
     if (msg.content.startsWith(prefix + `test`)) {
-        let args = msg.content.slice(prefix.length + 5).split(' ')
-        pubg.getPlayerStats(msg, args)
-        return
+
     }
 
     //Check if the message sent was a command intended for the bot
@@ -203,8 +202,16 @@ bot.on('messageCreate', async (msg) => {
             let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             lol[lolCommands[key]](msg, args)
+        } else if (Object.keys(pubgCommands).indexOf(command) > - 1) {
+
+            let key = Object.keys(pubgCommands)[Object.keys(pubgCommands).indexOf(command)]
+            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //run the function corresponding to the command name and pass it the message and its args
+            pubg[pubgCommands[key]](msg, args)
         }
+
     } else {
+
         if (isChannelGuildAnnouncer(msg.channel.id)) {
             postManager.deliverPost(`channel`, msg)
         }
