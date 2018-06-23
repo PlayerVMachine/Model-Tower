@@ -149,8 +149,7 @@ exports.getHeroStats = async (msg, args) => {
 
         let embed = {
             embed: {
-                title: f(`%s's %s medals:`, args[0], args[2]),
-                thumbnail: {url: account.profile},
+                title: f(`%s's stats for %s`, args[0], args[3]),
                 description: f(`\`\`\`js\n%s\n\`\`\``, JSON.stringify(heroStats, undefined, 4)),
             }
         }
