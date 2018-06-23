@@ -10,17 +10,17 @@ const modeList = ['duo', 'duo-fpp', 'solo', 'solo-fpp', 'squad', 'squad-fpp']
 
 exports.getPlayerStats = async (msg, args) => {
     if (args.length < 3) {
-        bot.createMessage(f(`**%s**, you need to provide a region, user, and game type`, msg.author.username))
+        bot.bot.createMessage(f(`**%s**, you need to provide a region, user, and game type`, msg.author.username))
         return
     }
 
     if (!regionList.includes(args[0])) {
-        bot.createMessage(f(`**%s**, please specify a region! One of (%s)`, msg.author.username, regionList.join(', ')))
+        bot.bot.createMessage(f(`**%s**, please specify a region! One of (%s)`, msg.author.username, regionList.join(', ')))
         return
     }
 
     if (!modeList.includes(args[2])) {
-        bot.createMessage(f(`**%s**, please specify a game mode! One of (%s)`, msg.author.username, modeList.join(', ')))
+        bot.bot.createMessage(f(`**%s**, please specify a game mode! One of (%s)`, msg.author.username, modeList.join(', ')))
     }
 
     let player = await pubg.getPlayerByName(args[0], args [1])
