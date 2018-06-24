@@ -73,14 +73,15 @@ exports.getForecast = async (msg, args) => {
             }
 
             let embed = {
-            embed: {
-                author: {name: f("Weather forecast in %s for the next 3 days", result[0].location.name), icon_url: result[0].current.imageUrl},
-                color: parseInt('0x4286f4', 16),
-                fields: fields,
-                footer: {text:'Part of the Broadcast Tower Integration Network'}
+                embed: {
+                    author: {name: f("Weather forecast in %s for the next 3 days", result[0].location.name), icon_url: result[0].current.imageUrl},
+                    color: parseInt('0x4286f4', 16),
+                    fields: fields,
+                    footer: {text:'Part of the Broadcast Tower Integration Network'}
                 }
             }
 
+            console.log(embed)
             bot.bot.createMessage(msg.channel.id, embed)
         })
     } catch (err) {
