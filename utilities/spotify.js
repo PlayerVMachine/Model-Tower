@@ -190,6 +190,8 @@ exports.search = async (msg, args) => {
         return
     }
 
+    let query = args.join('%20')
+
     let response = await request.post('https://accounts.spotify.com/api/token')
         .send({grant_type:'client_credentials'})
         .set('Authorization', 'Basic ' + base64data)
@@ -203,6 +205,6 @@ exports.search = async (msg, args) => {
     let getResponse = await request.get(f('https://api.spotify.com/v1/search?q=%s&type=track&limit=5', query))
     .set('Authorization', token)
 
-    let results = JSON.parse(getResponse.text.tracks)
+    let results = JSON.parse(getResponse.text)
     console.dir(results, {depth: 3})
 }
