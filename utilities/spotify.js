@@ -172,6 +172,8 @@ exports.tenList = async (msg, args) => {
         } else {
             num = parseInt(args[0])
         }
+    } else {
+        num = 1
     }
 
     let offset = 10 * (num - 1)
