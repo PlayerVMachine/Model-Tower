@@ -169,18 +169,19 @@ exports.tenList = async (msg, args) => {
             bot.bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'), msg.author.username)
             return
         } else {
-            num = parseInt(args[0])
+            let num = parseInt(args[0])
+            let offset = 10 * (num - 1)
+            //get the album from the database
+            let albums = await spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray()
         }
     } else {
-        num = 1
+        let num = 1
+        let offset = 10 * (num - 1)
+        //get the album from the database
+        let albums = await spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray()
     }
 
-    let offset = 10 * (num - 1)
 
-    console.log(num + ' ' + offset)
-
-    //get the album from the database
-    let albums = await spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray()
 
     let fields = []
     for (i = 0; i < albums.length; i++)
