@@ -17,6 +17,7 @@ const pubg = require('./game-integrations/pubg.js')
 
 const postManager = require('./messages/mailDelivery.js')
 const notes = require('./utilities/notes.js')
+const spotify = require('./utilities/spotify.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -141,6 +142,7 @@ let lolCommands = lol.commandList
 let pubgCommands = pubg.commandList
 let noteCommands = notes.commandList
 let pmCommands = postManager.commandList
+let spCommands = spotify.commandList
 
 bot.on('messageCreate', async (msg) => {
 
@@ -221,6 +223,12 @@ bot.on('messageCreate', async (msg) => {
             let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             ow[owCommands[key]](msg, args)
+        } else if (Object.keys(spCommands).indexOf(command) > - 1) {
+
+            let key = Object.keys(spCommands)[Object.keys(spCommands).indexOf(command)]
+            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //run the function corresponding to the command name and pass it the message and its args
+            spotify[spCommands[key]](msg, args)
         }
 
     } else {
@@ -274,6 +282,14 @@ const getNews = async () => {
 }
 setInterval(getNews, 30*60*1000)
 
+//refresh the spotify new releases
+const spotifyRefresh = () => {
+    date = new Date()
+    if(date.getDay() === 5)
+        spotify.getReleases()
+}
+setInterval(spotifyRefresh, 12*60*60*1000)
+
 /////////////////////////////////////////////
 //EXPRESS SERVER                          //
 ///////////////////////////////////////////
@@ -283,6 +299,9 @@ setInterval(getNews, 30*60*1000)
 /////////////////////////////////////////////
 //THINGS TO DO ON START UP                //
 ///////////////////////////////////////////
+
+//Make sure Spotify data is there
+spotifyRefresh()
 
 //Connect to Discord
 bot.connect()
