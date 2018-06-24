@@ -207,9 +207,32 @@ exports.search = async (msg, args) => {
 
     let results = JSON.parse(getResponse.text)
 
+    let fields = []
+    let count = 1
+
     results.tracks.items.forEach(track => {
-        console.log(f('[%s](%s)', track.name, track.external_urls.spotify))
-        console.log(f('[%s](%s)', track.artists[0].name,  track.artists[0].external_urls.spotify))
-        console.log(f('[%s](%s)', track.album.name, track.album.external_urls.spotify))
+        let album = f('[%s](%s)', track.album.name, track.album.external_urls.spotify)
+        let artists = []
+        track.artists.forEach(artist => {
+            artists.push(f('[%s](%s)', track.artist.name, track.artist.external_urls.spotify))
+        })
+
+        fields.push({
+            name: f('%s. %s', count, track.name),
+            value: f('Listen [here](%s) **Artist(s):** %s **Album:**, %s', track.external_urls.spotify, artists.join(', '), album),
+            inline: false
+        })
+        count ++
     })
+
+    let embed = {
+        embed: {
+            author: {name: 'Spotify Track Search Results', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
+            color: parseInt('0x1DB954', 16),
+            fields: fields,
+            footer: {text:'Like the bot? Consider buying me a coffee'}
+        }
+    }
+
+    bot.bot.createMessage(msg.channel.id, embed)
 }
