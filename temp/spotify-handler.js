@@ -17,8 +17,8 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 const timeFormat = new RegExp(/^[0-2][0-9]:[0-6][0-9]\b/)
 
 exports.getReleases = async () => {
-	let data = config.spotifyID + ':' + config.spotifySecret;  
-	let buff = new Buffer.from(data);  
+	let data = config.spotifyID + ':' + config.spotifySecret;
+	let buff = new Buffer.from(data);
 	let base64data = buff.toString('base64');
 
 
@@ -53,7 +53,7 @@ exports.getReleases = async () => {
 					artist_url: info.items[album].artists[0].external_urls.spotify,
 					album_url: info.items[album].external_urls.spotify,
 					image_url_300: info.items[album].images[1].url,
-					release_date: info.items[album].release_date 
+					release_date: info.items[album].release_date
 				}
 				albums.push(record)
 				position += 1
@@ -73,8 +73,8 @@ exports.getReleases = async () => {
 
 
 exports.getPlaylists = async (msg, args, bot) => {
-	let data = config.spotifyID + ':' + config.spotifySecret;  
-	let buff = new Buffer.from(data);  
+	let data = config.spotifyID + ':' + config.spotifySecret;
+	let buff = new Buffer.from(data);
 	let base64data = buff.toString('base64');
 
 	try {
@@ -176,12 +176,13 @@ exports.tenList = async (msg, args, bot) => {
 		let num = parseInt(args[0])
 
 		if (num < 1 || num > 10) {
-			bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'), msg.author.username)
-			return
+			num = 0
 		}
 
 		offset = 10 * (num - 1)
-	} 
+	} else {
+        offset = 0
+    }
 
 	//get the album from the database
 	spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray((err, albums) => {
@@ -268,7 +269,7 @@ exports.unNotif = async (msg, args, bot, client) => {
     const remCol = client.db(config.db).collection('Reminders')
 
     let remSpotify = await remCol.deleteOne({$and: [{user: msg.author.id}, {type:'spotify'}]})
-    if (remSpotify.deletedCount === 1) 
+    if (remSpotify.deletedCount === 1)
       bot.createMessage(msg.channel.id, f('%s, successfully unsubcribed from weekly Spotify updates!', msg.author.username))
     else
       bot.createMessage(msg.channel.id, f('%s, you were not subcribed to weekly Spotify updates!', msg.author.username))

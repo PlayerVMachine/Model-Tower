@@ -18,7 +18,7 @@ const base64data = buff.toString('base64')
 
 exports.commandList = {
     splists: `getPlaylists`,
-    spalbum: `getAlbum`,
+    spalbum: `albumDetail`,
     sptop: `tenList`
 }
 
@@ -163,6 +163,7 @@ exports.albumDetail = async (msg, args) => {
 exports.tenList = async (msg, args) => {
     let client = await MongoClient.connect(url)
     const spotifyCol = client.db('spotify').collection('NewReleases')
+
     let offset = 0
 
     if (args.length > 0) {
@@ -174,6 +175,8 @@ exports.tenList = async (msg, args) => {
         }
 
         offset = 10 * (num - 1)
+    } else {
+        offset = 0
     }
 
     //get the album from the database
