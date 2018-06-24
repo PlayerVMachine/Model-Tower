@@ -200,9 +200,10 @@ exports.search = async (msg, args) => {
     let data = JSON.parse(response.text)
     let token = 'Bearer ' + data.access_token
 
+    console.log(f('https://api.spotify.com/v1/search?q=%s', query))
+
     let getResponse = await request.get(f('https://api.spotify.com/v1/search?q=%s', query))
     .set('Authorization', token)
-    .set('Accept', 'application/json')
 
     let results = JSON.parse(getResponse.text)
     console.dir(results)
