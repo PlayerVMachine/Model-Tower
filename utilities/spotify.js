@@ -208,6 +208,10 @@ exports.search = async (msg, args) => {
     let results = JSON.parse(getResponse.text)
 
     results.tracks.items.forEach(track => {
-        console.dir(track, {depth: 3})
+        console.dir(track.album.external_urls, {depth: 3})
+        console.dir(track.album.images, {depth: 3})
+        console.dir(track.artists[0], {depth: 3})
+        console.dir(track.external_urls, {depth: 3})
+        console.dir(track.name, {depth: 3})
     })
 }
