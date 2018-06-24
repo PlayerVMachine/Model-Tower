@@ -76,7 +76,7 @@ exports.getReleases = async () => {
             if (pushAlbums.insertedCount !== albums.length)
                 console.log('Not all albums were pushed: ' + pushAlbums.insertedCount)
             else
-                console.log('50 albums pusehd to db')
+                console.log('50 albums pushed to db')
         }
 
     } catch (e) {
@@ -127,7 +127,7 @@ exports.getPlaylists = async (msg, args) => {
     }
 }
 
-exports.albumDetail = async (msg, args, bot) => {
+exports.albumDetail = async (msg, args) => {
     try {
         let position = 1
 
@@ -160,7 +160,7 @@ exports.albumDetail = async (msg, args, bot) => {
     }
 }
 
-exports.tenList = async (msg, args, bot) => {
+exports.tenList = async (msg, args) => {
     let client = await MongoClient.connect(url)
     const spotifyCol = client.db('spotify').collection('NewReleases')
     let offset = 0
