@@ -171,7 +171,7 @@ exports.tenList = async (msg, args) => {
                 if (parseInt(args[0]) < 1 || parseInt(args[0]) > 10) {
                     reject('invalid index')
                 } else {
-                    resolve(offset = 10 * (parseInt(args[0]) - 1))
+                    resolve(10 * (parseInt(args[0]) - 1))
                 }
             } else {
                 resolve(0)
