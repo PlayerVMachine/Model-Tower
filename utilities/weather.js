@@ -19,7 +19,7 @@ exports.getWeather = async (msg, args) => {
         }
 
         let degree = args[args.length - 1].toUpperCase() == 'C' ? 'C' : 'F'
-        let location = (args[args.length - 1].toUpperCase() == 'C' || args[args.length - 1].toUpperCase() == 'F') ? args.slice(0, args.length - 2).join(' ') : args.join(' ')
+        let location = (args[args.length - 1].toUpperCase() == 'C' || args[args.length - 1].toUpperCase() == 'F') ? args.slice(0, args.length - 1).join(' ') : args.join(' ')
 
         weather.find({search: location, degreeType: degree}, (err, result) => {
             if(err) {
