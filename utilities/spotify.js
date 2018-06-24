@@ -165,7 +165,7 @@ exports.tenList = async (msg, args) => {
     const spotifyCol = client.db('spotify').collection('NewReleases')
 
     //get the album from the database
-    let offset = args[0] ? (parseInt(args[0]) > 0 && parseInt(args[0]) < 11) ? parseInt(args[0]) : 0 : 0
+    let offset = args[0] ? (parseInt(args[0]) > 0 && parseInt(args[0]) < 11) ? (parseInt(args[0]) - 1) * 10 : 0 : 0
     let albums = await spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray()
 
     let fields = []
