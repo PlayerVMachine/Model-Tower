@@ -25,7 +25,7 @@ exports.commandList = {
 const getAlbum = async (position) => {
     try {
         let client = await MongoClient.connect(url)
-        const spotifyCol = client.db(config.db).collection('SpotifyNewReleases')
+        const spotifyCol = client.db('spotify').collection('NewReleases')
 
         let album = await spotifyCol.findOne({position:position})
         return album
