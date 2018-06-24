@@ -19,7 +19,8 @@ const base64data = buff.toString('base64')
 exports.commandList = {
     splists: `getPlaylists`,
     spalbum: `albumDetail`,
-    sptop: `tenList`
+    sptop: `tenList`,
+    spsearch: `search`
 }
 
 const getAlbum = async (position) => {
@@ -182,4 +183,26 @@ exports.tenList = async (msg, args) => {
     }
 
     bot.bot.createMessage(msg.channel.id, embed)
+}
+
+exports.search = async (msg, args) => {
+    if (args.length == 0) {
+        return
+    }
+
+    let query = args.join('%20')
+
+    let response = await request.post('https://accounts.spotify.com/api/token')
+        .send({grant_type:'client_credentials'})
+        .set('Authorization', 'Basic ' + base64data)
+        .type('application/x-www-form-urlencoded')
+
+    let data = JSON.parse(response.text)
+    let token = 'Bearer ' + data.access_token
+
+    let getResponse = await request.get(f('https://api.spotify.com/v1/browse/search?q=%s', query))
+    .set('Authorization', token)
+
+    let results = JSON.parse(getResponse.text)
+    console.dir(results)
 }
