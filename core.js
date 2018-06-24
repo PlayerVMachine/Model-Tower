@@ -16,8 +16,10 @@ const ow = require('./game-integrations/overwatch.js')
 const pubg = require('./game-integrations/pubg.js')
 
 const postManager = require('./messages/mailDelivery.js')
+
 const notes = require('./utilities/notes.js')
 const spotify = require('./utilities/spotify.js')
+const weather = require('./utilities/weather.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -145,6 +147,7 @@ let pubgCommands = pubg.commandList
 let noteCommands = notes.commandList
 let pmCommands = postManager.commandList
 let spCommands = spotify.commandList
+let weCommands = weather.commandList
 
 bot.on('messageCreate', async (msg) => {
 
@@ -185,11 +188,14 @@ bot.on('messageCreate', async (msg) => {
         let command = msg.content.slice(prefix.length, endIndex)
         console.log(command)
 
+        let content = msg.content.split(' ')
+        let args = content.slice(1)
+
         //Check if the command is a rainbow six siege stats command
         if (Object.keys(r6Commands).indexOf(command) > -1) {
 
             let key = Object.keys(r6Commands)[Object.keys(r6Commands).indexOf(command)]
-            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             r6[r6Commands[key]](msg, args)
 
@@ -197,40 +203,46 @@ bot.on('messageCreate', async (msg) => {
         } else if (Object.keys(pmCommands).indexOf(command) > -1) {
 
             let key = Object.keys(pmCommands)[Object.keys(pmCommands).indexOf(command)]
-            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             postManager[pmCommands[key]](msg, args)
 
         } else if (Object.keys(lolCommands).indexOf(command) > - 1) {
 
             let key = Object.keys(lolCommands)[Object.keys(lolCommands).indexOf(command)]
-            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             lol[lolCommands[key]](msg, args)
         } else if (Object.keys(pubgCommands).indexOf(command) > - 1) {
 
             let key = Object.keys(pubgCommands)[Object.keys(pubgCommands).indexOf(command)]
-            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             pubg[pubgCommands[key]](msg, args)
         } else if (Object.keys(noteCommands).indexOf(command) > - 1) {
 
             let key = Object.keys(noteCommands)[Object.keys(noteCommands).indexOf(command)]
-            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             notes[noteCommands[key]](msg, args)
         } else if (Object.keys(owCommands).indexOf(command) > - 1) {
 
             let key = Object.keys(owCommands)[Object.keys(owCommands).indexOf(command)]
-            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             ow[owCommands[key]](msg, args)
         } else if (Object.keys(spCommands).indexOf(command) > - 1) {
 
             let key = Object.keys(spCommands)[Object.keys(spCommands).indexOf(command)]
-            let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
             //run the function corresponding to the command name and pass it the message and its args
             spotify[spCommands[key]](msg, args)
+        } else if (Object.keys(weCommands).indexOf(command) > - 1) {
+
+            let key = Object.keys(weCommands)[Object.keys(weCommands).indexOf(command)]
+            //let args = msg.content.slice(prefix.length + key.length + 1).split(' ')
+            //run the function corresponding to the command name and pass it the message and its args
+            weather[weCommands[key]](msg, args)
         }
 
     } else {
