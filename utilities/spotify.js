@@ -163,19 +163,21 @@ exports.albumDetail = async (msg, args) => {
 exports.tenList = async (msg, args) => {
     let client = await MongoClient.connect(url)
     const spotifyCol = client.db('spotify').collection('NewReleases')
-    num = 1
 
-    if (args.length > 0) {
-        if (parseInt(args[0]) < 1 || parseInt(args[0]) > 10) {
-            bot.bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'), msg.author.username)
-            return
-        } else {
-            num = parseInt(args[0])
-        }
-    }
+    try {
 
-    offset = 10 * (num - 1)
-    console.log(num)
+        let offset = new Promise ((resolve, reject) => {
+            if (args.length > 0) {
+                if (parseInt(args[0]) < 1 || parseInt(args[0]) > 10) {
+                    reject('invalid index')
+                } else {
+                    resolve(offset = 10 * (parseInt(args[0]) - 1))
+                }
+            } else {
+                resolve(0)
+            }
+        })
+
     //get the album from the database
     let albums = await spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray()
 
@@ -193,4 +195,9 @@ exports.tenList = async (msg, args) => {
     }
 
     bot.bot.createMessage(msg.channel.id, embed)
+
+    } catch (err) {
+        bot.bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'), msg.author.username)
+        return
+    }
 }
