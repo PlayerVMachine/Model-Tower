@@ -180,20 +180,20 @@ exports.tenList = async (msg, args) => {
     console.log(num + ' ' + offset)
 
     //get the album from the database
-    spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray((err, albums) => {
-        let fields = []
-        for (i = 0; i < albums.length; i++)
-            fields.push({name: albums[i].position, value:f('Artist: **%s** | Album: [%s](%s)', albums[i].artist, albums[i].name.split('(')[0], albums[i].album_url), inline: false})
+    let albums = await spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray()
 
-        let embed = {
-            embed: {
-                author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
-                color: parseInt('0x1DB954', 16),
-                fields: fields,
-                footer: {text:'Part of the Broadcast Tower Integration Network'}
-            }
+    let fields = []
+    for (i = 0; i < albums.length; i++)
+        fields.push({name: albums[i].position, value:f('Artist: **%s** | Album: [%s](%s)', albums[i].artist, albums[i].name.split('(')[0], albums[i].album_url), inline: false})
+
+    let embed = {
+        embed: {
+            author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
+            color: parseInt('0x1DB954', 16),
+            fields: fields,
+            footer: {text:'Part of the Broadcast Tower Integration Network'}
         }
+    }
 
-        bot.bot.createMessage(msg.channel.id, embed)
-    })
+    bot.bot.createMessage(msg.channel.id, embed)
 }
