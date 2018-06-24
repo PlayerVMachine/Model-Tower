@@ -176,7 +176,7 @@ exports.tenList = async (msg, args) => {
 
     let offset = 10 * (num - 1)
 
-    console.log(offset)
+    console.log(num + ' ' + offset)
 
     //get the album from the database
     spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray((err, albums) => {
