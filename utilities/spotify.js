@@ -202,9 +202,9 @@ exports.search = async (msg, args) => {
 
     console.log(f('https://api.spotify.com/v1/search?q=%s', query))
 
-    let getResponse = await request.get(f('https://api.spotify.com/v1/search?q=%s&type=track%2Cartist%2Calbum%2Cplaylist', query))
+    let getResponse = await request.get(f('https://api.spotify.com/v1/search?q=%s&type=track%2Cartist%2Calbum%2Cplaylist&limit=3', query))
     .set('Authorization', token)
 
     let results = JSON.parse(getResponse.text)
-    console.dir(results, {depth: 4})
+    console.dir(results, {depth: 3})
 }
