@@ -214,13 +214,12 @@ exports.search = async (msg, args) => {
         let album = f('[%s](%s)', track.album.name, track.album.external_urls.spotify)
         let artists = []
         track.artists.forEach(artist => {
-            console.log(artist)
-            //artists.push(f('[%s](%s)', track.artist.name, track.artist.external_urls.spotify))
+            artists.push(f('[%s](%s)', artist.name, artist.external_urls.spotify))
         })
 
         fields.push({
             name: f('%s. %s', count, track.name),
-            value: f('Listen [here](%s) **Artist(s):** %s **Album:**, %s', track.external_urls.spotify, artists.join(', '), album),
+            value: f('Listen [here](%s) Artist(s): %s Album: %s', track.external_urls.spotify, artists.join(', '), album),
             inline: false
         })
         count ++
