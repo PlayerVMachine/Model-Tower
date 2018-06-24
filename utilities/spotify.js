@@ -163,7 +163,7 @@ exports.albumDetail = async (msg, args) => {
 exports.tenList = async (msg, args) => {
     let client = await MongoClient.connect(url)
     const spotifyCol = client.db('spotify').collection('NewReleases')
-    let num = 1
+    num = 1
 
     if (args.length > 0) {
         if (parseInt(args[0]) < 1 || parseInt(args[0]) > 10) {
