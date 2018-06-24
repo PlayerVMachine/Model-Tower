@@ -206,5 +206,5 @@ exports.search = async (msg, args) => {
     .set('Authorization', token)
 
     let results = JSON.parse(getResponse.text)
-    console.dir(results)
+    console.dir(results, {depth: 4})
 }
