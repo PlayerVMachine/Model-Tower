@@ -43,7 +43,7 @@ exports.getWeather = async (msg, args) => {
     }
 }
 
-exports.getForecast = async (msg, args, bot, client) => {
+exports.getForecast = async (msg, args) => {
     try {
         if (args.length == 0) {
             bot.bot.createMessage(msg.channel.id, 'please enter a location and optional degree type (default is F)')
