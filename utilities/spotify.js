@@ -164,8 +164,6 @@ exports.tenList = async (msg, args) => {
     let client = await MongoClient.connect(url)
     const spotifyCol = client.db('spotify').collection('NewReleases')
 
-    let offset = 0
-
     if (args.length > 0) {
         let num = parseInt(args[0])
 
@@ -173,11 +171,11 @@ exports.tenList = async (msg, args) => {
             bot.bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'), msg.author.username)
             return
         }
-
-        offset = 10 * (num - 1)
     } else {
-        offset = 0
+        num = 1
     }
+
+    let offset = 10 * (num - 1)
 
     //get the album from the database
     spotifyCol.find({ $and: [ {position:{$gte:offset}} , {position:{$lte:offset + 10}} ] }).toArray((err, albums) => {
