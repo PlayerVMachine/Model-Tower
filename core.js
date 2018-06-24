@@ -47,7 +47,7 @@ exports.bot = bot
 bot.on("ready", () => {
     console.log("The Tower of Power is online!")
     //Make sure Spotify data is there
-    spotifyRefresh()
+    spotify.getReleases()
 });
 
 //Perform permissions check when added to a guild
