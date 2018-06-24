@@ -165,7 +165,7 @@ exports.tenList = async (msg, args) => {
     const spotifyCol = client.db('spotify').collection('NewReleases')
 
     if (args.length > 0) {
-        let num = parseInt(args[0])
+        num = parseInt(args[0])
 
         if (num < 1 || num > 10) {
             bot.bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'), msg.author.username)
