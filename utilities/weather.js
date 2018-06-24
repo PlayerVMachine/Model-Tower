@@ -12,19 +12,14 @@ exports.commandList = {
 
 exports.getWeather = async (msg, args) => {
     try {
-        let degree = 'F'
-        let location = undefined
 
         if (args.length == 0) {
             bot.bot.createMessage(msg.channel.id, 'please enter a location and optional degree type (default is F)')
             return
         }
 
-        if (args[args.length - 1].toUpperCase() == 'C' || args[args.length - 1].toUpperCase() == 'F') {
-            location = args.slice(0, args.length - 2).join(' ')
-        } else {
-            location = args.join(' ')
-        }
+        let degree = args[args.length - 1].toUpperCase() == 'C' ? 'C' : 'F'
+        let location = (args[args.length - 1].toUpperCase() == 'C' || args[args.length - 1].toUpperCase() == 'F') ? args.slice(0, args.length - 2).join(' ') : args.join(' ')
 
         weather.find({search: location, degreeType: degree}, (err, result) => {
             if(err) {
