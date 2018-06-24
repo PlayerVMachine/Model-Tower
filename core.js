@@ -46,6 +46,8 @@ exports.bot = bot
 //ready
 bot.on("ready", () => {
     console.log("The Tower of Power is online!")
+    //Make sure Spotify data is there
+    spotifyRefresh()
 });
 
 //Perform permissions check when added to a guild
@@ -299,9 +301,6 @@ setInterval(spotifyRefresh, 12*60*60*1000)
 /////////////////////////////////////////////
 //THINGS TO DO ON START UP                //
 ///////////////////////////////////////////
-
-//Make sure Spotify data is there
-spotifyRefresh()
 
 //Connect to Discord
 bot.connect()
