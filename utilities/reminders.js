@@ -93,7 +93,7 @@ exports.remindMe = async (msg, args) => {
             }
         }
 
-        bot.on('messageReactionAdd', cancelTimeout)
+        bot.bot.on('messageReactionAdd', cancelTimeout)
 
 
 /*        let addRem = await col.insertOne(reminderObj)
