@@ -85,7 +85,7 @@ exports.remindMe = async (msg, args) => {
                     bot.bot.removeListener('messageReactionAdd', cancelTimeout)
                     clearTimeout(setReminder)
                     confirm.edit('Reminder cancelled!')
-                    setTimeout(() = > {
+                    setTimeout(() => {
                         confirm.delete('Clean up response')
                         msg.delete('Reminder cancelled')
                     }, 5000)
