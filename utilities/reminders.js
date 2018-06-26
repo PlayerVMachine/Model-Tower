@@ -22,21 +22,27 @@ exports.remindMe = async (msg, args) => {
 
         let reminder = msg.content.split(' ').slice(1, msg.content.lastIndexOf('in'))
         let rawTime = msg.connect.split(' ').slice(msg.content.lastIndexOf('in') + 1)
+        let dmChannel = await bot.bot.getDMChannel(msg.author.id)
 
+        //set the time unit for minute, day, week, month, or year
+        let timeUnit = rawTime.charAt(rawTime.length - 1).match(/[mMdyw]/) ? rawTime.charAt(rawTime.length - 1) : 'm'
 
-        let reminderObj = {
-            user: usee.user,
-            sendTo: usee.sendTo,
+        let timeMagnitude = !parseInt(rawTime) ? parseInt(rawTime.slice(0, rawTime.length -1)) : parseInt(rawTime)
+
+        bot.bot.createMessage(msg.channel.id, f('magnitude: %d, unit: %s, reminder: %s', timeMagnitude, timeUnit, reminder))
+
+/*        let reminderObj = {
+            sendTo: dmChannel.id,
             content: reminder,
             due: remDate,
             type: 'reminder'
         }
 
-        let addRem = await remCol.insertOne(reminderObj)
+        let addRem = await col.insertOne(reminderObj)
         if (addRem.insertedCount === 1)
-            bot.createMessage(msg.channel.id, f('Got it I\'ll remind you: %s in %s', message.slice(0, eom).trim(), rawDate))
+            bot.createMessage(msg.channel.id, f('Got it I\'ll remind you: %s in %s', reminder, rawDate))
         else
-            bot.createMessage(msg.channel.id, 'Uh oh! I can\'t remember that for you right now!')
+            bot.createMessage(msg.channel.id, 'Uh oh! I can\'t remember that for you right now!') */
     } catch (err) {
         console.log(err)
     }

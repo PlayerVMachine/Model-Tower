@@ -20,6 +20,7 @@ const postManager = require('./messages/mailDelivery.js')
 const notes = require('./utilities/notes.js')
 const spotify = require('./utilities/spotify.js')
 const weather = require('./utilities/weather.js')
+const rem = require('./utilities/reminders.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -178,7 +179,7 @@ bot.on('messageCreate', async (msg) => {
 
     if (msg.content.startsWith(prefix + `test`)) {
         let args = msg.content.slice(prefix.length + 5).split(' ')
-        ow.getHeroStats(msg, args)
+        rem.test(msg, args)
     }
 
     //Check if the message sent was a command intended for the bot
