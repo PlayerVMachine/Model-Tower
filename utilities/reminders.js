@@ -31,8 +31,6 @@ exports.remindMe = async (msg, args) => {
 
         let timeMagnitude = !parseInt(rawTime) ? parseInt(rawTime.slice(0, rawTime.length -1)) : parseInt(rawTime)
 
-        bot.bot.createMessage(msg.channel.id, f('magnitude: %d, unit: %s, reminder: %s', timeMagnitude, timeUnit, reminder))
-
         //breakdown date
         let date = new Date()
         let min = date.getMinutes()
@@ -41,35 +39,47 @@ exports.remindMe = async (msg, args) => {
         let month = date.getMonth()
         let year = date.getFullYear()
 
+        let response = timeMagnitude.toString() + ' '
+
         if (timeUnit == 'm') {
             min += timeMagnitude
+            response += 'minutes'
         } else if (timeUnit == 'h') {
             hour += timeMagnitude
+            response += 'hours'
         } else if (timeUnit == 'd') {
             day += timeMagnitude
+            response += 'days'
         } else if (timeUnit == 'w') {
             day += (7 * timeMagnitude)
+            response += 'weeks'
         } else if (timeUnit == 'M') {
             month += timeMagnitude
+            response += 'months'
         } else if (timeUnit == 'y') {
             year += timeMagnitude
+            response += 'years'
         }
 
+        //create new date for when the user wants to be reminded
         let reminderTime = new Date(year, month, day, hour, min)
-        console.log(date + ' -> ' + reminderTime)
 
-/*        let reminderObj = {
+        let reminderObj = {
             sendTo: dmChannel.id,
             content: reminder,
-            due: remDate,
+            due: reminderTime,
             type: 'reminder'
         }
 
-        let addRem = await col.insertOne(reminderObj)
-        if (addRem.insertedCount === 1)
-            bot.createMessage(msg.channel.id, f('Got it I\'ll remind you: %s in %s', reminder, rawDate))
-        else
-            bot.createMessage(msg.channel.id, 'Uh oh! I can\'t remember that for you right now!') */
+        bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s`, reminder, response))
+
+/*        let addRem = await col.insertOne(reminderObj)
+        if (addRem.insertedCount === 1) {
+            bot.bot.createMessage(msg.channel.id, f('Got it I\'ll remind you: %s in %s', reminder, response))
+        } else {
+            bot.bot.createMessage(msg.channel.id, 'Uh oh! I can\'t remember that for you right now!')
+        }
+*/
     } catch (err) {
         console.log(err)
     }
