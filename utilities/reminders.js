@@ -122,10 +122,10 @@ exports.checkReminders = async () => {
 
             setTimeout(async () => {
                 if (r.type === 'reminder') {
-                    bot.bot.createMessage(r.sendTo, f(`You wanted me to remind you: %s`, content))
+                    bot.bot.createMessage(r.sendTo, f(`You wanted me to remind you: %s`, r.content))
                     let remove = await col.deleteOne({_id: r._id})
                     if (remove.deletedCount !== 1) {
-                        console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
+                        console.log(f('An error occurred removing reminder: %s', r._id))
                     }
                 }
             }, timeout)
