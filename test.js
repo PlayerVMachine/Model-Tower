@@ -14,7 +14,7 @@ let test = {
 }
 
 let final = Object.entries(test).sort((a,b) => {
-    a.value - b.value
+    b.value - a.value
 })
 
 console.dir(test, {depth:2})
