@@ -81,7 +81,6 @@ exports.getForecast = async (msg, args) => {
                 }
             }
 
-            console.log(embed)
             bot.bot.createMessage(msg.channel.id, embed)
         })
     } catch (err) {
