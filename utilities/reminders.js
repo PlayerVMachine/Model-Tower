@@ -21,7 +21,7 @@ exports.remindMe = async (msg, args) => {
         const col = client.db('model_tower').collection('Reminders')
 
         let reminder = msg.content.split(' ').slice(1, msg.content.lastIndexOf('in'))
-        let rawTime = msg.content.split(' ').slice(msg.content.lastIndexOf('in') + 1)
+        let rawTime = msg.content.split(' ').slice(msg.content.lastIndexOf('in'))
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
 
         console.log(rawTime)
