@@ -179,7 +179,7 @@ bot.on('messageCreate', async (msg) => {
 
     if (msg.content.startsWith(prefix + `test`)) {
         let args = msg.content.slice(prefix.length + 5).split(' ')
-        rem.test(msg, args)
+        rem.remindMe(msg, args)
     }
 
     //Check if the message sent was a command intended for the bot
