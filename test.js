@@ -14,7 +14,7 @@ let test = {
 }
 
 let final = Object.entries(test).sort((a,b) => {
-    console.log(b.value + ' - ' + a.value + ' = ' + (b.value - a.value))
+    console.log(b)
     return b.value - a.value
 })
 
