@@ -22,8 +22,8 @@ exports.remindMe = async (msg, args) => {
 
         let splitIndex = msg.content.split(' ').lastIndexOf('in')
 
-        let reminder = msg.content.split(' ').slice(1, msg.content.lastIndexOf('in'))
-        let rawTime = msg.content.split(' ').slice(msg.content.lastIndexOf('in'))
+        let reminder = msg.content.split(' ').slice(1, splitIndex)
+        let rawTime = msg.content.split(' ').slice(splitIndex)
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
 
         console.log(rawTime)
