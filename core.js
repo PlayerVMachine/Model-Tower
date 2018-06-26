@@ -49,8 +49,13 @@ exports.bot = bot
 //ready
 bot.on("ready", () => {
     console.log("The Tower of Power is online!")
+
     //Make sure Spotify data is there
     //spotify.getReleases()
+
+    //check for expiring reminders
+    rem.checkReminders
+    setInterval(rem.checkReminders, 60*1000)
 });
 
 //Perform permissions check when added to a guild

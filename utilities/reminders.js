@@ -18,7 +18,7 @@ exports.remindMe = async (msg, args) => {
 
     try {
         let client = await MongoClient.connect(url)
-        const col = client.db('model_tower').collection('Reminders')
+        const col = client.db('model_tower').collection('reminders')
 
         let splitIndex = msg.content.split(' ').lastIndexOf('in')
 
@@ -71,12 +71,18 @@ exports.remindMe = async (msg, args) => {
             type: 'reminder'
         }
 
-        let confirm = await bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s (react with ❌ to cancel)`, reminder, response))
+        let confirm = await bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s _react with ❌ to cancel_)`, reminder, response))
         confirm.addReaction('❌')
 
         const setReminder = setTimeout(async () => {
             bot.bot.removeListener('messageReactionAdd', cancelTimeout)
-            //send to db
+            confirm.removeReaction('❌')
+            let addRem = await col.insertOne(reminderObj)
+            if (addRem.insertedCount == 1) {
+                confirm.edit(f(`Got it I'll remind you: %s in %s _reminder set!_`, reminder, response))
+            } else {
+                confirm.edit(f(`Got it I'll remind you: %s in %s _reminder not set sorry!_`, reminder, response))
+            }
         }, 5000)
 
         const cancelTimeout = async (message, emoji, userID) => {
@@ -85,24 +91,46 @@ exports.remindMe = async (msg, args) => {
                     bot.bot.removeListener('messageReactionAdd', cancelTimeout)
                     clearTimeout(setReminder)
                     confirm.edit('Reminder cancelled!')
-                    setTimeout(() => {
+                    /*setTimeout(() => {
                         confirm.delete('Clean up response')
                         msg.delete('Reminder cancelled')
-                    }, 5000)
+                    }, 5000)*/ //feedback first?
                 }
             }
         }
 
         bot.bot.on('messageReactionAdd', cancelTimeout)
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 
-/*        let addRem = await col.insertOne(reminderObj)
-        if (addRem.insertedCount === 1) {
-            bot.bot.createMessage(msg.channel.id, f('Got it I\'ll remind you: %s in %s', reminder, response))
-        } else {
-            bot.bot.createMessage(msg.channel.id, 'Uh oh! I can\'t remember that for you right now!')
-        }
-*/
+const checkReminders = async () => {
+    try {
+        let client = await MongoClient.connect(url)
+        const col = client.db('model_tower').collection('reminders')
+
+        now = new Date()
+        oneMinuteLater = new Date(now.getTime() + (60*1000))
+
+        let expiringReminders = await remCol.find({due: {$lte: oneMinuteLater}}).toArray()
+
+        expiringReminders.forEach(r => {
+            due = new Date(r.due)
+            timeout = due.getTime() - Date.now()
+
+            setTimeout(async () => {
+                if (r.type === 'reminder') {
+                    bot.bot.createMessage(r.sendTo, f(`You wanted me to remind you: %s`, content))
+                    let delete = await col.deleteOne({_id: r._id})
+                    if (delete.deletedCount !== 1) {
+                        console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
+                    }
+                }
+            }, timeout)
+
+        })
     } catch (err) {
         console.log(err)
     }
