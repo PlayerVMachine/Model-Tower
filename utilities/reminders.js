@@ -71,7 +71,7 @@ exports.remindMe = async (msg, args) => {
             type: 'reminder'
         }
 
-        let confirm = await bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s _react with \❌ to cancel_)`, reminder, response))
+        let confirm = await bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s _react with ❌ to cancel_)`, reminder, response))
         confirm.addReaction('❌')
 
         const setReminder = setTimeout(async () => {
@@ -114,7 +114,7 @@ exports.checkReminders = async () => {
         now = new Date()
         oneMinuteLater = new Date(now.getTime() + (60*1000))
 
-        let expiringReminders = await remCol.find({due: {$lte: oneMinuteLater}}).toArray()
+        let expiringReminders = await col.find({due: {$lte: oneMinuteLater}}).toArray()
 
         expiringReminders.forEach(r => {
             due = new Date(r.due)
