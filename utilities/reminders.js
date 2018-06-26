@@ -43,22 +43,22 @@ exports.remindMe = async (msg, args) => {
 
         if (timeUnit == 'm') {
             min += timeMagnitude
-            response += 'minutes'
+            response += 'minute(s)'
         } else if (timeUnit == 'h') {
             hour += timeMagnitude
-            response += 'hours'
+            response += 'hour(s)'
         } else if (timeUnit == 'd') {
             day += timeMagnitude
-            response += 'days'
+            response += 'day(s)'
         } else if (timeUnit == 'w') {
             day += (7 * timeMagnitude)
-            response += 'weeks'
+            response += 'week(s)'
         } else if (timeUnit == 'M') {
             month += timeMagnitude
-            response += 'months'
+            response += 'month(s)'
         } else if (timeUnit == 'y') {
             year += timeMagnitude
-            response += 'years'
+            response += 'year(s)'
         }
 
         //create new date for when the user wants to be reminded
@@ -71,7 +71,30 @@ exports.remindMe = async (msg, args) => {
             type: 'reminder'
         }
 
-        bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s`, reminder, response))
+        let confirm = bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s (react with ❌ to cancel)`, reminder, response))
+        confirm.addReaction('❌')
+
+        const setReminder = setTimeout(async () => {
+            bot.bot.removeListener('messageReactionAdd', cancelTimeout)
+            //send to db
+        }, 5000)
+
+        const cancelTimeout = async (message, emoji, userID) => {
+            if (userID == msg.author.id) {
+                if (emoji.name == '❌') {
+                    bot.bot.removeListener('messageReactionAdd', cancelTimeout)
+                    clearTimeout(setReminder)
+                    confirm.edit('Reminder cancelled!')
+                    setTimeout(() = > {
+                        confirm.delete('Clean up response')
+                        msg.delete('Reminder cancelled')
+                    }, 5000)
+                }
+            }
+        }
+
+        bot.on('messageReactionAdd', cancelTimeout)
+
 
 /*        let addRem = await col.insertOne(reminderObj)
         if (addRem.insertedCount === 1) {
