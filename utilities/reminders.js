@@ -24,7 +24,7 @@ exports.remindMe = async (msg, args) => {
         let rawTime = msg.content.split(' ').slice(msg.content.lastIndexOf('in') + 1)
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
 
-        console.log(typeOf(rawTime))
+        console.log(typeof rawTime)
 
         //set the time unit for minute, day, week, month, or year
         let timeUnit = rawTime.charAt(rawTime.length - 1).match(/[mMdyw]/) ? rawTime.charAt(rawTime.length - 1) : 'm'
