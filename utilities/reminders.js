@@ -23,10 +23,8 @@ exports.remindMe = async (msg, args) => {
         let splitIndex = msg.content.split(' ').lastIndexOf('in')
 
         let reminder = msg.content.split(' ').slice(1, splitIndex)
-        let rawTime = msg.content.split(' ').slice(splitIndex)
+        let rawTime = msg.content.split(' ').slice(splitIndex + 1).join()
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
-
-        console.log(rawTime)
 
         //set the time unit for minute, day, week, month, or year
         let timeUnit = rawTime.charAt(rawTime.length - 1).match(/[mMdyw]/) ? rawTime.charAt(rawTime.length - 1) : 'm'
