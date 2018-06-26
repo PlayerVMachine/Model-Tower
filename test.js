@@ -1,15 +1,15 @@
 let test = {
     thing1 : {
         value: 4,
-        also: 0
+        also: 1
     },
     thing2 : {
         value: 8,
-        also: 0
+        also: -1
     },
     thing3 : {
         value: 6,
-        also: 0
+        also: 5
     }
 }
 
