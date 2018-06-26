@@ -55,7 +55,7 @@ exports.remindMe = async (msg, args) => {
             year += timeMagnitude
         }
 
-        let reminderTime = new Date(remYear, remMonth, remDay, remHours, remMins)
+        let reminderTime = new Date(year, month, day, hour, min)
         console.log(date + ' -> ' + reminderTime)
 
 /*        let reminderObj = {
