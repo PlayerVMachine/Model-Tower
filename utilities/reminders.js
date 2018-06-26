@@ -71,7 +71,7 @@ exports.remindMe = async (msg, args) => {
             type: 'reminder'
         }
 
-        let confirm = await bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s _react with ❌ to cancel_)`, reminder, response))
+        let confirm = await bot.bot.createMessage(msg.channel.id, f(`Got it I'll remind you: %s in %s _react with \❌ to cancel_)`, reminder, response))
         confirm.addReaction('❌')
 
         const setReminder = setTimeout(async () => {
