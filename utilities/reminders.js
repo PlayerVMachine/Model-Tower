@@ -140,7 +140,7 @@ const viewReminders = async (msg, args) => {
         }
 
         let listMessage = await bot.bot.createMessage(msg.channel.id, embed)
-        let reactions = await bot.bot.createMessage(msg.channel.id ':one: :two: :three: :four: :five: :six: :seven: :eight: :nine: 🔟')
+        let reactions = await bot.bot.createMessage(msg.channel.id, ':one: :two: :three: :four: :five: :six: :seven: :eight: :nine: 🔟')
 
 
     } catch (err) {
