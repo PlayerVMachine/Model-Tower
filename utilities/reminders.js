@@ -9,6 +9,14 @@ const bot = require('../core.js')
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
 
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+
+    if (['me', 'remind'].includes(args[0])) {
+        remindMe(msg, restOfArgs)
+    }
+}
+
 exports.remindMe = async (msg, args) => {
 
     if (!args.includes('in')) {
@@ -105,6 +113,10 @@ exports.remindMe = async (msg, args) => {
     }
 }
 
+//View upcoming reminders and delete by reaction
+exports.viewReminders = async (msg, args) => {
+
+}
 
 exports.checkReminders = async () => {
     try {

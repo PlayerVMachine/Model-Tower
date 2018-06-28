@@ -8,8 +8,12 @@ const league = Kayn(config.RIOT_KEY)({
     region: REGIONS.NORTH_AMERICA
 })
 
-exports.commandList = {
-    loluser:`getSummoner`
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+
+    if (['user', 'summoner'].includes(args[0])) {
+        getSummoner(msg, restOfArgs)
+    }
 }
 
 exports.getSummoner = async (msg, args) => {

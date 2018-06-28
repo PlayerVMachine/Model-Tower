@@ -16,11 +16,18 @@ let data = config.spotifyID + ':' + config.spotifySecret
 let buff = new Buffer.from(data)
 const base64data = buff.toString('base64')
 
-exports.commandList = {
-    splists: `getPlaylists`,
-    spalbum: `albumDetail`,
-    sptop: `tenList`,
-    spsearch: `search`
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+
+    if (['playlists', 'plists', 'pl'].includes(args[0])) {
+        getPlaylists(msg, restOfArgs)
+    } else if (['album', 'adetail'].includes(args[0])) {
+        albumDetail(msg, restOfArgs)
+    } else if (['tenList', 'new', 'releases'].includes(args[0])) {
+        tenList(msg, restOfArgs)
+    } else if (['search', 'lookup', 'lu', 's'].includes(args[0])) {
+        search(msg, restOfArgs)
+    }
 }
 
 const getAlbum = async (position) => {

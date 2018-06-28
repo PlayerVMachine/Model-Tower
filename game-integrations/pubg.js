@@ -8,11 +8,15 @@ const pubg = require('./pubg-api-wrapper.js')
 const regionList = ['xbox-as', 'xbox-eu', 'xbox-na', 'xbox-oc', 'pc-krjp', 'pc-jp', 'pc-na', 'pc-eu', 'pc-ru', 'pc-oc', 'pc-kakao', 'pc-sea', 'pc-sa', 'pc-as']
 const modeList = ['duo', 'duo-fpp', 'solo', 'solo-fpp', 'squad', 'squad-fpp']
 
-exports.commandList = {
-    pubgstats:`getPlayerStats`
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+
+    if (['stats'].includes(args[0])) {
+        getPlayerStats(msg, restOfArgs)
+    }
 }
 
-exports.getPlayerStats = async (msg, args) => {
+const = getPlayerStats = async (msg, args) => {
     if (args.length < 3) {
         bot.bot.createMessage(msg.channel.id, f(`**%s**, you need to provide a region, user, and game type`, msg.author.username))
         return

@@ -7,24 +7,37 @@ const R6 = new RainbowSixApi();
 const config = require('../config.json')
 const bot = require('../core.js')
 
-exports.commandList = {
-    r6cas:`getCasualStats`,
-    r6rnk:`getRankedStats`,
-    r6op:`getTopOp`,
-    r6misc:`getMiscStats`
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+
+    if (['cas','casual'].includes(args[0])) {
+        getCasualStats(msg, restOfArgs)
+    } else if (['rnk', 'rank'].includes(args[0])) {
+        getRankedStats(msg, restOfArgs)
+    } else if (['operator', 'topop', 'op'].includes(args[0])) {
+        getTopOp(msg, restOfArgs)
+    } else if (['misc', 'general'].includes(args[0])) {
+        getMiscStats(msg, restOfArgs)
+    }
 }
 
-exports.getMiscStats = async (msg, args) => {
+const getMiscStats = async (msg, args) => {
 
-    if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
-        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+    if (!['pc', 'xbl', 'psn'].includes(args[1])) {
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xbl`, or `psn`')
         return
     }
 
     bot.bot.sendChannelTyping(msg.channel.id)
 
-    let username = args[0];
-    let platform = args[1];
+    let username = args[0]
+    let platform = 'pc'
+
+    if (args[1] == 'xbl') {
+        platform = 'xone'
+    } else if (args[1] == 'psn') {
+        platform = 'ps4'
+    }
 
     //Get stats on the user on that platform
     let statistics = await R6.stats(username, platform)
@@ -59,17 +72,23 @@ exports.getMiscStats = async (msg, args) => {
     bot.bot.createMessage(msg.channel.id, embed)
 }
 
-exports.getCasualStats = async (msg, args) => {
+const getCasualStats = async (msg, args) => {
 
-    if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
-        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+    if (!['pc', 'xb', 'ps'].includes(args[1])) {
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xb`, or `ps`')
         return
     }
 
     bot.bot.sendChannelTyping(msg.channel.id)
 
-    let username = args[0];
-    let platform = args[1];
+    let username = args[0]
+    let platform = 'pc'
+
+    if (args[1] == 'xb') {
+        platform = 'xone'
+    } else if (args[1] == 'ps') {
+        platform = 'ps4'
+    }
 
     //Get stats on the user on that platform
     let statistics = await R6.stats(username, platform)
@@ -135,17 +154,23 @@ exports.getCasualStats = async (msg, args) => {
     bot.bot.createMessage(msg.channel.id, embed)
 }
 
-exports.getRankedStats = async (msg, args) => {
+const getRankedStats = async (msg, args) => {
 
-    if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
-        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+    if (!['pc', 'xb', 'ps'].includes(args[1])) {
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xb`, or `ps`')
         return
     }
 
     bot.bot.sendChannelTyping(msg.channel.id)
 
-    let username = args[0];
-    let platform = args[1];
+    let username = args[0]
+    let platform = 'pc'
+
+    if (args[1] == 'xb') {
+        platform = 'xone'
+    } else if (args[1] == 'ps') {
+        platform = 'ps4'
+    }
 
     //Get stats on the user on that platform
     let statistics = await R6.stats(username, platform)
@@ -210,17 +235,24 @@ exports.getRankedStats = async (msg, args) => {
     bot.bot.createMessage(msg.channel.id, embed)
 }
 
-exports.getTopOp = async (msg, args) => {
+const getTopOp = async (msg, args) => {
 
-    if (!['uplay', 'xone', 'ps4'].includes(args[1])) {
-        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `uplay`, `xone`, or `ps4`')
+    if (!['pc', 'xb', 'ps'].includes(args[1])) {
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xb`, or `ps`')
         return
     }
 
     bot.bot.sendChannelTyping(msg.channel.id)
 
-    let username = args[0];
-    let platform = args[1];
+    let username = args[0]
+    let platform = 'pc'
+
+    if (args[1] == 'xb') {
+        platform = 'xone'
+    } else if (args[1] == 'ps') {
+        platform = 'ps4'
+    }
+
     let top = 0
     if (args.length > 1)
         top = parseInt(args[2]) - 1;

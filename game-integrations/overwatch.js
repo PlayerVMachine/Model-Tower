@@ -3,10 +3,16 @@ const ow = require('owapi')
 
 const bot = require('../core.js')
 
-exports.commandList = {
-    owStats:`getOverallStats`,
-    owMedals: `getMedals`,
-    owHero: `getHeroStats`
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+
+    if (['stats'].includes(args[0])) {
+        getOverallStats(msg, restOfArgs)
+    } else if (['medals'].includes(args[0])) {
+        getMedals(msg, restOfArgs)
+    } else if (['hero'].includes(args[0])) {
+        getHeroStats(msg, restOfArgs)
+    }
 }
 
 exports.getOverallStats = async (msg, args) => {

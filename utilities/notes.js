@@ -11,6 +11,19 @@ exports.commandList = {
     unnote: 'unNote'
 }
 
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+
+    if(['make', 'create', 'note', 'nts'].includes(args[0])) {
+        noteToSelf(msg, restOfArgs)
+    } else if (['get', 'view', 'list', 'ls'].includes(args[0])) {
+        getNotes(msg, restOfArgs)
+    } else if (['del', 'delete', 'rem', 'rm', 'unnote'].includes(args[0])) {
+        unNote(msg, restOfArgs)
+    }
+
+}
+
 exports.noteToSelf = async (msg, args) => {
     try{
         let files = []

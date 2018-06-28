@@ -146,15 +146,6 @@ const isChannelGuildAnnouncer = async (id) => {
 /////////////////////////////////////////////
 //COMMANDS                                //
 ///////////////////////////////////////////
-let r6Commands = r6.commandList
-let owCommands = ow.commandList
-let lolCommands = lol.commandList
-let pubgCommands = pubg.commandList
-let noteCommands = notes.commandList
-let pmCommands = postManager.commandList
-let spCommands = spotify.commandList
-let weCommands = weather.commandList
-
 bot.on('messageCreate', async (msg) => {
 
     //Ignore other bots and itself
@@ -192,61 +183,36 @@ bot.on('messageCreate', async (msg) => {
         //Get the command after the prefix and before any arguments
         let endIndex = msg.content.indexOf(` `) === -1 ? msg.length : msg.content.indexOf(` `)
         let command = msg.content.slice(prefix.length, endIndex)
-        console.log(command)
 
         let content = msg.content.split(' ')
         let args = content.slice(1)
 
-        //Check if the command is a rainbow six siege stats command
-        if (Object.keys(r6Commands).indexOf(command) > -1) {
-
-            let key = Object.keys(r6Commands)[Object.keys(r6Commands).indexOf(command)]
-            //run the function corresponding to the command name and pass it the message and its args
-            r6[r6Commands[key]](msg, args)
-
-        //Check if the command is a postManager Command
-        } else if (Object.keys(pmCommands).indexOf(command) > -1) {
-
-            let key = Object.keys(pmCommands)[Object.keys(pmCommands).indexOf(command)]
-            //run the function corresponding to the command name and pass it the message and its args
-            postManager[pmCommands[key]](msg, args)
-
-        } else if (Object.keys(lolCommands).indexOf(command) > - 1) {
-
-            let key = Object.keys(lolCommands)[Object.keys(lolCommands).indexOf(command)]
-            //run the function corresponding to the command name and pass it the message and its args
-            lol[lolCommands[key]](msg, args)
-
-        } else if (Object.keys(pubgCommands).indexOf(command) > - 1) {
-
-            let key = Object.keys(pubgCommands)[Object.keys(pubgCommands).indexOf(command)]
-            //run the function corresponding to the command name and pass it the message and its args
-            pubg[pubgCommands[key]](msg, args)
-
-        } else if (Object.keys(noteCommands).indexOf(command) > - 1) {
-
-            let key = Object.keys(noteCommands)[Object.keys(noteCommands).indexOf(command)]
-            //run the function corresponding to the command name and pass it the message and its args
-            notes[noteCommands[key]](msg, args)
-
-        } else if (Object.keys(owCommands).indexOf(command) > - 1) {
-
-            let key = Object.keys(owCommands)[Object.keys(owCommands).indexOf(command)]
-            //run the function corresponding to the command name and pass it the message and its args
-            ow[owCommands[key]](msg, args)
-
-        } else if (Object.keys(spCommands).indexOf(command) > - 1) {
-
-            let key = Object.keys(spCommands)[Object.keys(spCommands).indexOf(command)]
-            //run the function corresponding to the command name and pass it the message and its args
-            spotify[spCommands[key]](msg, args)
-
-        } else if (Object.keys(weCommands).indexOf(command) > - 1) {
-
-            let key = Object.keys(weCommands)[Object.keys(weCommands).indexOf(command)]
-            //run the function corresponding to the command name and pass it the message and its args
-            weather[weCommands[key]](msg, args)
-
+        if (command == 'r6') {
+            //Check if the command is a rainbow six siege stats command
+            r6.commandHandler(msg, args)
+        } else if (command == 'pm') {
+            //Check if the command is a postManager command
+            postManager.commandHandler(msg, args)
+        } else if (command == 'lol') {
+            //Check if the command is a league of league command
+            lol.commandHandler(msg, args)
+        } else if (command == 'pubg') {
+            //Check if the command is a pubg command
+            pubg.commandHandler(msg, args)
+        } else if (command == 'nts') {
+            //Check if the command is a notes command
+            notes.commandHandler(msg, args)
+        } else if (command == 'ow') {
+            //Check if the command is an overwatch command
+            ow.commandHandler(msg, args)
+        } else if (command == 'spotify') {
+            //Check if the command is a spotify command
+            spotify.commandHandler(msg, args)
+        } else if (command == 'weather') {
+            //Check if the command is a weather command
+            weather.commandHandler(msg, args)
+        } else if (command == 'remind') {
+            rem.commandHandler(msg,args)
         }
 
     } else {
