@@ -139,8 +139,6 @@ const viewReminders = async (msg, args) => {
                 let time = ((Date.parse(r.due) - Date.now()) / (60 * 60 * 1000)).toFixed(2)
                 desc.push(f('**%d.** %s set for: %d hours from now ', count, r.content, time))
                 count ++
-            } else {
-                continue
             }
         })
 
