@@ -16,7 +16,7 @@ exports.commandHandler = (msg, args) => {
     }
 }
 
-const = getPlayerStats = async (msg, args) => {
+const getPlayerStats = async (msg, args) => {
     if (args.length < 3) {
         bot.bot.createMessage(msg.channel.id, f(`**%s**, you need to provide a region, user, and game type`, msg.author.username))
         return
