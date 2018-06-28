@@ -118,7 +118,7 @@ const viewReminders = async (msg, args) => {
 
 }
 
-const checkReminders = async () => {
+exports.checkReminders = async () => {
     try {
         let client = await MongoClient.connect(url)
         const col = client.db('model_tower').collection('reminders')
