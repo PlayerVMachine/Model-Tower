@@ -122,20 +122,20 @@ const viewReminders = async (msg, args) => {
         const col = client.db('model_tower').collection('reminders')
 
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
-        let reminders = await col.find({sendTo: dmChannel.id}).toArray()
+        let reminders = await col.find({ $and: [ {sendTo: dmChannel.id}, {type:'reminder'} ] }).toArray()
 
-        let reminders = []
+        let desc = []
         let count = 1
         reminders.forEach(r => {
             let time = (Date.parse(r.new) - Date.now()) / (1000*60*60)
-            reminders.push(f('**%d.** %s set for: %d hours from now ', count, r.content, time))
+            desc.push(f('**%d.** %s set for: %d hours from now ', count, r.content, time))
             count ++
         })
 
         let embed = {
             embed: {
                 title: f(`%s's upcoming reminders`, msg.author.username),
-                description: reminders.join('\n')
+                description: desc.join('\n')
             }
         }
 
