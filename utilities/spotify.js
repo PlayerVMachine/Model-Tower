@@ -42,7 +42,7 @@ const getAlbum = async (position) => {
     }
 }
 
-exports.getReleases = async () => {
+const getReleases = async () => {
     try {
         let client = await MongoClient.connect(url)
         const spotifyCol = client.db('spotify').collection('NewReleases')
@@ -92,7 +92,7 @@ exports.getReleases = async () => {
     }
 }
 
-exports.getPlaylists = async (msg, args) => {
+const getPlaylists = async (msg, args) => {
     try {
         let response = await request.post('https://accounts.spotify.com/api/token')
         .send({grant_type:'client_credentials'})
@@ -135,7 +135,7 @@ exports.getPlaylists = async (msg, args) => {
     }
 }
 
-exports.albumDetail = async (msg, args) => {
+const albumDetail = async (msg, args) => {
     try {
         let position = 1
 
@@ -168,7 +168,7 @@ exports.albumDetail = async (msg, args) => {
     }
 }
 
-exports.tenList = async (msg, args) => {
+const tenList = async (msg, args) => {
     let client = await MongoClient.connect(url)
     const spotifyCol = client.db('spotify').collection('NewReleases')
 
@@ -192,7 +192,7 @@ exports.tenList = async (msg, args) => {
     bot.bot.createMessage(msg.channel.id, embed)
 }
 
-exports.search = async (msg, args) => {
+const search = async (msg, args) => {
     if (args.length == 0) {
         return
     }

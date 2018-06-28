@@ -17,7 +17,7 @@ exports.commandHandler = (msg, args) => {
     }
 }
 
-exports.remindMe = async (msg, args) => {
+const remindMe = async (msg, args) => {
 
     if (!args.includes('in')) {
         bot.createMessage(msg.channel.id, 'Missing keyword `in` cannot guess when you want to be reminded')
@@ -114,11 +114,11 @@ exports.remindMe = async (msg, args) => {
 }
 
 //View upcoming reminders and delete by reaction
-exports.viewReminders = async (msg, args) => {
+const viewReminders = async (msg, args) => {
 
 }
 
-exports.checkReminders = async () => {
+const checkReminders = async () => {
     try {
         let client = await MongoClient.connect(url)
         const col = client.db('model_tower').collection('reminders')

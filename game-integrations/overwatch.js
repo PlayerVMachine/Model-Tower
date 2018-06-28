@@ -15,7 +15,7 @@ exports.commandHandler = (msg, args) => {
     }
 }
 
-exports.getOverallStats = async (msg, args) => {
+const getOverallStats = async (msg, args) => {
 
     if (args.length < 3) {
         bot.bot.createMessage(msg.channel.id, f(`**%s**, you need to provide a username, platform, and game type!`, msg.author.username))
@@ -71,7 +71,7 @@ exports.getOverallStats = async (msg, args) => {
     }
 }
 
-exports.getMedals = async (msg, args) => {
+const getMedals = async (msg, args) => {
     if (args.length < 3) {
         bot.bot.createMessage(msg.channel.id, f(`**%s**, you need to provide a username, platform, and game type!`, msg.author.username))
         return
@@ -124,7 +124,7 @@ exports.getMedals = async (msg, args) => {
     }
 }
 
-exports.getHeroStats = async (msg, args) => {
+const getHeroStats = async (msg, args) => {
     if (args.length < 4) {
         bot.bot.createMessage(msg.channel.id, f(`**%s**, you need to provide a username, platform, game type, and hero!`, msg.author.username))
         return

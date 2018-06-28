@@ -5,12 +5,6 @@ const f = require('util').format
 const config = require('../config.json')
 const bot = require('../core.js')
 
-exports.commandList = {
-    nts: 'noteToSelf',
-    notes: 'getNotes',
-    unnote: 'unNote'
-}
-
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
 
@@ -24,7 +18,7 @@ exports.commandHandler = (msg, args) => {
 
 }
 
-exports.noteToSelf = async (msg, args) => {
+const noteToSelf = async (msg, args) => {
     try{
         let files = []
         if (msg.attachments.length !== 0) {
@@ -48,7 +42,7 @@ exports.noteToSelf = async (msg, args) => {
     }
 }
 
-exports.getNotes = async (msg, args) => {
+const getNotes = async (msg, args) => {
     try{
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
 
@@ -80,7 +74,7 @@ exports.getNotes = async (msg, args) => {
     }
 }
 
-exports.unNote = async (msg, args) => {
+const unNote = async (msg, args) => {
     try{
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
         let noteMsgs = await dmChannel.getPins()
