@@ -175,8 +175,13 @@ const deleteReminders = async (msg, args) => {
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
         let reminders = await col.find({ $and: [ {sendTo: dmChannel.id}, {type:'reminder'} ] }).toArray()
 
-        if(parseInt(args[0]) == NaN || parseInt(args[0]) > 10 || parseInt(args[0]) < 1) {
-            bot.bot.createMessage(msg.channel.id, f(`Sorry %s that's not`))
+        let index = -1
+
+        if(parseInt(args[0]) == NaN || parseInt(args[0]) > 10 || parseInt(args[0]) < reminders.length) {
+            bot.bot.createMessage(msg.channel.id, f(`Sorry %s that's not a number between 1 and %s`, msg.author.username, reminders.length))
+            return
+        } else {
+            index += parseInt(args[0])
         }
 
         let removed = await col.findOneAndDelete({_id:reminders[index]._id})
