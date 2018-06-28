@@ -140,7 +140,7 @@ const viewReminders = async (msg, args) => {
                 desc.push(f('**%d.** %s set for: %d hours from now ', count, r.content, time))
                 count ++
             } else {
-                break;
+                continue
             }
         })
 
