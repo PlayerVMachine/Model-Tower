@@ -166,7 +166,7 @@ const viewReminders = async (msg, args) => {
                 let emjoiString = emoji.name + ':' + emoji.id
                 let index = emotes1to10.indexOf(emjoiString)
                 if (index == -1 || index > reminders.length) {
-                    break
+                    //do nothing
                 } else {
                     let removed = await col.findOneAndDelete({_id:reminders[index]._id})
                     let time = ((Date.parse(removed.value.due) - Date.now()) / (60 * 60 * 1000)).toFixed(2)
