@@ -16,6 +16,8 @@ exports.commandHandler = (msg, args) => {
         remindMe(msg, restOfArgs)
     } else if (['view', 'list'].includes(args[0])) {
         viewReminders(msg, restOfArgs)
+    } else if (['del', 'delete', 'rem', 'remove', 'forget'].includes(args[0])) {
+        deleteReminders(msg, restOfArgs)
     }
 }
 
@@ -29,6 +31,12 @@ const remindMe = async (msg, args) => {
     try {
         let client = await MongoClient.connect(url)
         const col = client.db('model_tower').collection('reminders')
+
+        let reminders = await col.find({ $and: [ {sendTo: dmChannel.id}, {type:'reminder'} ] }).toArray()
+        if (reminders.length == 10) {
+            bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you've reached the limit (10) of active reminders! If you need the limit raised please contact support.`, msg.author,username))
+            return
+        }
 
         let splitIndex = msg.content.split(' ').lastIndexOf('in')
 
@@ -124,13 +132,16 @@ const viewReminders = async (msg, args) => {
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
         let reminders = await col.find({ $and: [ {sendTo: dmChannel.id}, {type:'reminder'} ] }).toArray()
 
-        let desc = []
+        let desc = ['Delete a reminder using `<prefix>remind del #`']
         let count = 1
         reminders.forEach(r => {
-            let time = Date.parse(r.new) - Date.now()
-            console.log (Date.parse(r.new) + ' - ' + Date.now())
-            desc.push(f('**%d.** %s set for: %d hours from now ', count, r.content, time))
-            count ++
+            if (count < 11) {
+                let time = ((Date.parse(r.due) - Date.now()) / (60 * 60 * 1000)).toFixed(2)
+                desc.push(f('**%d.** %s set for: %d hours from now ', count, r.content, time))
+                count ++
+            } else {
+                break;
+            }
         })
 
         let embed = {
@@ -152,7 +163,27 @@ const viewReminders = async (msg, args) => {
         listMessage.addReaction('9_:461947842290909194')
         listMessage.addReaction('10_:461947842614001674')
 
+    } catch (err) {
+        console.log(err)
+    }
+}
 
+const deleteReminders = async (msg, args) => {
+    try {
+        let client = await MongoClient.connect(url)
+        const col = client.db('model_tower').collection('reminders')
+
+        let dmChannel = await bot.bot.getDMChannel(msg.author.id)
+        let reminders = await col.find({ $and: [ {sendTo: dmChannel.id}, {type:'reminder'} ] }).toArray()
+
+        if(parseInt(args[0]) == NaN || parseInt(args[0]) > 10 || parseInt(args[0]) < 1) {
+            bot.bot.createMessage(msg.channel.id, f(`Sorry %s that's not`))
+        }
+
+        let removed = await col.findOneAndDelete({_id:reminders[index]._id})
+
+        let time = ((Date.parse(removed.due) - Date.now()) / (60 * 60 * 1000)).toFixed(2)
+        bot.bot.createMessage(msg.channel.id, f(`Success! %s your reminder: %s set for %d hours from now has been removed.`, msg.author.username, removed.content, time))
 
     } catch (err) {
         console.log(err)
