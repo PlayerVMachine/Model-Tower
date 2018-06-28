@@ -5,6 +5,7 @@ const bot = require('../core.js')
 
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
+    console.log(restOfArgs)
 
     if (['stats'].includes(args[0])) {
         getOverallStats(msg, restOfArgs)
