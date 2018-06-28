@@ -39,8 +39,6 @@ const getOverallStats = async (msg, args) => {
         let player = await ow.getModeStats(args[0], args[2], args[1])
         let account = await ow.getGeneralStats(args[0], args[1])
 
-        console.dir(player, {depth: 3})
-
         if (!player.career_stats['ALL HEROES']) {
             bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, could not find gampeplay stats for that mode!`, msg.author.username))
             return
