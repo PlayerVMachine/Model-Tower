@@ -142,6 +142,16 @@ const viewReminders = async (msg, args) => {
 
         let listMessage = await bot.bot.createMessage(msg.channel.id, embed)
         listMessage.addReaction('1_:461947842055897099')
+        listMessage.addReaction('2_:461947842546630656')
+        listMessage.addReaction('3_:461947842294972419')
+        listMessage.addReaction('4_:461947842232320011')
+        listMessage.addReaction('5_:461947842215542790')
+        listMessage.addReaction('6_:461947842370732062')
+        listMessage.addReaction('7_:461947842294972436')
+        listMessage.addReaction('8_:461946580472168467')
+        listMessage.addReaction('9_:461947842290909194')
+        listMessage.addReaction('10_:461947842614001674')
+
 
 
     } catch (err) {
