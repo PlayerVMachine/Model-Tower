@@ -127,7 +127,7 @@ const viewReminders = async (msg, args) => {
         let desc = []
         let count = 1
         reminders.forEach(r => {
-            let time = (Date.parse(r.new) - Date.now()) / (1000*60*60)
+            let time = Date.parse(r.new) - Date.now()
             desc.push(f('**%d.** %s set for: %d hours from now ', count, r.content, time))
             count ++
         })
@@ -140,15 +140,15 @@ const viewReminders = async (msg, args) => {
         }
 
         let listMessage = await bot.bot.createMessage(msg.channel.id, embed)
-        listMessage.addReaction(':one:')
-        listMessage.addReaction(':two:')
-        listMessage.addReaction(':three:')
-        listMessage.addReaction(':four:')
-        listMessage.addReaction(':five:')
-        listMessage.addReaction(':six:')
-        listMessage.addReaction(':seven:')
-        listMessage.addReaction(':eight:')
-        listMessage.addReaction(':nine:')
+        listMessage.addReaction('one')
+        listMessage.addReaction('two')
+        listMessage.addReaction('three')
+        listMessage.addReaction('four')
+        listMessage.addReaction('five')
+        listMessage.addReaction('six')
+        listMessage.addReaction('seven')
+        listMessage.addReaction('eight')
+        listMessage.addReaction('nine')
         listMessage.addReaction('🔟')
 
 
