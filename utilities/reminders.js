@@ -129,7 +129,11 @@ const remindMe = async (msg, args) => {
 //View upcoming reminders and delete by reaction
 const viewReminders = async (msg, args) => {
     try {
-        bot.bot.removeListener('messageReactionAdd', removeReminder)
+        try {
+            bot.bot.removeListener('messageReactionAdd', removeReminder)
+        } catch (err) {
+            console.log('not defined yet')
+        }
 
         let client = await MongoClient.connect(url)
         const col = client.db('model_tower').collection('reminders')
@@ -184,33 +188,6 @@ const viewReminders = async (msg, args) => {
         } else {
             bot.bot.createMessage(msg.channel.id, f(`You don't have any upcoming reminders %s!`, msg.author.username))
         }
-
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-const deleteReminders = async (msg, args) => {
-    try {
-        let client = await MongoClient.connect(url)
-        const col = client.db('model_tower').collection('reminders')
-
-        let dmChannel = await bot.bot.getDMChannel(msg.author.id)
-        let reminders = await col.find({ $and: [ {sendTo: dmChannel.id}, {type:'reminder'} ] }).toArray()
-
-        let index = -1
-
-        if(parseInt(args[0]) == NaN || parseInt(args[0]) > 10 || parseInt(args[0]) < reminders.length) {
-            bot.bot.createMessage(msg.channel.id, f(`Sorry %s that's not a number between 1 and %s`, msg.author.username, reminders.length))
-            return
-        } else {
-            index += parseInt(args[0])
-        }
-
-        let removed = await col.findOneAndDelete({_id:reminders[index]._id})
-
-        let time = ((Date.parse(removed.value.due) - Date.now()) / (60 * 60 * 1000)).toFixed(2)
-        bot.bot.createMessage(msg.channel.id, f(`Success! %s your reminder: %s set for %d hours from now has been removed.`, msg.author.username, removed.value.content, time))
 
     } catch (err) {
         console.log(err)
