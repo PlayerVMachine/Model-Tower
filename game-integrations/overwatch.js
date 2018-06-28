@@ -5,7 +5,7 @@ const bot = require('../core.js')
 
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
-    console.log(restOfArgs)
+
 
     if (['stats'].includes(args[0])) {
         getOverallStats(msg, restOfArgs)
@@ -38,6 +38,8 @@ const getOverallStats = async (msg, args) => {
     try {
         let player = await ow.getModeStats(args[0], args[2], args[1])
         let account = await ow.getGeneralStats(args[0], args[1])
+
+        console.log(JSON.stringify(player))
 
         if (!player.career_stats['ALL HEROES']) {
             bot.bot.createMessage(msg.channel.id, f(`Sorry **%s**, could not find gampeplay stats for that mode!`, msg.author.username))
