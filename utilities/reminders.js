@@ -43,7 +43,7 @@ const remindMe = async (msg, args) => {
 
         let splitIndex = msg.content.split(' ').lastIndexOf('in')
 
-        let reminder = msg.content.split(' ').slice(1, splitIndex).join(' ')
+        let reminder = msg.content.split(' ').slice(2, splitIndex).join(' ')
         let rawTime = msg.content.split(' ').slice(splitIndex + 1).join()
 
 
@@ -129,6 +129,8 @@ const remindMe = async (msg, args) => {
 //View upcoming reminders and delete by reaction
 const viewReminders = async (msg, args) => {
     try {
+        bot.bot.removeListener('messageReactionAdd', removeReminder)
+
         let client = await MongoClient.connect(url)
         const col = client.db('model_tower').collection('reminders')
 
