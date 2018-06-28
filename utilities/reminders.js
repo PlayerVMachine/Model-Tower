@@ -129,11 +129,6 @@ const remindMe = async (msg, args) => {
 //View upcoming reminders and delete by reaction
 const viewReminders = async (msg, args) => {
     try {
-        try {
-            bot.bot.removeListener('messageReactionAdd', removeReminder)
-        } catch (err) {
-            console.log('not defined yet')
-        }
 
         let client = await MongoClient.connect(url)
         const col = client.db('model_tower').collection('reminders')
@@ -183,7 +178,7 @@ const viewReminders = async (msg, args) => {
             bot.bot.on('messageReactionAdd', removeReminder)
             setTimeout(() => {
                 bot.bot.removeListener('messageReactionAdd', removeReminder)
-            }, 1 * 60 * 1000)
+            }, 30 * 1000)
 
         } else {
             bot.bot.createMessage(msg.channel.id, f(`You don't have any upcoming reminders %s!`, msg.author.username))
