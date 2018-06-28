@@ -14,6 +14,8 @@ exports.commandHandler = (msg, args) => {
 
     if (['me', 'remind'].includes(args[0])) {
         remindMe(msg, restOfArgs)
+    } else if (['view', 'list'].includes(args[0])) {
+        viewReminders(msg, restOfArgs)
     }
 }
 
@@ -115,7 +117,44 @@ const remindMe = async (msg, args) => {
 
 //View upcoming reminders and delete by reaction
 const viewReminders = async (msg, args) => {
+    try {
+        let client = await MongoClient.connect(url)
+        const col = client.db('model_tower').collection('reminders')
 
+        let dmChannel = await bot.bot.getDMChannel(msg.author.id)
+        let reminders = await col.find({sendTo: dmChannel.id}).toArray()
+
+        let reminders = []
+        let count = 1
+        reminders.forEach(r => {
+            let time = (Date.parse(r.new) - Date.now()) / (1000*60*60)
+            reminders.push(f('**%d.** %s set for: %d hours from now ', count, r.content, time))
+            count ++
+        })
+
+        let embed = {
+            embed: {
+                title: f(`%s's upcoming reminders`, msg.author.username),
+                description: reminders.join('\n')
+            }
+        }
+
+        let listMessage = await bot.bot.createMessage(msg.channel.id, embed)
+        listMessage.addReaction(':one:')
+        listMessage.addReaction(':two:')
+        listMessage.addReaction(':three:')
+        listMessage.addReaction(':four:')
+        listMessage.addReaction(':five:')
+        listMessage.addReaction(':six:')
+        listMessage.addReaction(':seven:')
+        listMessage.addReaction(':eight:')
+        listMessage.addReaction(':nine:')
+        listMessage.addReaction('🔟')
+
+
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 exports.checkReminders = async () => {

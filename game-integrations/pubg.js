@@ -10,7 +10,6 @@ const modeList = ['duo', 'duo-fpp', 'solo', 'solo-fpp', 'squad', 'squad-fpp']
 
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
-    console.log(restOfArgs)
 
     if (['stats'].includes(args[0])) {
         getPlayerStats(msg, restOfArgs)
