@@ -9,6 +9,8 @@ const bot = require('../core.js')
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
 
+const emotes1to10 = ['1_:461947842055897099', '2_:461947842546630656', '3_:461947842294972419', '4_:461947842232320011', '5_:461947842215542790', '6_:461947842370732062', '7_:461947842294972436', '8_:461946580472168467', '9_:461947842290909194', '10_:461947842614001674']
+
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
 
@@ -133,7 +135,7 @@ const viewReminders = async (msg, args) => {
         let dmChannel = await bot.bot.getDMChannel(msg.author.id)
         let reminders = await col.find({ $and: [ {sendTo: dmChannel.id}, {type:'reminder'} ] }).toArray()
 
-        let desc = ['Delete a reminder using `<prefix>remind del #`']
+        let desc = ['Delete a reminder using the reactions on this message!']
         let count = 1
         reminders.forEach(r => {
             if (count < 11) {
@@ -143,24 +145,43 @@ const viewReminders = async (msg, args) => {
             }
         })
 
-        let embed = {
-            embed: {
-                title: f(`%s's upcoming reminders`, msg.author.username),
-                description: desc.join('\n')
+        if (desc.length > 1) {
+            let embed = {
+                embed: {
+                    title: f(`%s's upcoming reminders`, msg.author.username),
+                    description: desc.join('\n')
+                }
             }
-        }
 
-        let listMessage = await bot.bot.createMessage(msg.channel.id, embed)
-        listMessage.addReaction('1_:461947842055897099')
-        listMessage.addReaction('2_:461947842546630656')
-        listMessage.addReaction('3_:461947842294972419')
-        listMessage.addReaction('4_:461947842232320011')
-        listMessage.addReaction('5_:461947842215542790')
-        listMessage.addReaction('6_:461947842370732062')
-        listMessage.addReaction('7_:461947842294972436')
-        listMessage.addReaction('8_:461946580472168467')
-        listMessage.addReaction('9_:461947842290909194')
-        listMessage.addReaction('10_:461947842614001674')
+            let listMessage = await bot.bot.createMessage(msg.channel.id, embed)
+            for (i = 0; i < reminders.length; i++) {
+                listMessage.addReaction(emotes1to10[i])
+            }
+
+            const removeReminder = async (message, emoji, userID) => {
+                if (userID != msg.author.id) {
+                    return
+                }
+
+                let emjoiString = emoji.name + ':' + emoji.id
+                let index = emotes1to10.indexOf(emjoiString)
+                if (index == -1 || index > reminders.length) {
+                    break
+                } else {
+                    let removed = await col.findOneAndDelete({_id:reminders[index]._id})
+                    let time = ((Date.parse(removed.value.due) - Date.now()) / (60 * 60 * 1000)).toFixed(2)
+                    bot.bot.createMessage(msg.channel.id, f(`Success! %s your reminder: %s set for %d hours from now has been removed.`, msg.author.username, removed.value.content, time))
+                }
+            }
+
+            bot.bot.on('messageReactionAdd', removeReminder)
+            setTimeout(() => {
+                bot.bot.removeListener('messageReactionAdd', removeReminder)
+            }, 1 * 60 * 1000)
+
+        } else {
+            bot.bot.createMessage(msg.channel.id, f(`You don't have any upcoming reminders %s!`, msg.author.username))
+        }
 
     } catch (err) {
         console.log(err)
@@ -186,8 +207,8 @@ const deleteReminders = async (msg, args) => {
 
         let removed = await col.findOneAndDelete({_id:reminders[index]._id})
 
-        let time = ((Date.parse(removed.due) - Date.now()) / (60 * 60 * 1000)).toFixed(2)
-        bot.bot.createMessage(msg.channel.id, f(`Success! %s your reminder: %s set for %d hours from now has been removed.`, msg.author.username, removed.content, time))
+        let time = ((Date.parse(removed.value.due) - Date.now()) / (60 * 60 * 1000)).toFixed(2)
+        bot.bot.createMessage(msg.channel.id, f(`Success! %s your reminder: %s set for %d hours from now has been removed.`, msg.author.username, removed.value.content, time))
 
     } catch (err) {
         console.log(err)
