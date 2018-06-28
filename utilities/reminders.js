@@ -31,6 +31,7 @@ const remindMe = async (msg, args) => {
     try {
         let client = await MongoClient.connect(url)
         const col = client.db('model_tower').collection('reminders')
+        let dmChannel = await bot.bot.getDMChannel(msg.author.id)
 
         let reminders = await col.find({ $and: [ {sendTo: dmChannel.id}, {type:'reminder'} ] }).toArray()
         if (reminders.length == 10) {
@@ -42,7 +43,7 @@ const remindMe = async (msg, args) => {
 
         let reminder = msg.content.split(' ').slice(1, splitIndex).join(' ')
         let rawTime = msg.content.split(' ').slice(splitIndex + 1).join()
-        let dmChannel = await bot.bot.getDMChannel(msg.author.id)
+
 
         //set the time unit for minute, day, week, month, or year
         let timeUnit = rawTime.charAt(rawTime.length - 1).match(/[mMhdyw]/) ? rawTime.charAt(rawTime.length - 1) : 'm'
