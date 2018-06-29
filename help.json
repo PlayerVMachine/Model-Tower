@@ -7,7 +7,5 @@
     "ow":"",
     "spotify":"",
     "weather":"",
-    "remind":"Use the `remind me <text> in <time><unit>` command to set reminders for yourself. "
+    "remind":"**Reminder Commands**\n\n```pfxremind me|set <reminder text> in <time><unit>```Set a reminder, the bot will DM you your reminder at the specified time unit is one of m, h, d, w, M, y from minutes to years default if no unit set is minutes\n\n```pfxremind view|list```Shows a list of your upcoming reminders and lets you delete them using reactions"
 }
-
-
