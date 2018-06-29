@@ -3,10 +3,10 @@
     "pm":"",
     "lol":"",
     "pubg":"",
-    "nts":"",
+    "nts":"**Note To Self Commands**\n\n```pfxnts make|note|create <text> <attachments>```Make a note for yourself and GSC will pin it in your DMs with it. Supports message file attachments.\n\n```pfxnts view|list|get```Gets a list of your current notes.\n\n```pfxnts delete|rem|unnote <list position>```Using the position number of a note from the list command you can delete a note. unpinning it will also remove it from the list.",
     "ow":"",
-    "spotify":"**Spotify Commands**\n\n```pfxspotify search|lookup <song name>```Search for a song by name on Spotify, returns top 3 results.\n\n```pfxspotify new|releases <page #>```Browse the top 100 new relases 10 at a time using the optional `<page #>`.\n\n```pfxspotify album|adetail <new release #>```Get a more detailed album view for an album on the top 100 new releases list using its position number\n\n```pfxspotify playlists|plists|pl```Get 5 playlist suggestions",
-    "weather":"**Weather commands**\n\n```pfxweather <location> C|F```Get the current weather for a location, Fahrenheit is default.\n\n```pfxweather forecast|fc <location> C|F```Get the 3 day forecast for for a location",
+    "spotify":"**Spotify Commands**\n\n```pfxspotify search|lookup <song name>```Search for a song by name on Spotify, returns top 3 results.\n\n```pfxspotify new|releases <page #>```Browse the top 100 new relases 10 at a time using the optional page number.\n\n```pfxspotify album|adetail <new release #>```Get a more detailed album view for an album on the top 100 new releases list using its position number\n\n```pfxspotify playlists|plists|pl```Get 5 playlist suggestions",
+    "weather":"**Weather Commands**\n\n```pfxweather <location> C|F```Get the current weather for a location, Fahrenheit is default.\n\n```pfxweather forecast|fc <location> C|F```Get the 3 day forecast for for a location",
     "remind":"**Reminder Commands**\n\n```pfxremind me|set <reminder text> in <time><unit>```Set a reminder, the bot will DM you your reminder at the specified time unit is one of m, h, d, w, M, y from minutes to years default if no unit set is minutes.\n\n```pfxremind view|list```Shows a list of your upcoming reminders and lets you delete them using reactions."
 }
 
