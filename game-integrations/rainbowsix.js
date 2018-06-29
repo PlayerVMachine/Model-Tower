@@ -73,91 +73,94 @@ const getMiscStats = async (msg, args) => {
 }
 
 const getCasualStats = async (msg, args) => {
-
-    if (!['pc', 'xb', 'ps'].includes(args[1])) {
-        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xb`, or `ps`')
-        return
-    }
-
-    bot.bot.sendChannelTyping(msg.channel.id)
-
-    let username = args[0]
-    let platform = 'pc'
-
-    if (args[1] == 'xb') {
-        platform = 'xone'
-    } else if (args[1] == 'ps') {
-        platform = 'ps4'
-    }
-
-    //Get stats on the user on that platform
-    let statistics = await R6.stats(username, platform)
-    if (statistics.player === undefined) {
-        bot.bot.createMessage(msg.channel.id, 'An error ocurred getting stats, make sure that you entered the username correctly.')
-        return
-    }
-    let casualStats = statistics.player.stats.casual
-
-    if (!casualStats.has_played) {
-        bot.bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
-        return
-    }
-    let playTime = parseInt(casualStats.playtime)
-    playTime = playTime/60/60
-    playTime = playTime.toFixed(2)
-
-    let desc = f('Clearance level: %d, XP: %d\n', statistics.player.stats.progression.level, statistics.player.stats.progression.xp)
-
-    let operatorStats = await R6.stats(username, platform, true)
-    operatorStats.operator_records.sort((a,b) => {
-        return b.stats.playtime - a.stats.playtime
-    })
-    if (operatorStats.operator_records !== undefined) {
-        let rawURL = operatorStats.operator_records[0].operator.images.badge
-        let url = rawURL.split('\\')[0]
-        let badgeURL = url.replace('org', 'cc')
-
-        desc = desc + f('Play time: %sh Top operator: %s', playTime, operatorStats.operator_records[0].operator.name)
-
-        thumbnail = {
-            url: badgeURL,
-            height: 256,
-            width: 256
+    try {
+        if (!['pc', 'xb', 'ps'].includes(args[1])) {
+            bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xbl`, or `psn`')
+            return
         }
-        console.log(badgeURL)
-    } else {
-        desc = desc + f('Play time: %sh', playTime)
 
-        thumbnail = {
-            url: msg.author.avatarURL,
-            height: 256,
-            width: 256
+        bot.bot.sendChannelTyping(msg.channel.id)
+
+        let username = args[0]
+        let platform = 'pc'
+
+        if (args[1] == 'xbl') {
+            platform = 'xone'
+        } else if (args[1] == 'psn') {
+            platform = 'ps4'
         }
-    }
 
-    let embed = {
-        embed: {
-            title:f("%s's Rainbow Six Siege Casual Stats", username),
-            description: desc,
-            thumbnail:thumbnail,
-            fields: [
-                {name:'Wins', value:casualStats.wins, inline:true},
-                {name:'Losses', value:casualStats.losses, inline:true},
-                {name:'Win rating', value:casualStats.wlr.toString(), inline:true},
-                {name:'Kills', value:casualStats.kills, inline:true},
-                {name:'Deaths', value:casualStats.deaths, inline:true},
-                {name:'K/D', value:casualStats.kd.toString(), inline:true}
-            ]
+        //Get stats on the user on that platform
+        let statistics = await R6.stats(username, platform)
+        if (statistics.player === undefined) {
+            bot.bot.createMessage(msg.channel.id, 'An error ocurred getting stats, make sure that you entered the username correctly.')
+            return
         }
-    }
+        let casualStats = statistics.player.stats.casual
 
-    bot.bot.createMessage(msg.channel.id, embed)
+        if (!casualStats.has_played) {
+            bot.bot.createMessage(msg.channel.id, 'This user has not played that game mode.')
+            return
+        }
+        let playTime = parseInt(casualStats.playtime)
+        playTime = playTime/60/60
+        playTime = playTime.toFixed(2)
+
+        let desc = f('Clearance level: %d, XP: %d\n', statistics.player.stats.progression.level, statistics.player.stats.progression.xp)
+
+        let operatorStats = await R6.stats(username, platform, true)
+        operatorStats.operator_records.sort((a,b) => {
+            return b.stats.playtime - a.stats.playtime
+        })
+        if (operatorStats.operator_records !== undefined) {
+            let rawURL = operatorStats.operator_records[0].operator.images.badge
+            let url = rawURL.split('\\')[0]
+            let badgeURL = url.replace('org', 'cc')
+
+            desc = desc + f('Play time: %sh Top operator: %s', playTime, operatorStats.operator_records[0].operator.name)
+
+            thumbnail = {
+                url: badgeURL,
+                height: 256,
+                width: 256
+            }
+            console.log(badgeURL)
+        } else {
+            desc = desc + f('Play time: %sh', playTime)
+
+            thumbnail = {
+                url: msg.author.avatarURL,
+                height: 256,
+                width: 256
+            }
+        }
+
+        let embed = {
+            embed: {
+                title:f("%s's Rainbow Six Siege Casual Stats", username),
+                description: desc,
+                thumbnail:thumbnail,
+                fields: [
+                    {name:'Wins', value:casualStats.wins, inline:true},
+                    {name:'Losses', value:casualStats.losses, inline:true},
+                    {name:'Win rating', value:casualStats.wlr.toString(), inline:true},
+                    {name:'Kills', value:casualStats.kills, inline:true},
+                    {name:'Deaths', value:casualStats.deaths, inline:true},
+                    {name:'K/D', value:casualStats.kd.toString(), inline:true}
+                ]
+            }
+        }
+
+        bot.bot.createMessage(msg.channel.id, embed)
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 const getRankedStats = async (msg, args) => {
 
     if (!['pc', 'xb', 'ps'].includes(args[1])) {
-        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xb`, or `ps`')
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xbl`, or `psn`')
         return
     }
 
@@ -166,9 +169,9 @@ const getRankedStats = async (msg, args) => {
     let username = args[0]
     let platform = 'pc'
 
-    if (args[1] == 'xb') {
+    if (args[1] == 'xbl') {
         platform = 'xone'
-    } else if (args[1] == 'ps') {
+    } else if (args[1] == 'psn') {
         platform = 'ps4'
     }
 
@@ -238,7 +241,7 @@ const getRankedStats = async (msg, args) => {
 const getTopOp = async (msg, args) => {
 
     if (!['pc', 'xb', 'ps'].includes(args[1])) {
-        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xb`, or `ps`')
+        bot.bot.createMessage(msg.channel.id, 'Please set platform as one of `pc`, `xbl`, or `psn`')
         return
     }
 
@@ -247,9 +250,9 @@ const getTopOp = async (msg, args) => {
     let username = args[0]
     let platform = 'pc'
 
-    if (args[1] == 'xb') {
+    if (args[1] == 'xbl') {
         platform = 'xone'
-    } else if (args[1] == 'ps') {
+    } else if (args[1] == 'psn') {
         platform = 'ps4'
     }
 
