@@ -31,7 +31,7 @@ const getMiscStats = async (msg, args) => {
     bot.bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0]
-    let platform = 'pc'
+    let platform = 'uplay'
 
     if (args[1] == 'xbl') {
         platform = 'xone'
@@ -82,7 +82,7 @@ const getCasualStats = async (msg, args) => {
         bot.bot.sendChannelTyping(msg.channel.id)
 
         let username = args[0]
-        let platform = 'pc'
+        let platform = 'uplay'
 
         if (args[1] == 'xbl') {
             platform = 'xone'
@@ -167,7 +167,7 @@ const getRankedStats = async (msg, args) => {
     bot.bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0]
-    let platform = 'pc'
+    let platform = 'uplay'
 
     if (args[1] == 'xbl') {
         platform = 'xone'
@@ -248,7 +248,7 @@ const getTopOp = async (msg, args) => {
     bot.bot.sendChannelTyping(msg.channel.id)
 
     let username = args[0]
-    let platform = 'pc'
+    let platform = 'uplay'
 
     if (args[1] == 'xbl') {
         platform = 'xone'
