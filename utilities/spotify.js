@@ -109,7 +109,7 @@ const getPlaylists = async (msg, args) => {
         let info = featuredPlayslistsRAW.playlists.items
         let spotifyMessage = featuredPlayslistsRAW.message
 
-        let list = [`\`m.splists <playlist #>\` To get a playlist embed`]
+        let list = [`Use this command again with a playlist number To get a playlist embed`]
         for (i in info) {
             index = parseInt(i) + 1
             list.push(f(`%s. **%s**\n[%s Tracks](%s)`, index, info[i].name, info[i].tracks.total, info[i].external_urls.spotify))
