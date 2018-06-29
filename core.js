@@ -194,7 +194,8 @@ bot.on('messageCreate', async (msg) => {
             let embed = {
                 embed : {
                     title: 'Game Stats Central Command Help',
-                    description: help[args[0]].replace('pfx', prefix)
+                    color: 0x497fbc,
+                    description: help[args[0]].replace(/pfx/g, prefix)
                 }
             }
             bot.createMessage(msg.channel.id, embed)

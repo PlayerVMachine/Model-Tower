@@ -1,5 +1,5 @@
 {
-    "r6":"**Rainbow Six Siege Statistics**\n\nUse ```pfxr6 cas|casual <username> pc|xbl|psn``` to get a user's stats for casual play.\n\nUse ```pfxr6 rnk|ranked <username> pc|xbl|psn``` to get a user's stats for ranked play.\n\nUse ```pfxr6 topop|operator <username> pc|xbl|psn``` to get a user's stats for their most played operator.\nAdd a number to the end of the command to go through the list of operators they've played (sorted by time played).\n\nLastly use ```pfxr6 misc|general <username> pc|xbl|psn``` to get additional stats on a user unrelated to game mode.",
+    "r6":"**Rainbow Six Siege Statistics**\n\n```m.r6 cas|casual <username> pc|xbl|psn```\nGets a user's stats for casual play.\n\n```pfxr6 rnk|ranked <username> pc|xbl|psn```\nGets a user's stats for ranked play.\n\n```pfxr6 topop|operator <username> pc|xbl|psn```\nGets a user's stats for their most played operator.\nAdd a number at the end to move trough the list.\n\n```pfxr6 misc|general <username> pc|xbl|psn```\nGets additional stats on a user unrelated to game mode.",
     "pm":"",
     "lol":"",
     "pubg":"",
