@@ -1,5 +1,5 @@
 {
-    "r6":"```asciidoc\n = Rainbow Six Siege Statistics: = \nUse [pfxr6 cas|casual <username> pc|xbl|psn] to get a user's stats for casual play.\nUse [pfxr6 rnk|ranked <username> pc|xbl|psn] to get a user's stats for ranked play.\n Use [pfxr6 topop|operator <username> pc|xbl|psn] to get a user's stats for their most played operator. Add a number to the end of the command to go down the list of operators they've played (sorted by time).\nLastly Use [pfxr6 misc|general <username> pc|xbl|psn] to get additional stats on a user unrelateed to game mode.\n```",
+    "r6":"**Rainbow Six Siege Statistics**\n\nUse ```pfxr6 cas|casual <username> pc|xbl|psn``` to get a user's stats for casual play.\n\nUse ```pfxr6 rnk|ranked <username> pc|xbl|psn``` to get a user's stats for ranked play.\n\nUse ```pfxr6 topop|operator <username> pc|xbl|psn``` to get a user's stats for their most played operator.\nAdd a number to the end of the command to go through the list of operators they've played (sorted by time played).\n\nLastly use ```pfxr6 misc|general <username> pc|xbl|psn``` to get additional stats on a user unrelated to game mode.",
     "pm":"",
     "lol":"",
     "pubg":"",
@@ -9,3 +9,5 @@
     "weather":"",
     "remind":"Use the `remind me <text> in <time><unit>` command to set reminders for yourself. "
 }
+
+

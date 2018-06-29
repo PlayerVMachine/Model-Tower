@@ -191,7 +191,13 @@ bot.on('messageCreate', async (msg) => {
         let args = content.slice(1)
 
         if (command == 'help') {
-            bot.createMessage(msg.channel.id, help[args[0]].replace('pfx', prefix))
+            let embed = {
+                embed : {
+                    title: 'Game Stats Central Command Help',
+                    description: help[args[0]].replace('pfx', prefix)
+                }
+            }
+            bot.createMessage(msg.channel.id, embed)
         }
 
         if (command == 'r6') {
