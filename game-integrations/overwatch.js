@@ -1,4 +1,4 @@
-const f = require('util').format
+ const f = require('util').format
 const ow = require('owapi')
 
 const bot = require('../core.js')
