@@ -262,7 +262,7 @@ const getTopOp = async (msg, args) => {
             platform = 'ps4'
         }
 
-        let top = args.length > 2 ? parseInt(args[2]) == NaN ? 0 : parseInt(args[2]) - 1 : 0
+        let top = args.length > 2 ? !parseInt(args[2]) ? 0 : parseInt(args[2]) - 1 : 0
 
         //Get stats on the user on that platform
         let operatorStats = await R6.stats(username, platform, true)
