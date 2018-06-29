@@ -12,7 +12,7 @@ exports.commandHandler = (msg, args) => {
 
     if (['cas','casual'].includes(args[0])) {
         getCasualStats(msg, restOfArgs)
-    } else if (['rnk', 'rank'].includes(args[0])) {
+    } else if (['rnk', 'ranked'].includes(args[0])) {
         getRankedStats(msg, restOfArgs)
     } else if (['operator', 'topop', 'op'].includes(args[0])) {
         getTopOp(msg, restOfArgs)

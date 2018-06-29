@@ -18,8 +18,6 @@ exports.commandHandler = (msg, args) => {
         remindMe(msg, restOfArgs)
     } else if (['view', 'list'].includes(args[0])) {
         viewReminders(msg, restOfArgs)
-    } else if (['del', 'delete', 'rem', 'remove', 'forget'].includes(args[0])) {
-        deleteReminders(msg, restOfArgs)
     }
 }
 

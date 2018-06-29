@@ -22,6 +22,9 @@ const spotify = require('./utilities/spotify.js')
 const weather = require('./utilities/weather.js')
 const rem = require('./utilities/reminders.js')
 
+//
+const help = require('./help.json')
+
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
 
@@ -186,6 +189,16 @@ bot.on('messageCreate', async (msg) => {
 
         let content = msg.content.split(' ')
         let args = content.slice(1)
+
+        if (command == 'help') {
+            let embed = {
+                embed : {
+                    title: 'Game Stats Central Command Help',
+                    description: help[args[0]].replace('pfx', prefix)
+                }
+            }
+            bot.createMessage(msg.channel.id, embed)
+        }
 
         if (command == 'r6') {
             //Check if the command is a rainbow six siege stats command
