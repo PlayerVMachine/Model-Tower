@@ -48,9 +48,9 @@ exports.long = (setName, msg) => {
 		bot.bot.createMessage(msg.channel.id, f(`%s, slow down buddy! Wait 30 seconds please.`, msg.author.username))
 		return false
 	} else {
-		shortCD[setName].add(msg.author.id)
+		longCD[setName].add(msg.author.id)
 		setTimeout(() => {
-			shortCD[setName].delete(msg.author.id)
+			longCD[setName].delete(msg.author.id)
 		}, 30000)
 		return true
 	}
