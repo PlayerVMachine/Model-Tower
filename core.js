@@ -166,11 +166,6 @@ bot.on('messageCreate', async (msg) => {
         return
     }
 
-    if (msg.content.startsWith(prefix + `test`)) {
-        let args = msg.content.slice(prefix.length + 5).split(' ')
-        rem.remindMe(msg, args)
-    }
-
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
         //Get the command after the prefix and before any arguments
@@ -189,6 +184,7 @@ bot.on('messageCreate', async (msg) => {
                 }
             }
             bot.createMessage(msg.channel.id, embed)
+            return
         }
 
         if (command == 'r6') {
