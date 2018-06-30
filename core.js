@@ -24,6 +24,7 @@ const rem = require('./utilities/reminders.js')
 
 //
 const help = require('./help.json')
+const cooldown = require('./cooldown.js')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -203,30 +204,57 @@ bot.on('messageCreate', async (msg) => {
 
         if (command == 'r6') {
             //Check if the command is a rainbow six siege stats command
-            r6.commandHandler(msg, args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                r6.commandHandler(msg, args)
+            }
         } else if (command == 'pm') {
             //Check if the command is a postManager command
-            postManager.commandHandler(msg, args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                postManager.commandHandler(msg, args)
+            }
         } else if (command == 'lol') {
             //Check if the command is a league of league command
-            lol.commandHandler(msg, args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                lol.commandHandler(msg, args)
+            }
         } else if (command == 'pubg') {
             //Check if the command is a pubg command
-            pubg.commandHandler(msg, args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                pubg.commandHandler(msg, args)
+            }
         } else if (command == 'nts') {
             //Check if the command is a notes command
-            notes.commandHandler(msg, args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                notes.commandHandler(msg, args)
+            }
         } else if (command == 'ow') {
             //Check if the command is an overwatch command
-            ow.commandHandler(msg, args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                ow.commandHandler(msg, args)
+            }
         } else if (command == 'spotify') {
             //Check if the command is a spotify command
-            spotify.commandHandler(msg, args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                spotify.commandHandler(msg, args)
+            }
         } else if (command == 'weather') {
             //Check if the command is a weather command
-            weather.commandHandler(msg, args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                weather.commandHandler(msg, args)
+            }
         } else if (command == 'remind') {
-            rem.commandHandler(msg,args)
+            let check = cooldown.short(command, msg)
+            if (check) {
+                rem.commandHandler(msg,args)
+            }
         }
 
     } else {
