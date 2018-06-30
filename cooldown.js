@@ -11,6 +11,7 @@ const pubgSet = new Set()
 const lolSet = new Set()
 const owSet = new Set()
 const pmSet = new Set()
+const utilSet = new Set()
 
 let shortCD = {
 	weather: weatherSet,
@@ -19,7 +20,8 @@ let shortCD = {
 	r6: r6Set,
 	pubg: pubgSet,
 	lol: lolSet,
-	ow: owSet 
+	ow: owSet,
+	util: utilSet 
 }
 
 let longCD = {

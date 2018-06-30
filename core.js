@@ -21,6 +21,7 @@ const notes = require('./utilities/notes.js')
 const spotify = require('./utilities/spotify.js')
 const weather = require('./utilities/weather.js')
 const rem = require('./utilities/reminders.js')
+const tools = require('./utilities/tools.js')
 
 //
 const help = require('./help.json')
@@ -160,18 +161,6 @@ bot.on('messageCreate', async (msg) => {
     //Check the origin guild to set prefix
     prefix = await getGuildPrefix(msg.channel.guild)
 
-    //bad get rid of later
-    if (msg.content.startsWith(prefix + `ping`)) {
-        //Ping, used to reassure people that the bot is up and to check latency
-        let start = Date.now()
-
-        bot.createMessage(msg.channel.id, 'Pong!').then(msg => {
-            let diff = Date.now() - start
-            return msg.edit(f('Pong! `%dms`', diff))
-        })
-        return
-    }
-
     if (msg.content.startsWith(prefix + `post`)) {
         postManager.deliverPost(`user`, msg)
         return
@@ -254,6 +243,11 @@ bot.on('messageCreate', async (msg) => {
             let check = cooldown.long(command, msg)
             if (check) {
                 rem.commandHandler(msg,args)
+            }
+        } else if (command == 'util') {
+            let check = cooldown.short(command, msg)
+            if (check) {
+                tools.commandHandler(msg,args)
             }
         }
 
