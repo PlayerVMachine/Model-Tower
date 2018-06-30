@@ -249,6 +249,11 @@ bot.on('messageCreate', async (msg) => {
             if (check) {
                 tools.commandHandler(msg,args)
             }
+        } else {
+            //check for shortcuts
+            if (command == 'ping') {
+                tools.commandHandler(msg, ['ping'].concat(args))
+            }
         }
 
     } else {
