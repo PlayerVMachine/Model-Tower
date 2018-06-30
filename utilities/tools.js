@@ -29,7 +29,7 @@ const clean = async (msg, args) => {
 		return
 	}
 
-	let messages = await dmchannel.channel.getMessages(50);
+	let messages = await dmchannel.getMessages(50);
 
 	let count = parseInt(args[0])
 	for (i = 0; i < 50; i++) {
