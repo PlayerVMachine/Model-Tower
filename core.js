@@ -251,7 +251,7 @@ bot.on('messageCreate', async (msg) => {
                 weather.commandHandler(msg, args)
             }
         } else if (command == 'remind') {
-            let check = cooldown.short(command, msg)
+            let check = cooldown.long(command, msg)
             if (check) {
                 rem.commandHandler(msg,args)
             }
