@@ -28,10 +28,13 @@ let longCD = {
 }
 
 
-exports.short = (setName, msg) => {
+exports.short = async (setName, msg) => {
 	//if name is in list send cooldown message, if not add name to list for 5 seconds
 	if (shortCD[setName].has(msg.author.id)) {
-		bot.bot.createMessage(msg.channel.id, f(`%s, slow down buddy! Wait 5 seconds please.`, msg.author.username))
+		let warning = await bot.bot.createMessage(msg.channel.id, f(`%s, slow down buddy! Wait 5 seconds please.`, msg.author.username))
+		setTimeout(() => {
+			warning.delete('clean up responses')
+		}, 2000)
 		return false
 	} else {
 		shortCD[setName].add(msg.author.id)
@@ -42,10 +45,13 @@ exports.short = (setName, msg) => {
 	}
 }
 
-exports.long = (setName, msg) => {
+exports.long = async (setName, msg) => {
 	//if name is in list send cooldown message, if not add name to list for 30 seconds
 	if (longCD[setName].has(msg.author.id)) {
-		bot.bot.createMessage(msg.channel.id, f(`%s, slow down buddy! Wait 30 seconds please.`, msg.author.username))
+		let warning = await bot.bot.createMessage(msg.channel.id, f(`%s, slow down buddy! Wait 30 seconds please.`, msg.author.username))
+		setTimeout(() => {
+			warning.delete('clean up responses')
+		}, 5000)
 		return false
 	} else {
 		longCD[setName].add(msg.author.id)
