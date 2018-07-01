@@ -39,6 +39,11 @@ const registerMailbox = async (userid) => {
 }
 
 exports.deliverPost = async (srcType, msg) => {
+    //Posts from the bot will be ignored
+    if (msg.author.id == bot.bot.user.id) {
+        return
+    }
+
     //Message object that will be delivered to subscribees' mailboxes
     let message = {
         source: '',
@@ -52,7 +57,7 @@ exports.deliverPost = async (srcType, msg) => {
     //Pack message object with data to send
     if (srcType == `channel`) {
         message.source = msg.channel.guild.name + `'s announcements:`
-        message.content = msg.content
+        message.content = !msg.embeds[0].description ? msg.content : msg.embeds[0].description
         srcID = msg.channel.id
     } else { //type is user
         message.source = msg.author.username + `#` + msg.author.discriminator

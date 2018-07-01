@@ -36,7 +36,7 @@ exports.commandHandler = (msg, args) => {
         } else if (args[0] == 'stream') {
             unregisterGuildStreamChannel(msg, restOfArgs)
         }
-        
+
     }
 }
 
