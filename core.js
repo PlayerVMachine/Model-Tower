@@ -44,8 +44,10 @@ const bot = new Eris.Client(config.BOT_TOKEN, {
     defaultImageSize:256
 })
 
-//EXPORT BOT
+//Export bot and footer
 exports.bot = bot
+exports.footer = {text: `If you like the bot consider supporting devlopment and maintenance by buying me a coffee here: buymeacoff.ee/playervm`, icon_url:`https://www.buymeacoffee.com/assets/img/guidelines/logo-mark-1.svg`}
+
 
 /////////////////////////////////////////////
 //EVENTS TO REACT TO                      //
@@ -180,7 +182,8 @@ bot.on('messageCreate', async (msg) => {
                 embed : {
                     title: 'Game Stats Central Command Help',
                     color: 0x497fbc,
-                    description: help[args[0]].replace(/pfx/g, prefix)
+                    description: help[args[0]].replace(/pfx/g, prefix),
+                    footer: module.exports.footer
                 }
             }
             bot.createMessage(msg.channel.id, embed)

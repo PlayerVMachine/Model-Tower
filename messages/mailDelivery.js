@@ -1,6 +1,7 @@
 //Module imports
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
+const crypto = require('crypto')
 
 //project files required
 const config = require('../config.json')
@@ -10,9 +11,7 @@ const resolver = require('../resolver.js')
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
 
-exports.commandList = {
-    pull:`getPostsFromMailbox`
-}
+const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
 //Register mailbox for a user if it does not exist
 const registerMailbox = async (userid) => {
@@ -43,6 +42,8 @@ exports.deliverPost = async (srcType, msg) => {
     if (msg.author.id == bot.bot.user.id) {
         return
     }
+
+
 
     //Message object that will be delivered to subscribees' mailboxes
     let message = {
@@ -77,6 +78,40 @@ exports.deliverPost = async (srcType, msg) => {
         bot.bot.createMessage(msg.channel.id, `An error occured sending the post to followers`)
     }
 }
+
+//Try a new setup
+
+exports.userPost = async (msg, args) => {
+    //No blank posts
+    if (args.length == 0 || msg.content.match(nonPrintingChars)) {
+        let reply = await bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you cannot post blank messages or messages with non-printing characters.`, msg.author.username))
+        setTimeout(() => {
+            reply.delete('clean up after self')
+        }, 5000)
+    }
+
+    //create message
+    let message = {
+        editKey: crypto.randomBytes(4).toString('hex'),
+        source: msg.author.username + `#` + msg.author.discriminator,
+        content: msg.content.slice(msg.content.indexOf(' ') + 1),
+        sent: new Date()
+    }
+
+    //connect to db
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('mailboxes')
+
+    let sent = await col.updateMany({subscriptions:msg.author.id}, {$addToSet: {news:message}})
+    if (sent.result.ok == 1) {
+        if(srcType == `user`) {
+            bot.bot.createMessage(msg.channel.id, f(`%s, your post has been sent to your followers! You can edit it using this key: %s, for up to 24 hours from now.`, msg.author.username, message.editKey))
+        }
+    } else {
+        bot.bot.createMessage(msg.channel.id, f(`%s an error occured sending the post to your followers, please try again later`, msg.author.username)
+    }
+}
+
 
 exports.getPostsFromMailbox = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
