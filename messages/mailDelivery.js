@@ -11,12 +11,6 @@ const resolver = require('../resolver.js')
 const url = 'mongodb://127.0.0.1:36505'
 
 exports.commandList = {
-    setan:`registerGuildAnnouncementChannel`,
-    unsetan:`unregisterGuildAnnouncementChannel`,
-    updates:`subscribeToGuildAnnouncementChannel`,
-    noupdates:`unsubscribeFromGuildAnnouncementChannel`,
-    subscribe:`subscribeToUser`,
-    unsubscribe:`unsubscribeFromUser`,
     pull:`getPostsFromMailbox`
 }
 
