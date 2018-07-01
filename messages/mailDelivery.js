@@ -108,7 +108,7 @@ exports.userPost = async (msg, args) => {
             bot.bot.createMessage(msg.channel.id, f(`%s, your post has been sent to your followers! You can edit it using this key: %s, for up to 24 hours from now.`, msg.author.username, message.editKey))
         }
     } else {
-        bot.bot.createMessage(msg.channel.id, f(`%s an error occured sending the post to your followers, please try again later`, msg.author.username)
+        bot.bot.createMessage(msg.channel.id, f(`%s an error occured sending the post to your followers, please try again later`, msg.author.username))
     }
 }
 
