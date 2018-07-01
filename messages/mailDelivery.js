@@ -58,7 +58,7 @@ exports.deliverPost = async (srcType, msg) => {
     //Pack message object with data to send
     if (srcType == `channel`) {
         message.source = msg.channel.guild.name + `'s announcements:`
-        message.content = !msg.embeds[0].description ? msg.content : msg.embeds[0].description
+        message.content = !msg.embeds ? msg.content : msg.embeds[0].description
         srcID = msg.channel.id
     } else { //type is user
         message.source = msg.author.username + `#` + msg.author.discriminator
