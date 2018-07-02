@@ -179,7 +179,7 @@ const unregisterGuildAnnouncementChannel = async (msg, args) => {
         let removeChannel = await col.findOneAndUpdate({_id:guild.id}, {$set: {announcements:undefined}})
         if(removeChannel.ok == 1) {
             let removeSubscriptions = await mailboxes.updateMany({subscriptions:removeChannel.value.announcements}, {$pull: {subscriptions:removeChannel.value.announcements}})
-            bot.bot.createMessage(msg.channel.id, f(`This server's announcement channel is no longer set.`)
+            bot.bot.createMessage(msg.channel.id, f(`This server's announcement channel is no longer set.`))
         } else {
             bot.bot.createMessage(msg.channel.id, f(`There was no announcement channel to remove.`))
         }
