@@ -185,7 +185,8 @@ bot.on('messageCreate', async (msg) => {
                     title: 'Game Stats Central Command Help',
                     color: 0x497fbc,
                     description: help[args[0]].replace(/pfx/g, prefix),
-                    footer: module.exports.footer
+                    footer: module.exports.footer,
+                    url: `https://buymeacoff.ee/playervm`
                 }
             }
             bot.createMessage(msg.channel.id, embed)
