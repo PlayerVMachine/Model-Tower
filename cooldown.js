@@ -21,12 +21,12 @@ let shortCD = {
 	pubg: pubgSet,
 	lol: lolSet,
 	ow: owSet,
-	util: utilSet 
+	pm: pmSet,
+	util: utilSet
 }
 
 let longCD = {
-	remind: remindSet,
-	pm: pmSet
+	remind: remindSet
 }
 
 
