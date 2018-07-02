@@ -157,9 +157,9 @@ const isChannelGuildAnnouncer = async (id) => {
 bot.on('messageCreate', async (msg) => {
 
     //Post announcement if message is in announcement channel
-//    if (isChannelGuildAnnouncer(msg.channel.id)) {
-//        postManager.deliverPost(msg)
-//    }
+    if (isChannelGuildAnnouncer(msg.channel.id)) {
+        postManager.deliverPost(msg)
+    }
 
     //Ignore other bots and itself
     if (msg.author.bot) {
