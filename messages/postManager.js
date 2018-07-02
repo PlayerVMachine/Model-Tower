@@ -77,7 +77,6 @@ const userPost = async (msg, args) => {
 
         //create message
         let post = {
-            editKey: crypto.randomBytes(4).toString('hex'),
             source: msg.author.username + `#` + msg.author.discriminator,
             content: msg.content.slice(msg.content.indexOf(' ') + 1),
             sent: new Date()
