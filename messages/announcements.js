@@ -40,7 +40,7 @@ exports.commandHandler = (msg, args) => {
     }
 }
 
-const = registerGuildAnnouncementChannel = async (msg, args) => {
+const registerGuildAnnouncementChannel = async (msg, args) => {
     if (!msg.member.permission.has('manageChannels')) {
         return
     }
@@ -76,7 +76,7 @@ const = registerGuildAnnouncementChannel = async (msg, args) => {
     }
 }
 
-const = registerGuildSpotifyChannel = async (msg, args) => {
+const registerGuildSpotifyChannel = async (msg, args) => {
     if (!msg.member.permission.has('manageChannels')) {
         return
     }
@@ -112,7 +112,7 @@ const = registerGuildSpotifyChannel = async (msg, args) => {
     }
 }
 
-const = registerGuildStreamChannel = async (msg, args) => {
+const registerGuildStreamChannel = async (msg, args) => {
     if (!msg.member.permission.has('manageChannels')) {
         return
     }
@@ -148,7 +148,7 @@ const = registerGuildStreamChannel = async (msg, args) => {
     }
 }
 
-const = unregisterGuildAnnouncementChannel = async (msg, args) => {
+const unregisterGuildAnnouncementChannel = async (msg, args) => {
     if (!msg.member.permission.has('manageChannels')) {
         return
     }
@@ -171,7 +171,7 @@ const = unregisterGuildAnnouncementChannel = async (msg, args) => {
     }
 }
 
-const = unregisterGuildSpotifyChannel = async (msg, args) => {
+const unregisterGuildSpotifyChannel = async (msg, args) => {
     if (!msg.member.permission.has('manageChannels')) {
         return
     }
@@ -194,7 +194,7 @@ const = unregisterGuildSpotifyChannel = async (msg, args) => {
     }
 }
 
-const = unregisterGuildStreamChannel = async (msg, args) => {
+const unregisterGuildStreamChannel = async (msg, args) => {
     if (!msg.member.permission.has('manageChannels')) {
         return
     }
