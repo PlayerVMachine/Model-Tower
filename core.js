@@ -144,11 +144,9 @@ const isChannelGuildAnnouncer = async (id) => {
     let col = client.db('model_tower').collection('guild_announcers')
 
     let findChannel = await col.findOne({announcements:id})
-
     if (findChannel != null) {
         return true
     } else {
-        console.log(findChannel)
         return false
     }
 }
@@ -159,7 +157,9 @@ const isChannelGuildAnnouncer = async (id) => {
 bot.on('messageCreate', async (msg) => {
 
     //Post announcement if message is in announcement channel
-    if (isChannelGuildAnnouncer(msg.channel.id)) {
+    let chanGuildAnn = await isChannelGuildAnnouncer(msg.channel.id)
+    console.log(chanGuildAnn)
+    if (chanGuildAnn) {
         postManager.deliverPost(msg)
     }
 
