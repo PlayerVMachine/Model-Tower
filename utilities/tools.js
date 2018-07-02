@@ -61,7 +61,7 @@ const setPrefix = async (msg, args) => {
 		let client = await MongoClient.connect(url)
 	    let col = client.db('model_tower').collection('guild_configs')
 
-	    let guildConfig = await col.updateOne({_id:msg.channel.guild.id}, {$set: {prefix:args[0]}})
+	    let guildConfig = await col.updateOne({_id:msg.channel.guild.id}, {$set: {prefix:args[0]}}, {upsert: true})
 	    if(guildConfig.result.ok == 1) {
 	    	bot.bot.createMessage(msg.channel.id, f(`The guild prefix is now: %s`, args[0]))
 	    } else {
