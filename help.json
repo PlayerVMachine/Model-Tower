@@ -1,6 +1,6 @@
 {
     "r6":"**Rainbow Six Siege Statistics**\n\n```m.r6 cas|casual <username> pc|xbl|psn```Gets a user's stats for casual play.\n\n```pfxr6 rnk|ranked <username> pc|xbl|psn```Gets a user's stats for ranked play.\n\n```pfxr6 topop|operator <username> pc|xbl|psn```Gets a user's stats for their most played operator. Add a number at the end to move trough the list.\n\n```pfxr6 misc|general <username> pc|xbl|psn```Gets additional stats on a user unrelated to game mode.",
-    "pm":"",
+    "mb":"",
     "lol":"",
     "pubg":"**Player Unknown's Battlegrounds Statistics**\n\n```pfxpubg stats <region> <username> <game-mode>```Gets a player's statistics for a given game mode.\n\nAvailable modes```solo, solo-fpp, duo, duo-fpp, squad, squad-fpp```\nAvailable regions```xbox-as, xbox-eu, xbox-na, xbox-oc, pc-krjp, pc-jp, pc-na, pc-eu, pc-ru, pc-oc, pc-kakao, pc-sea, pc-sa, pc-as```",
     "nts":"**Note To Self Commands**\n\n```pfxnts make|note|create <text> <attachments>```Make a note for yourself and GSC will pin it in your DMs with it. Supports message file attachments.\n\n```pfxnts view|list|get```Gets a list of your current notes.\n\n```pfxnts delete|rem|unnote <list position>```Using the position number of a note from the list command you can delete a note. Unpinning it will also remove it from the list.",

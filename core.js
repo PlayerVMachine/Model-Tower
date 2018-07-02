@@ -48,7 +48,7 @@ const bot = new Eris.Client(config.BOT_TOKEN, {
 
 //Export bot and footer
 exports.bot = bot
-exports.footer = {text: `If you like the bot consider supporting it by buying me a coffee here: buymeacoff.ee/playervm`, icon_url:`https://cdn.discordapp.com/attachments/461945242061504515/463104485443502090/logo-mark-1.png`}
+exports.footer = {text: `If you like the bot consider supporting development here: buymeacoff.ee/playervm`, icon_url:`https://cdn.discordapp.com/attachments/461945242061504515/463104485443502090/logo-mark-1.png`}
 
 /////////////////////////////////////////////
 //EVENTS TO REACT TO                      //
@@ -125,7 +125,7 @@ bot.on('guildDelete', async (guild) => {
 const getGuildPrefix = async (guild) => {
     //message channel is a DM not a guild channel
     if (!guild) {
-        return `m.`
+        return `g.`
     }
 
     let client = await MongoClient.connect(url)
@@ -136,7 +136,7 @@ const getGuildPrefix = async (guild) => {
         return guildConfig.prefix
     }
 
-    return `m.`
+    return `g.`
 }
 
 const isChannelGuildAnnouncer = async (id) => {
@@ -192,17 +192,27 @@ bot.on('messageCreate', async (msg) => {
             return
         }
 
+        if (command == 'invite') {
+            bot.createMessage(msg.channel.id, `Invite me with this link: <https://discordapp.com/api/oauth2/authorize?client_id=463370961941561344&permissions=536881152&scope=bot>`)
+            return
+        }
+
+        if (command == 'server') {
+            bot.createMessage(msg.channel.id, `Join my support and information server: https://discord.gg/NNFnjFA`)
+            return
+        }
+
         if (command == 'r6') {
             //Check if the command is a rainbow six siege stats command
             let check = cooldown.short(command, msg)
             if (check) {
                 r6.commandHandler(msg, args)
             }
-        } else if (command == 'pm') {
+        } else if (command == 'mb') {
             //Check if the command is a postManager command
             let check = cooldown.short(command, msg)
             if (check) {
-                subscribe.commandHandler(msg, args)
+                postManager.commandHandler(msg, args)
             }
         } else if (command == 'set' || command == 'unset') {
 
@@ -258,8 +268,8 @@ bot.on('messageCreate', async (msg) => {
             //check for shortcuts
             if (command == 'ping') {
                 tools.commandHandler(msg, ['ping'].concat(args))
-            } else if (['post', 'send', 'pull', 'get', 'posts', 'subscriptions', 'mysubs'].includes(command)) {
-                let check = cooldown.short('pm', msg)
+            } else if (['post', 'pull'].includes(command)) {
+                let check = cooldown.short('mb', msg)
                 postManager.commandHandler(msg, [command].concat(args))
             }
         }

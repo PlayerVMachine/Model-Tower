@@ -10,7 +10,7 @@ const r6Set = new Set()
 const pubgSet = new Set()
 const lolSet = new Set()
 const owSet = new Set()
-const pmSet = new Set()
+const mbSet = new Set()
 const utilSet = new Set()
 
 let shortCD = {
@@ -21,7 +21,7 @@ let shortCD = {
 	pubg: pubgSet,
 	lol: lolSet,
 	ow: owSet,
-	pm: pmSet,
+	mb: mbSet,
 	util: utilSet
 }
 
