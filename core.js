@@ -205,7 +205,7 @@ bot.on('messageCreate', async (msg) => {
             }
         } else if (command == 'set' || command == 'unset') {
 
-            annMgmt(msg, [command].concat(args))
+            annMgmt.commandHandler(msg, [command].concat(args))
 
         } else if (command == 'lol') {
             //Check if the command is a league of league command
