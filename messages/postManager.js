@@ -18,7 +18,7 @@ exports.commandHandler = (msg, args) => {
 
     if (['post', 'send'].includes(args[0])) {
         userPost(msg, restOfArgs)
-    } else if (['pull', 'get', 'posts'].includes(args[0])) {
+    } else if (['pull', 'check'].includes(args[0])) {
         getPosts(msg, restOfArgs)
     } else {
         sub.commandHandler(msg, args) //continue onto subscription commands

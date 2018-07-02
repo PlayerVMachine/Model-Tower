@@ -180,13 +180,13 @@ bot.on('messageCreate', async (msg) => {
         let args = content.slice(1)
 
         if (command == 'help') {
+            let description = args.length == 0 ? help['help'].replace(/pfx/g, prefix) : help[args[0]].replace(/pfx/g, prefix)
             let embed = {
                 embed : {
                     title: 'Game Stats Central Command Help',
                     color: 0x497fbc,
-                    description: help[args[0]].replace(/pfx/g, prefix),
-                    footer: module.exports.footer,
-                    url: `https://buymeacoff.ee/playervm`
+                    description: description,
+                    footer: module.exports.footer
                 }
             }
             bot.createMessage(msg.channel.id, embed)
