@@ -53,8 +53,12 @@ const clean = async (msg, args) => {
 
 const setPrefix = async (msg, args) => {
 	try {
+		if (!msg.member.permission.has('manageGuild')) {
+			return
+		}
+
 		if (args.length > 1 || args[0].length > 10) {
-			bot.bot.createMessage(msg.channel.id, f(`Sorry %s, the prefix cannot contain spaces or be more than 10 characters long`))
+			bot.bot.createMessage(msg.channel.id, f(`Sorry %s, the prefix cannot contain spaces or be more than 10 characters long`, msg.author.username))
 			return
 		}
 
