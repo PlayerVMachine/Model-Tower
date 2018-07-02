@@ -23,6 +23,7 @@ exports.commandHandler = (msg, args) => {
     }
 }
 
+//For announcement channels
 exports.deliverPost = async (msg) => {
     try {
         //Posts from the bot will be ignored
@@ -51,7 +52,7 @@ exports.deliverPost = async (msg) => {
             console.log(sent)
         }
     } catch (err) {
-        console.log(err)
+        bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: deliverPost`, new Date(), err.message))
     }
 }
 
@@ -125,50 +126,57 @@ const userPost = async (msg, args) => {
         }, 5 * 60 * 1000)
 
     } catch (err) {
-        console.log(err)
+        bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: userPost`, new Date(), err.message))
+        bot.bot.createMessage(msg.channel.id, f(`Sorry %s, a fuse blew somewhere if this message persists please report it in <#447153276786311180>`, msg.author.username))
     }
 }
 
+//user gets posts
 const getPosts = async (msg, args) => {
-    let validateMailbox = await sub.registerMailbox(msg.author.id)
+    try {
+        let validateMailbox = await sub.registerMailbox(msg.author.id)
 
-    if (!validateMailbox) {
-        bot.bot.createMessage(msg.channel.id, `Sorry could not get posts.`)
-    }
+        if (!validateMailbox) {
+            bot.bot.createMessage(msg.channel.id, `Sorry could not get posts.`)
+        }
 
-    let client = await MongoClient.connect(url)
-    let col = client.db('model_tower').collection('mailboxes')
-    let mailbox = await col.findOne({_id:msg.author.id})
-    let clearMail = await col.updateOne({_id:msg.author.id}, {$set: {news: []}})
+        let client = await MongoClient.connect(url)
+        let col = client.db('model_tower').collection('mailboxes')
+        let mailbox = await col.findOne({_id:msg.author.id})
+        let clearMail = await col.updateOne({_id:msg.author.id}, {$set: {news: []}})
 
-    let numberOfSubscriptions = mailbox.subscriptions.length
-    let numberOfPosts = mailbox.news.length
+        let numberOfSubscriptions = mailbox.subscriptions.length
+        let numberOfPosts = mailbox.news.length
 
-    let lines = []
+        let lines = []
 
-    if (numberOfPosts > 0) {
-        mailbox.news.forEach(post => {
-            //format the post as it will appear in the embed
-            let item = f(`**%s**: %s`, post.source, post.content)
-            lines.push(item)
-        })
-    } else {
-        bot.bot.createMessage(msg.channel.id, f(`%s, you have no posts to pull at this time`, msg.author.username))
-        return
-    }
+        if (numberOfPosts > 0) {
+            mailbox.news.forEach(post => {
+                //format the post as it will appear in the embed
+                let item = f(`**%s**: %s`, post.source, post.content)
+                lines.push(item)
+            })
+        } else {
+            bot.bot.createMessage(msg.channel.id, f(`%s, you have no posts to pull at this time`, msg.author.username))
+            return
+        }
 
-    let description = lines.join('\n')
-    let characterCount = description.length
-    let start = 0, end = 1999
-    while (characterCount > 0) {
-        bot.bot.createMessage(msg.channel.id, {embed: {
-            title: `New posts for you:`,
-            description: description.slice(start,end),
-            footer: {text: f(`You are subscribed to %s users & channels`, numberOfSubscriptions)}
-        }})
-        characterCount -= 1999
-        start = end
-        end += 1999
+        let description = lines.join('\n')
+        let characterCount = description.length
+        let start = 0, end = 1999
+        while (characterCount > 0) {
+            bot.bot.createMessage(msg.channel.id, {embed: {
+                title: `New posts for you:`,
+                description: description.slice(start,end),
+                footer: {text: f(`You are subscribed to %s users & channels`, numberOfSubscriptions)}
+            }})
+            characterCount -= 1999
+            start = end
+            end += 1999
+        }
+    } catch (err) {
+        bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: getPosts`, new Date(), err.message))
+        bot.bot.createMessage(msg.channel.id, f(`Sorry %s, a fuse blew somewhere if this message persists please report it in <#447153276786311180>`, msg.author.username))
     }
 }
 

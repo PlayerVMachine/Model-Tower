@@ -258,7 +258,7 @@ bot.on('messageCreate', async (msg) => {
             //check for shortcuts
             if (command == 'ping') {
                 tools.commandHandler(msg, ['ping'].concat(args))
-            } else if (['post', 'send', 'pull', 'get', 'posts'].includes(command)) {
+            } else if (['post', 'send', 'pull', 'get', 'posts', 'subscriptions', 'mysubs'].includes(command)) {
                 let check = cooldown.short('pm', msg)
                 postManager.commandHandler(msg, [command].concat(args))
             }
