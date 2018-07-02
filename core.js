@@ -144,10 +144,11 @@ const isChannelGuildAnnouncer = async (id) => {
     let col = client.db('model_tower').collection('guild_announcers')
 
     let findChannel = await col.findOne({announcements:id})
-    console.log(findChannel)
-    if (findChannel) {
+
+    if (findChannel != null) {
         return true
     } else {
+        console.log(findChannel)
         return false
     }
 }
