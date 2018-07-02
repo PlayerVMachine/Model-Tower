@@ -134,9 +134,9 @@ const getGuildPrefix = async (guild) => {
     let guildConfig = await col.findOne({_id:guild.id})
     if(guildConfig) {
         return guildConfig.prefix
+    } else {
+        return `g.`
     }
-
-    return `g.`
 }
 
 const isChannelGuildAnnouncer = async (id) => {
