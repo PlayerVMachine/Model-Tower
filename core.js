@@ -16,6 +16,8 @@ const ow = require('./game-integrations/overwatch.js')
 const pubg = require('./game-integrations/pubg.js')
 
 const postManager = require('./messages/postManager.js')
+const subscribe = require('./messages/subscribe.js')
+const annMgmt = require('./messages/announcements.js')
 
 const notes = require('./utilities/notes.js')
 const spotify = require('./utilities/spotify.js')
@@ -141,7 +143,7 @@ const isChannelGuildAnnouncer = async (id) => {
     let client = await MongoClient.connect(url)
     let col = client.db('model_tower').collection('guild_announcers')
 
-    let findChannel = await col.findOne({channel:id})
+    let findChannel = await col.findOne({announcements:id})
     if (findChannel) {
         return true
     } else {
@@ -153,6 +155,11 @@ const isChannelGuildAnnouncer = async (id) => {
 //COMMANDS                                //
 ///////////////////////////////////////////
 bot.on('messageCreate', async (msg) => {
+
+    //Post announcement if message is in announcement channel
+    if (isChannelGuildAnnouncer(msg.channel.id)) {
+        postManager.deliverPost(msg)
+    }
 
     //Ignore other bots and itself
     if (msg.author.bot) {
@@ -194,8 +201,12 @@ bot.on('messageCreate', async (msg) => {
             //Check if the command is a postManager command
             let check = cooldown.short(command, msg)
             if (check) {
-                postManager.commandHandler(msg, args)
+                subscribe.commandHandler(msg, args)
             }
+        } else if (command == 'set' || command == 'unset') {
+
+            annMgmt(msg, [command].concat(args))
+
         } else if (command == 'lol') {
             //Check if the command is a league of league command
             let check = cooldown.short(command, msg)
@@ -246,16 +257,12 @@ bot.on('messageCreate', async (msg) => {
             //check for shortcuts
             if (command == 'ping') {
                 tools.commandHandler(msg, ['ping'].concat(args))
-            } else if (['post', 'send', 'edit', 'update', 'delete', 'remove', 'pull', 'get', 'posts'].includes(command)) {
+            } else if (['post', 'send', 'pull', 'get', 'posts'].includes(command)) {
                 let check = cooldown.short('pm', msg)
                 postManager.commandHandler(msg, [command].concat(args))
             }
         }
 
-    } else {
-        if (isChannelGuildAnnouncer(msg.channel.id)) {
-            postManager.deliverPost(`channel`, msg)
-        }
     }
 })
 

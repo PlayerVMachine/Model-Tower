@@ -23,43 +23,30 @@ exports.commandHandler = (msg, args) => {
     }
 }
 
-exports.deliverPost = async (srcType, msg) => {
-    //Posts from the bot will be ignored
-    if (msg.author.id == bot.bot.user.id) {
-        return
-    }
-
-    //Message object that will be delivered to subscribees' mailboxes
-    let message = {
-        source: '',
-        content: '',
-        sent: new Date()
-    }
-
-    //Search key for subscriptions
-    let srcID = msg.author.id
-
-    //Pack message object with data to send
-    if (srcType == `channel`) {
-        message.source = msg.channel.guild.name + `'s announcements:`
-        message.content = !msg.embeds ? msg.content : msg.embeds[0].description
-        srcID = msg.channel.id
-    } else { //type is user
-        message.source = msg.author.username + `#` + msg.author.discriminator
-        message.content = msg.content.slice(msg.content.indexOf(' ') + 1)
-    }
-
-    //Send message to subscribees
-    let client = await MongoClient.connect(url)
-    let col = client.db('model_tower').collection('mailboxes')
-
-    let sent = await col.updateMany({subscriptions:srcID}, {$addToSet: {news:message}})
-    if (sent.result.ok == 1) {
-        if(srcType == `user`) {
-            bot.bot.createMessage(msg.channel.id, `Your post has been sent to your followers`)
+exports.deliverPost = async (msg) => {
+    try {
+        //Posts from the bot will be ignored
+        if (msg.author.id == bot.bot.user.id) {
+            return
         }
-    } else {
-        bot.bot.createMessage(msg.channel.id, `An error occured sending the post to followers`)
+
+        //Message object that will be delivered to subscribees' mailboxes
+        let message = {
+            source:  msg.channel.guild.name + `'s announcements:`,
+            content: !msg.embeds ? msg.content : msg.embeds[0].description,
+            sent: new Date()
+        }
+
+        //Send message to subscribees
+        let client = await MongoClient.connect(url)
+        let col = client.db('model_tower').collection('mailboxes')
+
+        let sent = await col.updateMany({subscriptions:msg.channel.id}, {$addToSet: {news:message}})
+        if (sent.result.ok != 1) {
+            console.log(sent)
+        }
+    } catch (err) {
+        console.log(err)
     }
 }
 
@@ -82,7 +69,7 @@ const userPost = async (msg, args) => {
             sent: new Date()
         }
 
-        let notice = await bot.bot.createMessage(msg.channel.id, f(`%s, you have 5 minutes to edit or delete your message to edit or delete your post before it is sent`, msg.author.username))
+        let notice = await bot.bot.createMessage(msg.channel.id, f(`%s, you have 5 minutes to edit or delete your post before it's sent!`, msg.author.username))
 
         //5 minute delay on sending the post
         let postSender = setTimeout(async () => {
@@ -100,7 +87,6 @@ const userPost = async (msg, args) => {
             }
         }, 5 * 60 * 1000)
 
-
         //listen for edit message or delete message for 5 minutes before continuing with post sending
         const updatePost = (message, oldMessage) => {
             if (!oldMessage) {
@@ -110,6 +96,7 @@ const userPost = async (msg, args) => {
             if (message.id == msg.id) {
                 let args = message.content.split(' ')
                 post.content = args.slice(1).join(' ')
+                notice.edit(f(`%s, you have 5 minutes to edit or delete your post before it's sent! Edit registed!`, msg.author.username))
             }
         }
 
@@ -126,8 +113,6 @@ const userPost = async (msg, args) => {
         bot.bot.on('messageUpdate', updatePost)
         bot.bot.on('messageDelete', deletePost)
 
-
-
         setTimeout(() => {
             notice.delete('post expired')
             bot.bot.removeListener('messageDelete', deletePost)
@@ -138,7 +123,6 @@ const userPost = async (msg, args) => {
         console.log(err)
     }
 }
-
 
 const getPosts = async (msg, args) => {
     let validateMailbox = await sub.registerMailbox(msg.author.id)

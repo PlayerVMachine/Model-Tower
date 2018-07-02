@@ -11,6 +11,21 @@ const spotify = require('../utilities/spotify.js')
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
 
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+
+    if(['notify'].includes(args[0])) {
+        subscribeToGuildAnnouncementChannel(msg, restOfArgs)
+    } else if (['unnotify'].includes(args[0])) {
+        unsubscribeFromGuildAnnouncementChannel(msg, restOfArgs)
+    } else if (['sub', 'follow'].includes(args[0])) {
+        subscribeToUser(msg, restOfArgs)
+    } else if (['unsub', 'unfollow'].includes(args[0])) {
+        unsubscribeFromUser(msg, restOfArgs)
+    }
+}
+
+
 //Register mailbox for a user if it does not exist
 const registerMailbox = async (userid) => {
     let client = await MongoClient.connect(url)
@@ -34,10 +49,11 @@ const registerMailbox = async (userid) => {
         return true
     }
 }
-//
+
+//export for postManager
 exports.registerMailbox = registerMailbox
 
-exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
+const = subscribeToGuildAnnouncementChannel = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
@@ -49,8 +65,8 @@ exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
     let guild_announcers = client.db('model_tower').collection('guild_announcers')
 
     let guild_announcer = await guild_announcers.findOne({_id:msg.channel.guild.id})
-    if(guild_announcer) {
-        let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:guild_announcer.channel}})
+    if(guild_announcer.announcements) {
+        let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:guild_announcer.announcements}})
         if (subscribe.result.ok != 1) {
             console.log(f(`Could not subscribe to %s for %s`, guild_announcer.channel, msg.author.id))
         } else {
@@ -61,7 +77,7 @@ exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
     }
 }
 
-exports.unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
+const = unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
@@ -73,8 +89,8 @@ exports.unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
     let guild_announcers = client.db('model_tower').collection('guild_announcers')
 
     let guild_announcer = await guild_announcers.findOne({_id:msg.channel.guild.id})
-    if(guild_announcer) {
-        let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$pull: {subscriptions:guild_announcer.channel}})
+    if(guild_announcer.announcements) {
+        let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$pull: {subscriptions:guild_announcer.announcements}})
         if (subscribe.result.ok != 1) {
             console.log(f(`Could not unsubscribe from %s for %s`, guild_announcer.channel, msg.author.id))
         } else {
@@ -85,7 +101,7 @@ exports.unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
     }
 }
 
-exports.subscribeToUser = async (msg, args) => {
+const = subscribeToUser = async (msg, args) => {
     let user = resolver.user(bot.bot.users, args[0])
 
     if(msg.author.id == user.id) {
@@ -116,7 +132,7 @@ exports.subscribeToUser = async (msg, args) => {
     }
 }
 
-exports.unsubscribeFromUser = async (msg, args) => {
+const = unsubscribeFromUser = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
