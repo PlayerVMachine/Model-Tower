@@ -1,7 +1,6 @@
 //Module imports
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
-const crypto = require('crypto')
 
 //project files required
 const config = require('../config.json')
@@ -19,10 +18,6 @@ exports.commandHandler = (msg, args) => {
 
     if (['post', 'send'].includes(args[0])) {
         userPost(msg, restOfArgs)
-    } else if (['edit', 'update'].includes(args[0])) {
-        editUserPost(msg, restOfArgs)
-    } else if (['delete', 'remove'].includes(args[0])) {
-        deleteUserPost(msg, restOfArgs)
     } else if (['pull', 'get', 'posts'].includes(args[0])) {
         getPosts(msg, restOfArgs)
     }
@@ -81,101 +76,70 @@ const userPost = async (msg, args) => {
         }
 
         //create message
-        let message = {
+        let post = {
             editKey: crypto.randomBytes(4).toString('hex'),
             source: msg.author.username + `#` + msg.author.discriminator,
             content: msg.content.slice(msg.content.indexOf(' ') + 1),
             sent: new Date()
         }
 
-        //connect to db
-        let client = await MongoClient.connect(url)
-        let col = client.db('model_tower').collection('mailboxes')
+        let notice = await bot.bot.createMessage(msg.channel.id, f(`%s, you have 5 minutes to edit or delete your message to edit or delete your post before it is sent`, msg.author.username)
 
-        //add message to apropriate mailboxes
-        let sent = await col.updateMany({subscriptions:msg.author.id}, {$addToSet: {news:message}})
-        if (sent.result.ok == 1) {
-            let dmChannel = await msg.author.getDMChannel()
-            bot.bot.createMessage(dmChannel.id, f(`%s, your post has been sent to your followers! You can edit it using this key: %s, for up to 24 hours from now.`, msg.author.username, message.editKey))
-        } else {
-            bot.bot.createMessage(msg.channel.id, f(`%s, an error occured sending the post to your followers, please try again later`, msg.author.username))
-        }
-    } catch (err) {
-        console.log(err)
-    }
-}
+        //5 minute delay on sending the post
+        let postSender = setTimeout(() => {
+            //connect to db
+            let client = await MongoClient.connect(url)
+            let col = client.db('model_tower').collection('mailboxes')
 
-//edit a post
-const editUserPost = async (msg, args) => {
-    try {
-        //if key is missing
-        if (args.length == 0) {
-            let reply = await bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you must provide a post key to edit a post.`, msg.author.username))
-            setTimeout(() => {
-                reply.delete('Cleaning up after self')
-            }, 5000)
-            return
-        } else if (args.length < 2) {
-            let reply = await bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you must provide text to edit your post with, to delete a post use the delete command instead.`, msg.author.username))
-            setTimeout(() => {
-                reply.delete('Cleaning up after self')
-            }, 5000)
-            return
-        }
-
-        let client = await MongoClient.connect(url)
-        let col = client.db('model_tower').collection('mailboxes')
-
-        let lastDay = new Date(Date.now() - 24 * 60 * 60 * 1000)
-        //get the post by key and date
-        let posts = await col.find({news: {$elemMatch: {editKey:args[0], sent: {$gte: lastDay} } } }).toArray()
-        if (posts.length > 0) {
-            let newMessage = args.slice(1).join(' ')
-            let editPosts = col.updateMany({news: {$elemMatch: {editKey:args[0], sent: {$gte: lastDay} } } }, {content: newMessage})
-            if (editPosts.modifiedCount == posts.length) {
-                bot.bot.createMessage(msg.channel.id, f(`%s, your post was successfully updated for those who have not read it yet.`, msg.author.username))
+            //add message to apropriate mailboxes
+            let sent = await col.updateMany({subscriptions:msg.author.id}, {$addToSet: {news:post}})
+            if (sent.result.ok == 1) {
+                let dmChannel = await msg.author.getDMChannel()
+                bot.bot.createMessage(dmChannel.id, f(`%s, your post has been sent to your followers!\`\`\`%s\`\`\``, msg.author.username, post.content))
             } else {
-                bot.bot.createMessage(msg.channel.id, f(`Sorry %s, an error occured updating your post`, msg.author.username))
+                bot.bot.createMessage(msg.channel.id, f(`%s, an error occured sending the post to your followers, please try again later`, msg.author.username))
             }
-        } else {
-            bot.bot.createMessage(msg.channel.id, f(`%s, I could not find a post to update it, double check the key, I can only update posts that are less than a day old and have not been read by all your followers.`, msg.author.udername))
+        }, 5 * 60 * 1000)
+
+
+        //listen for edit message or delete message for 5 minutes before continuing with post sending
+        const updatePost = (message, oldMessage) => {
+            if (!oldMessage) {
+                return
+            }
+
+            if (message.id == msg.id) {
+                let args = message.content.split(' ')
+                post.content = args.slice(1).join(' ')
+            }
         }
+
+        const deletePost = (message) => {
+            if (message.id == msg.id) {
+                clearTimeout(postSender)
+                notice.edit(f('%s Your post has been deleted and will not be sent.', msg.author.username))
+                setTimeout(() => {notice.delete('Cleaning up after self')}, 5000)
+                bot.bot.removeListener('messageDelete', deletePost)
+                bot.bot.removeListener('messageUpdate', updatePost)
+            }
+        }
+
+        bot.bot.on('messageUpdate', updatePost)
+        bot.bot.on('messageDelete', deletePost)
+
+
+
+        setTimeout(() => {
+            notice.delete('post expired')
+            bot.bot.removeListener('messageDelete', deletePost)
+            bot.bot.removeListener('messageUpdate', updatePost)
+        }, 5 * 60 * 1000)
+
     } catch (err) {
         console.log(err)
     }
 }
 
-//delete a post
-const deleteUserPost = async (msg, args) => {
-    try {
-        //if key is missing
-        if (args.length == 0) {
-            let reply = await bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you must provide a post key to delete a post.`, msg.author.username))
-            setTimeout(() => {
-                reply.delete('Cleaning up after self')
-            }, 5000)
-            return
-        }
-
-        let client = await MongoClient.connect(url)
-        let col = client.db('model_tower').collection('mailboxes')
-
-        //get the post by key and date
-        let posts = await col.find({news: {editKey:args[0] } }).toArray()
-        if (posts.length > 0) {
-            let editPosts = col.updateMany({news: {$pull: {news: {editKey: args[0]}} } }, {content: newMessage})
-            if (editPosts.modifiedCount == posts.length) {
-                bot.bot.createMessage(msg.channel.id, f(`%s, your post was successfully deleted for those who have not read it yet.`, msg.author.username))
-            } else {
-                bot.bot.createMessage(msg.channel.id, f(`Sorry %s, an error occured deleting your post`, msg.author.username))
-            }
-        } else {
-            bot.bot.createMessage(msg.channel.id, f(`%s, I could not find a post to update it, double check the key, I can only update posts that are less than a day old and have not been read by all your followers.`, msg.author.udername))
-        }
-    } catch (err) {
-        console.log(err)
-    }
-}
 
 const getPosts = async (msg, args) => {
     let validateMailbox = await sub.registerMailbox(msg.author.id)

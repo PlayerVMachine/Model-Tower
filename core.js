@@ -253,7 +253,6 @@ bot.on('messageCreate', async (msg) => {
         }
 
     } else {
-
         if (isChannelGuildAnnouncer(msg.channel.id)) {
             postManager.deliverPost(`channel`, msg)
         }
