@@ -132,6 +132,7 @@ const getGuildPrefix = async (guild) => {
     let col = client.db('model_tower').collection('guild_configs')
 
     let guildConfig = await col.findOne({_id:guild.id})
+    console.log(guildConfig)
     if(guildConfig) {
         return guildConfig.prefix
     } else {
