@@ -11,6 +11,32 @@ const spotify = require('../utilities/spotify.js')
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
 
+//Register mailbox for a user if it does not exist
+const registerMailbox = async (userid) => {
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('mailboxes')
+
+    let mailbox = {
+        _id: userid,
+        subscriptions: [],
+        news: []
+    }
+
+    let findUser = await col.findOne({_id:userid})
+    if(!findUser) {
+        let register = await col.insertOne(mailbox)
+        if (register.insertedCount == 1)
+            return true
+        else
+            return false
+
+    } else {
+        return true
+    }
+}
+//
+exports.registerMailbox = registerMailbox
+
 exports.subscribeToGuildAnnouncementChannel = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 

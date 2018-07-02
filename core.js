@@ -15,7 +15,7 @@ const lol = require('./game-integrations/leagueoflegends.js')
 const ow = require('./game-integrations/overwatch.js')
 const pubg = require('./game-integrations/pubg.js')
 
-const postManager = require('./messages/mailDelivery.js')
+const postManager = require('./messages/postManager.js')
 
 const notes = require('./utilities/notes.js')
 const spotify = require('./utilities/spotify.js')
@@ -46,7 +46,7 @@ const bot = new Eris.Client(config.BOT_TOKEN, {
 
 //Export bot and footer
 exports.bot = bot
-exports.footer = {text: `If you like the bot consider supporting it by buying me a coffee here: https://www.buymeacoffee.com/playervm`, icon_url:`https://cdn.discordapp.com/attachments/461945242061504515/463104485443502090/logo-mark-1.png`}
+exports.footer = {text: `If you like the bot consider supporting it by buying me a coffee here: buymeacoff.ee/playervm`, icon_url:`https://cdn.discordapp.com/attachments/461945242061504515/463104485443502090/logo-mark-1.png`}
 
 /////////////////////////////////////////////
 //EVENTS TO REACT TO                      //
@@ -162,11 +162,6 @@ bot.on('messageCreate', async (msg) => {
     //Check the origin guild to set prefix
     prefix = await getGuildPrefix(msg.channel.guild)
 
-    if (msg.content.startsWith(prefix + `post`)) {
-        postManager.deliverPost(`user`, msg)
-        return
-    }
-
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
         //Get the command after the prefix and before any arguments
@@ -251,6 +246,9 @@ bot.on('messageCreate', async (msg) => {
             //check for shortcuts
             if (command == 'ping') {
                 tools.commandHandler(msg, ['ping'].concat(args))
+            } else if (['post', 'send', 'edit', 'update', 'delete', 'remove', 'pull', 'get', 'posts'].includes(command)) {
+                let check = cooldown.short('pm', msg)
+                postManager.commandHandler(msg, [command].concat(args))
             }
         }
 

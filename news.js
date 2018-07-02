@@ -27,7 +27,7 @@ exports.pullNews = async (bot, client) => {
 
     let generalNews = await feedReader.parseURL('http://feeds.bbci.co.uk/news/rss.xml')
     let generalTech = await feedReader.parseURL('https://www.cnet.com/rss/news/')
-
+    //lifehacker?, io9?, buzzfeed?
 
     let feeds = {
         generalNews: generalNews,
