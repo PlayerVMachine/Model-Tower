@@ -152,6 +152,9 @@ const getPosts = async (msg, args) => {
             let item = f(`**%s**: %s`, post.source, post.content)
             lines.push(item)
         })
+    } else {
+        bot.bot.createMessage(msg.channel.id, f(`%s, you have no posts to pull at this time`, msg.author.username))
+        return
     }
 
     let description = lines.join('\n')

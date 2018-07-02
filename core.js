@@ -260,7 +260,6 @@ bot.on('messageCreate', async (msg) => {
                 tools.commandHandler(msg, ['ping'].concat(args))
             } else if (['post', 'send', 'pull', 'get', 'posts'].includes(command)) {
                 let check = cooldown.short('pm', msg)
-                console.log(command)
                 postManager.commandHandler(msg, [command].concat(args))
             }
         }
