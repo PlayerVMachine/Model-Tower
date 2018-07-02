@@ -158,7 +158,6 @@ bot.on('messageCreate', async (msg) => {
 
     //Post announcement if message is in announcement channel
     let chanGuildAnn = await isChannelGuildAnnouncer(msg.channel.id)
-    console.log(chanGuildAnn)
     if (chanGuildAnn) {
         postManager.deliverPost(msg)
     }

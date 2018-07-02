@@ -30,6 +30,9 @@ exports.deliverPost = async (msg) => {
             return
         }
 
+        console.dir(msg, {depth:2})
+        return
+
         //Message object that will be delivered to subscribees' mailboxes
         let message = {
             source:  msg.channel.guild.name + `'s announcements:`,
