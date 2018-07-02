@@ -18,22 +18,22 @@ exports.commandHandler = (msg, args) => {
     if (args[0] == 'set') {
         let restOfArgs = args.slice(2)
 
-        if (args[0] == 'ann') {
+        if (args[1] == 'ann') {
             registerGuildAnnouncementChannel(msg, restOfArgs)
-        } else if (args[0] == 'spotify') {
+        } else if (args[1] == 'spotify') {
             registerGuildSpotifyChannel(msg, restOfArgs)
-        } else if (args[0] == 'stream') {
+        } else if (args[1] == 'stream') {
             registerGuildStreamChannel(msg, restOfArgs)
         }
 
     } else if (args[0] == 'unset') {
         let restOfArgs = args.slice(2)
 
-        if (args[0] == 'ann') {
+        if (args[1] == 'ann') {
             unregisterGuildAnnouncementChannel(msg, restOfArgs)
-        } else if (args[0] == 'spotify') {
+        } else if (args[1] == 'spotify') {
             unregisterGuildSpotifyChannel(msg, restOfArgs)
-        } else if (args[0] == 'stream') {
+        } else if (args[1] == 'stream') {
             unregisterGuildStreamChannel(msg, restOfArgs)
         }
 
@@ -50,6 +50,7 @@ const registerGuildAnnouncementChannel = async (msg, args) => {
 
     if (!channel) {
         bot.bot.createMessage(msg.channel.id, `Sorry I couldn't find that channel in this server!`)
+        return
     }
 
     //Add the guild and channel to a collection
