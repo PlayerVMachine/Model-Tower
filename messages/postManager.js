@@ -83,7 +83,7 @@ const userPost = async (msg, args) => {
             sent: new Date()
         }
 
-        let notice = await bot.bot.createMessage(msg.channel.id, f(`%s, you have 5 minutes to edit or delete your message to edit or delete your post before it is sent`, msg.author.username)
+        let notice = await bot.bot.createMessage(msg.channel.id, f(`%s, you have 5 minutes to edit or delete your message to edit or delete your post before it is sent`, msg.author.username))
 
         //5 minute delay on sending the post
         let postSender = setTimeout(() => {
