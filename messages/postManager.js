@@ -30,10 +30,15 @@ exports.deliverPost = async (msg) => {
             return
         }
 
+        let content = msg.content
+        if (msg.embeds.length > 0) {
+            content = msg.embeds[0].description
+        }
+
         //Message object that will be delivered to subscribees' mailboxes
         let message = {
             source:  msg.channel.guild.name + `'s announcements:`,
-            content: msg.embeds.length > 0 ? msg.content : msg.embeds[0].description,
+            content: content,
             sent: new Date()
         }
 
