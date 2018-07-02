@@ -53,7 +53,7 @@ const registerMailbox = async (userid) => {
 //export for postManager
 exports.registerMailbox = registerMailbox
 
-const = subscribeToGuildAnnouncementChannel = async (msg, args) => {
+const subscribeToGuildAnnouncementChannel = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
@@ -77,7 +77,7 @@ const = subscribeToGuildAnnouncementChannel = async (msg, args) => {
     }
 }
 
-const = unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
+const unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
@@ -101,7 +101,7 @@ const = unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
     }
 }
 
-const = subscribeToUser = async (msg, args) => {
+const subscribeToUser = async (msg, args) => {
     let user = resolver.user(bot.bot.users, args[0])
 
     if(msg.author.id == user.id) {
@@ -132,7 +132,7 @@ const = subscribeToUser = async (msg, args) => {
     }
 }
 
-const = unsubscribeFromUser = async (msg, args) => {
+const unsubscribeFromUser = async (msg, args) => {
     let validateMailbox = await registerMailbox(msg.author.id)
 
     if (!validateMailbox) {
