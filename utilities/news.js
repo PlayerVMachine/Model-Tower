@@ -39,6 +39,7 @@ exports.pullNews = async () => {
         let embeds = []
         feeds[channel.subscriptions].items.forEach(item => {
             if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
+                console.log('pushing')
                 embeds.push({
                     title: item.title,
                     description: item.content,
@@ -47,7 +48,7 @@ exports.pullNews = async () => {
                 })
             }
         })
-        console.log(channel.webhook.id)
+        console.log(embeds.length)
         if (embeds.length > 0) {
             bot.bot.executeWebhook(channel.webhook.id, channel.webhook.token, {embeds: embeds.reverse()})
         }
