@@ -39,7 +39,7 @@ exports.pullNews = async () => {
         let embeds = []
         channel.subscriptions.forEach(sub => {
             feeds[sub].items.forEach(item => {
-                if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
+                //if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
                     console.log('pushing')
                     embeds.push({
                         title: item.title,
@@ -47,7 +47,7 @@ exports.pullNews = async () => {
                         url: item.link,
                         timestamp: item.isoDate
                     })
-                }
+                //}
             })
         })
         console.log(embeds.length)
