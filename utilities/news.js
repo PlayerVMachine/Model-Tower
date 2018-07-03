@@ -109,6 +109,7 @@ const subscribeToNews = async (msg, args) => {
             let col = client.db('RSS').collection('channels')
 
             let create = await col.updateOne({_id:msg.channel.id}, {$setOnInsert: {subscriptions: [], webhook:{id:botHook.id, token:botHook.token}}}, {upsert:true})
+            console.dir(create)
             if (create.ok == 1) {
                 let registerChoice = await col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
                 if (registerChoice.ok == 1) {
