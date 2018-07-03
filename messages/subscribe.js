@@ -138,7 +138,7 @@ const subscribeToUser = async (msg, args) => {
         let mailboxes = client.db('model_tower').collection('mailboxes')
 
         if (user) {
-            let checkSubs = await mailboxes.findOne({$and: [ {_id:message.author.id}, {subscriptions:user.id} ]})
+            let checkSubs = await mailboxes.findOne({$and: [ {_id:msg.author.id}, {subscriptions:user.id} ]})
             if (checkSubs) {
                 bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you're already subscribed to %s`, msg.author.username, user.username))
                 return
