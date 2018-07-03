@@ -109,10 +109,9 @@ const subscribeToNews = async (msg, args) => {
             let col = client.db('RSS').collection('channels')
 
             let create = await col.updateOne({_id:msg.channel.id}, {$setOnInsert: {subscriptions: [], webhook:{id:botHook.id, token:botHook.token}}}, {upsert:true})
-            console.dir(create)
-            if (create.ok == 1) {
+            if (create.result.ok == 1) {
                 let registerChoice = await col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
-                if (registerChoice.ok == 1) {
+                if (registerChoice.result.ok == 1) {
                     let confirmation = bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
                     setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
                 }
