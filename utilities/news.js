@@ -114,7 +114,7 @@ const subscribeToNews = async (msg, args) => {
             }
 
             let registerChoice = col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
-            if (registerChoice.result.ok == 1) {
+            if (registerChoice.ok == 1) {
                 let confirmation = bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
                 setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
             }
