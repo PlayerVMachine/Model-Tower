@@ -137,8 +137,13 @@ const subscribeToUser = async (msg, args) => {
         let client = await MongoClient.connect(url)
         let mailboxes = client.db('model_tower').collection('mailboxes')
 
-
         if (user) {
+            let checkSubs = await mailboxes.findOne({$and: [ {_id:message.author.id}, {subscriptions:user.id} ]})
+            if (checkSubs) {
+                bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you're already subscribed to %s`, msg.author.username, user.username))
+                return
+            }
+
             let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:user.id}})
             if (subscribe.result.ok != 1) {
                 console.log(f(`Could not subscribe to %s for %s`, user.id, msg.author.id))

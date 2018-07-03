@@ -82,6 +82,8 @@ const userPost = async (msg, args) => {
 
         //5 minute delay on sending the post
         let postSender = setTimeout(async () => {
+            notice.delete('Cleaning up after self')
+
             //connect to db
             let client = await MongoClient.connect(url)
             let col = client.db('model_tower').collection('mailboxes')
@@ -129,6 +131,7 @@ const userPost = async (msg, args) => {
             bot.bot.removeListener('messageDelete', deletePost)
             bot.bot.removeListener('messageUpdate', updatePost)
             bot.bot.removeListener('messageReactionAdd', sendNow)
+            notice.delete('Cleaning up after self')
 
             let client = await MongoClient.connect(url)
             let col = client.db('model_tower').collection('mailboxes')
