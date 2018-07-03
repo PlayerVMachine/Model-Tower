@@ -308,23 +308,15 @@ bot.on(`presenceUpdate`, async (other, old) => {
     }
 })
 
-//Used to configure the RSS webhook options
-// const setNews = bot.registerCommand('news', async (msg, args) => {
-//     let client = await MongoClient.connect(url)
-//     news.subscribeToNews(msg, bot, client)
-// })
-
-
 /////////////////////////////////////////////
 //SCHEDULED TASKS                         //
 ///////////////////////////////////////////
 
 //GET news from RSS feeds every 30 minutes and send to subscribed webhooks
-const getNews = async () => {
-    let client = await MongoClient.connect(url)
-    news.pullNews(bot, client)
+const getNews = () => {
+    news.pullNews()
 }
-setInterval(getNews, 30*60*1000)
+setInterval(getNews, 5*60*1000)
 
 //refresh the spotify new releases
 const spotifyRefresh = () => {
