@@ -1,33 +1,19 @@
-const request = require('superagent')
 const Parser = require('rss-parser')
 const f = require('util').format
 
-let feedReader = new Parser()
+const feedReader = new Parser()
 
-const rh = require('./replyHandler')
-
-//News related functions, like RSS and ???
-
-// CREATE WEBHOOK
-// let webhook = await msg.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
-
-
-/* POST TO A WEBHOOK CREATED BY THE BOT
-request.post('https://discordapp.com/api/webhooks/{id}/{token}
-.set('Content-Type', 'application/json')
-.send({'content': 'I did not hit her!'})
-.then((res) => {
-    console.log(res.status)
-})
-*/
+const bot = require('../core.js')
+const config = require('../config.json')
 
 //Collect types of news from RSS feeds and put them somewhere?
 exports.pullNews = async (bot, client) => {
     let thirtyMinutesAgo = new Date(Date.now() - 30*60*1000)
 
-    let generalNews = await feedReader.parseURL('http://feeds.bbci.co.uk/news/rss.xml')
-    let generalTech = await feedReader.parseURL('https://www.cnet.com/rss/news/')
-    //lifehacker?, io9?, buzzfeed?
+    let leagueNews = await feedReader.parseURL('https://na.leagueoflegends.com/en/rss.xml')
+    let r6News = await feedReader.parseURL('https://steamcommunity.com/games/359550/rss/')
+    let pubgNews = await feedReader.parseURL('https://steamcommunity.com/games/578080/rss')
+    let owNews = await feedReader.parseURL('https://fbis251.github.io/overwatch_news_feed/pc.atom')
 
     let feeds = {
         generalNews: generalNews,
@@ -58,61 +44,54 @@ exports.pullNews = async (bot, client) => {
             }
         })
     })
-
-
 }
 
-//Function for subscribing to news
-exports.subscribeToNews = async (msg, bot, client) => {
-    let botHook = null
-
-    //check if channel has our webhook, if so set botHook to our hook
-    let webhooks = await msg.channel.getWebhooks()
-    if (webhooks.length > 0) {
-        for (i in webhooks) {
-            if (webhooks[i].user.id == bot.user.id)
-                botHook = webhooks[i]
-            break
-        }
-    }
-
-    if (botHook == null) {
-
-        let question = `\`\`\`\nWould you like to configure this channel to recieve news? This will create a webhook. Y/n\`\`\``
-        let doWork = async (reply) => {
-            if (reply.content.trim().toUpperCase() == 'Y') {
-                    botHook = await reply.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
-
-                    let newsOptions = `\`\`\`xl\nSelect the news feed you wish to subscribe to:\n\n1. General News\n2. Tech News\n9. Leave menu\`\`\``
-                    let doMoreWork = async (reply) => {
-                        if (reply.content == '9') {
-                            // do nothing menu is closed
-                        } else {
-                            //push the created webhook to the selected news list
-                            let col = client.db('RSS').collection('channels')
-
-                            let feedID = parseInt(reply.content)
-
-                            if (feedID == NaN) {
-                                bot.createMessage(msg.channel.id, `\`\`\`\nPlease enter a number.\`\`\``)
-                            } else {
-                                let addWF = await col.findOneAndUpdate({_id:feedID}, {$addToSet: {subscribers:{id:botHook.id, token:botHook.token}}})
-                                console.log(addWF)
-                            }
-                            //call again if the reply wasn't 9
-                            rh.replyHandler(bot, msg, newsOptions, doMoreWork)
-                        }
-                    }
-                    rh.replyHandler(bot, msg, newsOptions, doMoreWork)
-            } else {
-                bot.createMessage(msg.channel.id, `\`\`\`\nWebhook creation cancelled.\`\`\``)
+const subscribeToNews = async (msg, args) => {
+    try {
+        let embed = {
+            embed: {
+                title: {text: `Available Game Newsfeeds`},
+                author: {name: bot.bot.user.username, icon_url: bot.bot.user.avatarURL, url:`https://buymeacoff.ee/playervm`},
+                description: `1. League of Legends News\n2. Rainbow Six Seige News\n3. Overwatch Patch Notes\n4. Player Unknown's Battlegrounds News`,
+                footer: `Know a good RSS feed for news on a game the bot supports? Let me know!`
             }
         }
 
-        rh.replyHandler(bot, msg, question, doWork)
+        let feedList = await bot.bot.createMessage(msg.channel.id, embed)
+        feedList.addReaction('1_:461947842055897099')
+        feedList.addReaction('2_:461947842546630656')
+        feedList.addReaction('3_:461947842294972419')
+        feedList.addReaction('4_:461947842232320011')
 
-    } else {
-        //user may want to update hook
+        const createNewsSubscription = async (message, emoji, userID) => {
+            if (userID != msg.author.id) {
+                return
+            }
+
+            let botHook = null
+
+            //check if channel has our webhook, if so set botHook to our hook
+            let webhooks = await msg.channel.getWebhooks()
+            if (webhooks.length > 0) {
+                for (i in webhooks) {
+                    if (webhooks[i].user.id == bot.user.id) {
+                        botHook = webhooks[i]
+                        break
+                    }
+                }
+            }
+
+            //create webhook since none exists
+            if (!botHook) {
+                botHook = await msg.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
+            }
+
+            //parse the emjoi name to get the # 1 through 4
+            //register the subscription in the db somehow
+
+
+    } catch (err) {
+        bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: subscribeToNews`, new Date(), err.message))
+        bot.bot.createMessage(msg.channel.id, f(`Sorry %s, a fuse blew somewhere if this message persists please report it in <#447153276786311180>`, msg.author.username))
     }
-
 }
