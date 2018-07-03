@@ -63,7 +63,7 @@ const subscribeToNews = async (msg, args) => {
                 title: `Available Game Newsfeeds`,
                 author: {name: bot.bot.user.username, icon_url: bot.bot.user.avatarURL, url:`https://buymeacoff.ee/playervm`},
                 description: `1. League of Legends News\n2. Rainbow Six Seige News\n3. Overwatch Patch Notes\n4. Player Unknown's Battlegrounds News`,
-                footer: `Know a good RSS feed for news on a game the bot supports? Let me know!`
+                footer: `Know a good RSS feed for news on a game the bot supports? Let me know! <#447153047970250772>`
             }
         }
 
