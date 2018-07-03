@@ -37,6 +37,7 @@ exports.pullNews = async () => {
 
     channels.forEach(channel => {
         let embeds = []
+        console.log(channel.subscriptions + ' : ' + feeds[channel.subscriptions])
         feeds[channel.subscriptions].items.forEach(item => {
             if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
                 console.log('pushing')
