@@ -108,15 +108,13 @@ const subscribeToNews = async (msg, args) => {
             let client = await MongoClient.connect(url)
             let col = client.db('RSS').collection('channels')
 
-            let subscriber = col.findOne({_id:msg.channel.id})
-            if (!subscriber) {
-                let create = col.insertOne({_id:msg.channel.id, webhook:{id:botHook.id, token:botHook.token}, subscriptions: []})
-            }
-
-            let registerChoice = col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
-            if (registerChoice.ok == 1) {
-                let confirmation = bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
-                setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
+            let create = col.updateOne({_id:msg.channel.id, webhook:{id:botHook.id, token:botHook.token}, {$setOnInsert: {subscriptions: []}}, {upsert:true})
+            if (create.ok == 1) {
+                let registerChoice = col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
+                if (registerChoice.ok == 1) {
+                    let confirmation = bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
+                    setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
+                }
             }
 
         }
