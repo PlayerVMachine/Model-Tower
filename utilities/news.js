@@ -38,7 +38,6 @@ exports.pullNews = async () => {
     channels.forEach(channel => {
         let embeds = []
         feeds[channel.subscriptions].items.forEach(item => {
-            console.log(item.isoDate + ': ' + item.title)
             if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
                 embeds.push({
                     title: item.title,
@@ -48,6 +47,7 @@ exports.pullNews = async () => {
                 })
             }
         })
+        console.log(channel.webhook.id)
         if (embeds.length > 0) {
             bot.bot.executeWebhook(channel.webhook.id, channel.webhook.token, {embeds: embeds.reverse()})
         }
@@ -112,7 +112,7 @@ const subscribeToNews = async (msg, args) => {
             if (create.result.ok == 1) {
                 let registerChoice = await col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
                 if (registerChoice.result.ok == 1) {
-                    let confirmation = bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
+                    let confirmation = await bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
                     setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
                 }
             }
