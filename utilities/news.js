@@ -37,22 +37,23 @@ exports.pullNews = async () => {
 
     channels.forEach(channel => {
         let embeds = []
-        console.log(channel.subscriptions + ' : ' + feeds[channel.subscriptions])
-        feeds[channel.subscriptions].items.forEach(item => {
-            if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
-                console.log('pushing')
-                embeds.push({
-                    title: item.title,
-                    description: item.content,
-                    url: item.link,
-                    timestamp: item.isoDate
-                })
-            }
+        channel.subscriptions.forEach(sub => {
+            feeds[sub].items.forEach(item => {
+                if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
+                    console.log('pushing')
+                    embeds.push({
+                        title: item.title,
+                        description: item.content,
+                        url: item.link,
+                        timestamp: item.isoDate
+                    })
+                }
+            })
         })
         console.log(embeds.length)
-        if (embeds.length > 0) {
-            bot.bot.executeWebhook(channel.webhook.id, channel.webhook.token, {embeds: embeds.reverse()})
-        }
+            if (embeds.length > 0) {
+                bot.bot.executeWebhook(channel.webhook.id, channel.webhook.token, {embeds: embeds.reverse()})
+            }
     })
 }
 
