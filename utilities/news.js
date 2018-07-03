@@ -11,6 +11,8 @@ const config = require('../config.json')
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
 
+const emotes1to10 = ['1_:461947842055897099', '2_:461947842546630656', '3_:461947842294972419', '4_:461947842232320011', '5_:461947842215542790', '6_:461947842370732062', '7_:461947842294972436', '8_:461946580472168467', '9_:461947842290909194', '10_:461947842614001674']
+
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
     if (['set','sub'].includes(args[0])) {
@@ -77,6 +79,9 @@ const subscribeToNews = async (msg, args) => {
             if (userID != msg.author.id) {
                 return
             }
+            if (!emotes1to10.includes(emoji.name + ':' + emoji.id)) {
+                return
+            }
 
             let botHook = null
 
@@ -93,7 +98,7 @@ const subscribeToNews = async (msg, args) => {
 
             //create webhook since none exists
             if (!botHook) {
-                botHook = await msg.channel.createWebhook({name: bot.user.username + `: Game News`, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
+                botHook = await msg.channel.createWebhook({name: bot.bot.user.username + `: Game News`, avatar: bot.bot.user.avatarURL}, `Registered webhook to send news`)
             }
 
             //parse the emjoi name to get the # 1 through 4
