@@ -77,7 +77,8 @@ const userPost = async (msg, args) => {
             sent: new Date()
         }
 
-        let notice = await bot.bot.createMessage(msg.channel.id, f(`%s, you have 5 minutes to edit or delete your post before it's sent!`, msg.author.username))
+        let notice = await bot.bot.createMessage(msg.channel.id, f(`%s, you have 2 minutes to edit or delete your post before it's sent! React with 📨 to send now.`, msg.author.username))
+        notice.addReaction('📨')
 
         //5 minute delay on sending the post
         let postSender = setTimeout(async () => {
@@ -93,7 +94,7 @@ const userPost = async (msg, args) => {
             } else {
                 bot.bot.createMessage(msg.channel.id, f(`%s, an error occured sending the post to your followers, please try again later`, msg.author.username))
             }
-        }, 5 * 60 * 1000)
+        }, 2 * 60 * 1000)
 
         //listen for edit message or delete message for 5 minutes before continuing with post sending
         const updatePost = (message, oldMessage) => {
@@ -104,7 +105,7 @@ const userPost = async (msg, args) => {
             if (message.id == msg.id) {
                 let args = message.content.split(' ')
                 post.content = args.slice(1).join(' ')
-                notice.edit(f(`%s, you have 5 minutes to edit or delete your post before it's sent! Edit registed!`, msg.author.username))
+                notice.edit(f(`%s, you have 2 minutes to edit or delete your post before it's sent! Edit registed! React with 📨 to send now.`, msg.author.username))
             }
         }
 
@@ -115,17 +116,42 @@ const userPost = async (msg, args) => {
                 setTimeout(() => {notice.delete('Cleaning up after self')}, 5000)
                 bot.bot.removeListener('messageDelete', deletePost)
                 bot.bot.removeListener('messageUpdate', updatePost)
+                bot.bot.removeListener('messageReactionAdd', sendNow)
+            }
+        }
+
+        const sendNow = async (message, emoji, userID) => {
+            if (userID != msg.author.id) {
+                return
+            }
+
+            clearTimeout(postSender)
+            bot.bot.removeListener('messageDelete', deletePost)
+            bot.bot.removeListener('messageUpdate', updatePost)
+            bot.bot.removeListener('messageReactionAdd', sendNow)
+
+            let client = await MongoClient.connect(url)
+            let col = client.db('model_tower').collection('mailboxes')
+
+            //add message to apropriate mailboxes
+            let sent = await col.updateMany({subscriptions:msg.author.id}, {$addToSet: {news:post}})
+            if (sent.result.ok == 1) {
+                let dmChannel = await msg.author.getDMChannel()
+                bot.bot.createMessage(dmChannel.id, f(`%s, your post has been sent to your followers!\`\`\`%s\`\`\``, msg.author.username, post.content))
+            } else {
+                bot.bot.createMessage(msg.channel.id, f(`%s, an error occured sending the post to your followers, please try again later`, msg.author.username))
             }
         }
 
         bot.bot.on('messageUpdate', updatePost)
         bot.bot.on('messageDelete', deletePost)
+        bot.bot.on('messageReactionAdd', sendNow)
 
         setTimeout(() => {
             notice.delete('post expired')
             bot.bot.removeListener('messageDelete', deletePost)
             bot.bot.removeListener('messageUpdate', updatePost)
-        }, 5 * 60 * 1000)
+        }, 2 * 60 * 1000)
 
     } catch (err) {
         bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: userPost`, new Date(), err.message))
