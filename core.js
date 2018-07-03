@@ -316,7 +316,7 @@ bot.on(`presenceUpdate`, async (other, old) => {
 const getNews = () => {
     news.pullNews()
 }
-setInterval(getNews, 5*60*1000)
+setInterval(getNews, 15*60*1000)
 
 //refresh the spotify new releases
 const spotifyRefresh = () => {
@@ -324,7 +324,7 @@ const spotifyRefresh = () => {
     if(date.getDay() === 5)
         spotify.getReleases()
 }
-setInterval(spotifyRefresh, 12*60*60*1000)
+setInterval(spotifyRefresh, 15*60*60*1000)
 
 /////////////////////////////////////////////
 //EXPRESS SERVER                          //

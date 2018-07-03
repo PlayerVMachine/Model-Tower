@@ -23,7 +23,7 @@ exports.commandHandler = (msg, args) => {
 //Collect types of news from RSS feeds and put them somewhere?
 exports.pullNews = async () => {
     let client = await MongoClient.connect(url)
-    let thirtyMinutesAgo = new Date(Date.now() - 3w0*60*1000)
+    let fifteenMinutesAgo = new Date(Date.now() - 15*60*1000)
 
     let leagueNews = await feedReader.parseURL('https://na.leagueoflegends.com/en/rss.xml')
     let r6News = await feedReader.parseURL('https://steamcommunity.com/games/359550/rss/')
@@ -39,7 +39,7 @@ exports.pullNews = async () => {
         let embeds = []
         channel.subscriptions.forEach(sub => {
             feeds[sub].items.forEach(item => {
-                if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
+                if(Date.parse(item.isoDate) > Date.parse(fifteenMinutesAgo)) {
                     embeds.push({
                         title: item.title,
                         description: item.contentSnippet,
