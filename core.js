@@ -6,7 +6,6 @@ const Eris = require('eris')
 const config = require('./config.json')
 
 //Project files
-//const news = require('./news.js')
 const r6 = require('./game-integrations/rainbowsix.js')
 const lol = require('./game-integrations/leagueoflegends.js')
 //const fortnite = require('./game-integrations/fortnite.js')
@@ -24,6 +23,7 @@ const spotify = require('./utilities/spotify.js')
 const weather = require('./utilities/weather.js')
 const rem = require('./utilities/reminders.js')
 const tools = require('./utilities/tools.js')
+const news = require('./utilities/news.js')
 
 //
 const help = require('./help.json')
@@ -265,6 +265,11 @@ bot.on('messageCreate', async (msg) => {
             if (check) {
                 tools.commandHandler(msg,args)
             }
+        } else if (command == 'news') {
+            //let check = cooldown.short(command, msg)
+            //if (check) {
+                news.commandHandler(msg, args)
+            //}
         } else {
             //check for shortcuts
             if (command == 'ping') {

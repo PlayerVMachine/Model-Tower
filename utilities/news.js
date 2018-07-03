@@ -1,3 +1,5 @@
+//Module imports
+const MongoClient = require('mongodb').MongoClient
 const Parser = require('rss-parser')
 const f = require('util').format
 
@@ -6,27 +8,34 @@ const feedReader = new Parser()
 const bot = require('../core.js')
 const config = require('../config.json')
 
+// mongodb login
+const url = 'mongodb://127.0.0.1:36505'
+
+exports.commandHandler = (msg, args) => {
+    let restOfArgs = args.slice(1)
+    if (['set','sub'].includes(args[0])) {
+        subscribeToNews(msg, restOfArgs)
+    }
+}
+
 //Collect types of news from RSS feeds and put them somewhere?
-exports.pullNews = async (bot, client) => {
-    let thirtyMinutesAgo = new Date(Date.now() - 30*60*1000)
+exports.pullNews = async () => {
+    let client = await MongoClient.connect(url)
+    let thirtyMinutesAgo = new Date(Date.now() - 24*60*60*1000)
 
     let leagueNews = await feedReader.parseURL('https://na.leagueoflegends.com/en/rss.xml')
     let r6News = await feedReader.parseURL('https://steamcommunity.com/games/359550/rss/')
-    let pubgNews = await feedReader.parseURL('https://steamcommunity.com/games/578080/rss')
     let owNews = await feedReader.parseURL('https://fbis251.github.io/overwatch_news_feed/pc.atom')
+    let pubgNews = await feedReader.parseURL('https://steamcommunity.com/games/578080/rss')
 
-    let feeds = {
-        generalNews: generalNews,
-        generalTech: generalTech
-    }
-
+    let feeds = [leagueNews, r6News, owNews, pubgNews]
     let col = client.db('RSS').collection('channels')
 
     let channels = await col.find().toArray()
 
     channels.forEach(channel => {
         let embeds = []
-        feeds[channel.name].items.forEach(item => {
+        feeds[channel.subscriptions].items.forEach(item => {
             console.log(item.isoDate + ': ' + item.title)
             if(Date.parse(item.isoDate) > Date.parse(thirtyMinutesAgo)) {
                 embeds.push({
@@ -37,17 +46,18 @@ exports.pullNews = async (bot, client) => {
                 })
             }
         })
-
-        channel.subscribers.forEach(subscriber => {
-            if (embeds.length > 0) {
-                bot.executeWebhook(subscriber.id, subscriber.token, {embeds: embeds.reverse()})
-            }
-        })
+        if (embeds.length > 0) {
+            bot.bot.executeWebhook(channel.webhook.id, channel.webhook.token, {embeds: embeds.reverse()})
+        }
     })
 }
 
 const subscribeToNews = async (msg, args) => {
     try {
+        if (!msg.member.permission.has('manageChannels')) {
+            return
+        }
+
         let embed = {
             embed: {
                 title: {text: `Available Game Newsfeeds`},
@@ -83,11 +93,31 @@ const subscribeToNews = async (msg, args) => {
 
             //create webhook since none exists
             if (!botHook) {
-                botHook = await msg.channel.createWebhook({name: bot.user.username, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
+                botHook = await msg.channel.createWebhook({name: bot.user.username + `: Game News`, avatar: bot.user.avatarURL}, `Registered webhook to send news`)
             }
 
             //parse the emjoi name to get the # 1 through 4
+            let choice = parseInt(emoji.name.charAt(0)) - 1
+
             //register the subscription in the db somehow
+            let client = await MongoClient.connect(url)
+            let col = client.db('RSS').collection('channels')
+
+            let subscriber = col.findOne({_id:msg.channel.id})
+            if (!subscriber) {
+                let create = col.insertOne({_id:msg.channel.id, webhook:{id:botHook.id, token:botHook.token}, subscriptions: []})
+            }
+
+            let registerChoice = col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
+            if (registerChoice.result.ok == 1) {
+                let confirmation = bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
+                setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
+            }
+
+        }
+
+        bot.bot.on('messageReactionAdd', createNewsSubscription)
+        setTimeout(() => {bot.bot.removeListener('messageReactionAdd', createNewsSubscription)}, 60 * 1000)
 
 
     } catch (err) {
