@@ -43,7 +43,7 @@ exports.pullNews = async () => {
                     console.log('pushing')
                     embeds.push({
                         title: item.title,
-                        description: item.content,
+                        description: item.contentSnippet,
                         url: item.link,
                         timestamp: item.isoDate
                     })
