@@ -89,7 +89,7 @@ const subscribeToNews = async (msg, args) => {
             let webhooks = await msg.channel.getWebhooks()
             if (webhooks.length > 0) {
                 for (i in webhooks) {
-                    if (webhooks[i].user.id == bot.user.id) {
+                    if (webhooks[i].user.id == bot.bot.user.id) {
                         botHook = webhooks[i]
                         break
                     }
