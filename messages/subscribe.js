@@ -74,6 +74,12 @@ const subscribeToGuildAnnouncementChannel = async (msg, args) => {
 
         let guild_announcer = await guild_announcers.findOne({_id:msg.channel.guild.id})
         if(guild_announcer.announcements) {
+            let checkSubs = await mailboxes.findOne({$and: [ {_id:msg.author.id}, {subscriptions:guild_announcer.announcements} ]})
+            if (checkSubs) {
+                bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you're already subscribed to %s`, msg.author.username, resolver.channel(msg.channel.guild, guild_announcer.announcements).mention))
+                return
+            }
+
             let subscribe = await mailboxes.updateOne({_id:msg.author.id}, {$addToSet: {subscriptions:guild_announcer.announcements}})
             if (subscribe.result.ok != 1) {
                 console.log(f(`Could not subscribe to %s for %s`, guild_announcer.channel, msg.author.id))
