@@ -42,7 +42,7 @@ const getAlbum = async (position) => {
     }
 }
 
-const getReleases = async () => {
+exports.getReleases = async () => {
     try {
         let client = await MongoClient.connect(url)
         const spotifyCol = client.db('spotify').collection('NewReleases')
@@ -86,7 +86,7 @@ const getReleases = async () => {
             else
                 console.log('50 albums pushed to db')
         }
-
+        postTop10ToChannels()
     } catch (e) {
         console.log(e)
     }
@@ -243,3 +243,34 @@ const search = async (msg, args) => {
 
     bot.bot.createMessage(msg.channel.id, embed)
 }
+
+const postTop10ToChannels = async () => {
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('guild_announcers')
+    const spotifyCol = client.db('spotify').collection('NewReleases')
+
+    let guild_announcers = await col.find().toArray()
+
+    guild_announcers.forEach(ga => {
+        if (ga.spotify) {
+            let albums = await spotifyCol.find({ $and: [ {position:{$gte:0}} , {position:{$lte:10}} ] }).toArray()
+
+            let fields = []
+            for (i = 0; i < albums.length; i++)
+                fields.push({name: albums[i].position, value:f('Artist: **%s** | Album: [%s](%s)', albums[i].artist, albums[i].name.split('(')[0], albums[i].album_url), inline: false})
+
+            let embed = {
+                embed: {
+                    author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
+                    color: parseInt('0x1DB954', 16),
+                    fields: fields,
+                    footer: {text:'Part of the Broadcast Tower Integration Network'}
+                }
+            }
+
+            bot.bot.createMessage(ga.spotify, embed)
+        }
+    })
+}
+
+

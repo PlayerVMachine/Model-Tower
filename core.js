@@ -289,7 +289,11 @@ bot.on('messageCreate', async (msg) => {
 ///////////////////////////////////////////
 
 bot.on(`presenceUpdate`, async (other, old) => {
-    //Is the presence update to streaming?
+    //ignore bot presences
+    if (other.bot == true) {
+        return
+    }
+
     if(other.game) {
         console.dir(other.game)
         if(other.game.type == 1) {
@@ -317,9 +321,6 @@ bot.on(`presenceUpdate`, async (other, old) => {
             } else if (announcesStreams.stream) {
                 bot.createMessage(announcesStreams.stream, embed)
             }
-
-        } else if (other.game == 2) {
-
         } else {
             return
         }
@@ -339,10 +340,13 @@ setInterval(getNews, 15*60*1000)
 //refresh the spotify new releases
 const spotifyRefresh = () => {
     date = new Date()
-    if(date.getDay() === 5)
-        spotify.getReleases()
+    if(date.getDay() === 5) {
+        if (date.getHours() == 14) {
+            spotify.getReleases()
+        }
+    }
 }
-setInterval(spotifyRefresh, 12*60*60*1000)
+setInterval(spotifyRefresh, 60*60*1000)
 
 /////////////////////////////////////////////
 //EXPRESS SERVER                          //
