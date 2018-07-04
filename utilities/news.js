@@ -68,6 +68,7 @@ const subscribeToNews = async (msg, args) => {
             embed: {
                 title: `Available Game Newsfeeds`,
                 author: {name: bot.bot.user.username, icon_url: bot.bot.user.avatarURL, url:`https://buymeacoff.ee/playervm`},
+                color: parseInt(config.color, 16),
                 description: `1. League of Legends News\n2. Rainbow Six Seige News\n3. Overwatch Patch Notes\n4. Player Unknown's Battlegrounds News`,
                 footer: {text:`Know a good RSS feed for news on a game the bot supports? Let me know!`}
             }
@@ -120,12 +121,30 @@ const subscribeToNews = async (msg, args) => {
                     setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
                 }
             }
+        }
 
+        const removeNewsSubscription = async (message, emoji, userID) => {
+            if (userID != msg.author.id) {
+                return
+            }
+            if (!emotes1to10.includes(emoji.name + ':' + emoji.id)) {
+                return
+            }
+            //parse the emjoi name to get the # 1 through 4
+            let choice = parseInt(emoji.name.charAt(0)) - 1
+
+            let registerChoice = await col.updateOne({_id:msg.channel.id}, {$pull: {subscriptions:choice}})
+            if (registerChoice.result.ok == 1) {
+                let confirmation = await bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been removed`, msg.author.username))
+                setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
+            }
         }
 
         bot.bot.on('messageReactionAdd', createNewsSubscription)
+        bot.bot.on('messageReactionRemove', removeNewsSubscription)
         setTimeout(() => {
             bot.bot.removeListener('messageReactionAdd', createNewsSubscription)
+            bot.bot.removeListener('messageReactionRemove', removeNewsSubscription)
             feedList.removeReactions()
         }, 30 * 1000)
 
@@ -171,7 +190,7 @@ const unsubscribeFromNews = async (msg, args) => {
             feedList.addReaction(emotes1to10[n])
         })
 
-        const createNewsSubscription = async (message, emoji, userID) => {
+        const removeNewsSubscription = async (message, emoji, userID) => {
             if (userID != msg.author.id) {
                 return
             }
@@ -192,11 +211,6 @@ const unsubscribeFromNews = async (msg, args) => {
                 }
             }
 
-            //create webhook since none exists
-            if (!botHook) {
-                botHook = await msg.channel.createWebhook({name: bot.bot.user.username + `: Game News`, avatar: bot.bot.user.avatarURL}, `Registered webhook to send news`)
-            }
-
             //parse the emjoi name to get the # 1 through 4
             let choice = parseInt(emoji.name.charAt(0)) - 1
 
@@ -208,9 +222,9 @@ const unsubscribeFromNews = async (msg, args) => {
 
         }
 
-        bot.bot.on('messageReactionAdd', createNewsSubscription)
+        bot.bot.on('messageReactionAdd', removeNewsSubscription)
         setTimeout(() => {
-            bot.bot.removeListener('messageReactionAdd', createNewsSubscription)
+            bot.bot.removeListener('messageReactionAdd', removeNewsSubscription)
             feedList.removeReactions()
         }, 30 * 1000)
 
