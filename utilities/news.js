@@ -74,10 +74,10 @@ const subscribeToNews = async (msg, args) => {
         }
 
         let feedList = await bot.bot.createMessage(msg.channel.id, embed)
-        feedList.addReaction('1_:461947842055897099')
-        feedList.addReaction('2_:461947842546630656')
-        feedList.addReaction('3_:461947842294972419')
-        feedList.addReaction('4_:461947842232320011')
+        for (i = 0; i < newsSourceNames.length; i++) {
+            feedList.addReaction(emotes1to10[i])
+        }
+
 
         const createNewsSubscription = async (message, emoji, userID) => {
             if (userID != msg.author.id) {
@@ -147,7 +147,7 @@ const unsubscribeFromNews = async (msg, args) => {
         let channel = await col.findOne({_id:msg.channel.id})
 
         if (!channel || channel.subscriptions.length == 0) {
-            bot.bot.createMessage(msg.channel.id, f(`There are no subscriptions for this channel`, msg.author.id))
+            bot.bot.createMessage(msg.channel.id, f(`Sorry %s there are no subscriptions for this channel`, msg.author.username ))
             return
         }
 
@@ -166,10 +166,9 @@ const unsubscribeFromNews = async (msg, args) => {
         }
 
         let feedList = await bot.bot.createMessage(msg.channel.id, embed)
-        feedList.addReaction('1_:461947842055897099')
-        feedList.addReaction('2_:461947842546630656')
-        feedList.addReaction('3_:461947842294972419')
-        feedList.addReaction('4_:461947842232320011')
+        channel.subscriptions.forEach(n => {
+            feedList.addReaction(emotes1to10[n])
+        })
 
         const createNewsSubscription = async (message, emoji, userID) => {
             if (userID != msg.author.id) {
@@ -200,12 +199,10 @@ const unsubscribeFromNews = async (msg, args) => {
             //parse the emjoi name to get the # 1 through 4
             let choice = parseInt(emoji.name.charAt(0)) - 1
 
-            if (create.result.ok == 1) {
-                let registerChoice = await col.updateOne({_id:msg.channel.id}, {$pull: {subscriptions:choice}})
-                if (registerChoice.result.ok == 1) {
-                    let confirmation = await bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
-                    setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
-                }
+            let registerChoice = await col.updateOne({_id:msg.channel.id}, {$pull: {subscriptions:choice}})
+            if (registerChoice.result.ok == 1) {
+                let confirmation = await bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been removed`, msg.author.username))
+                setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
             }
 
         }
