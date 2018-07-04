@@ -291,6 +291,7 @@ bot.on('messageCreate', async (msg) => {
 bot.on(`presenceUpdate`, async (other, old) => {
     //Is the presence update to streaming?
     if(other.game) {
+        console.dir(other.game)
         if(other.game == 1) {
             let timestamp = new Date()
             let twitchUser = other.game.assets.large_image.slice(7)
@@ -306,6 +307,7 @@ bot.on(`presenceUpdate`, async (other, old) => {
                     timestamp: timestamp.toISOString()
                 }
             }
+            console.dir(embed)
 
             //create a list of guild ids the user is in
             let guildsUserIsMember = []
