@@ -225,9 +225,35 @@ const unsubscribeFromNews = async (msg, args) => {
 
         }
 
+        const createNewsSubscription = async (message, emoji, userID) => {
+            if (userID != msg.author.id) {
+                return
+            }
+            if (!emotes1to10.includes(emoji.name + ':' + emoji.id)) {
+                return
+            }
+
+            //parse the emjoi name to get the # 1 through 4
+            let choice = parseInt(emoji.name.charAt(0)) - 1
+
+            //register the subscription in the db somehow
+            let client = await MongoClient.connect(url)
+            let col = client.db('RSS').collection('channels')
+
+            if (create.result.ok == 1) {
+                let registerChoice = await col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
+                if (registerChoice.result.ok == 1) {
+                    let confirmation = await bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
+                    setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
+                }
+            }
+        }
+
         bot.bot.on('messageReactionAdd', removeNewsSubscription)
+        bot.bot.on('messageReactionRemove', createNewsSubscription)
         setTimeout(() => {
             bot.bot.removeListener('messageReactionAdd', removeNewsSubscription)
+            bot.bot.removeListener('messageReactionRemove', createNewsSubscription)
             feedList.removeReactions()
         }, 30 * 1000)
 
