@@ -100,7 +100,7 @@ const registerGuildSpotifyChannel = async (msg, args) => {
         let client = await MongoClient.connect(url)
         let col = client.db('model_tower').collection('guild_announcers')
 
-        let checkForGuild = await col.findOne({_id:guild.id, spotify:channel.id})
+        let checkForGuild = await col.findOne({_id:guild.id})
 
         if(!checkForGuild) {
             let register = await col.insertOne({_id:guild.id, spotify:channel.id})
