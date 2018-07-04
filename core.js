@@ -299,7 +299,7 @@ bot.on(`presenceUpdate`, async (other, old) => {
                 embed: {
                     title: f(`%s is now streaming: %s`, other.username, other.game.name),
                     author: {name: other.username, icon_url: other.avatarURL},
-                    thumbnail: {url:f(`https://static-cdn.jtvnw.net/previews-ttv/live_user_%s-256x256.jpg`, twitchUser), height:256, width:256}
+                    thumbnail: {url:f(`https://static-cdn.jtvnw.net/previews-ttv/live_user_%s-256x256.jpg`, twitchUser), height:256, width:256},
                     color: parseInt(config.color, 16),
                     url: other.game.url,
                     description: other.game.details,
