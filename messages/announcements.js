@@ -143,7 +143,7 @@ const registerGuildStreamChannel = async (msg, args) => {
         let checkForGuild = await col.findOne({_id:guild.id, stream:channel.id})
 
         if(!checkForGuild) {
-            let register = await col.insertOne({_id:guild.id, stream:stream.id})
+            let register = await col.insertOne({_id:guild.id, stream:channel.id})
             if (register.insertedCount == 1)
                 bot.bot.createMessage(msg.channel.id, f(`%s is now set as this server's Stream notification channel.`, channel.mention))
             else

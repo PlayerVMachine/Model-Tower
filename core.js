@@ -215,10 +215,11 @@ bot.on('messageCreate', async (msg) => {
             if (check) {
                 postManager.commandHandler(msg, args)
             }
-        } else if (command == 'set' || command == 'unset') {
-
-            annMgmt.commandHandler(msg, [command].concat(args))
-
+        } else if (command == 'chan') {
+            let check = cooldown.short(command, msg)
+            if (check) {
+                annMgmt.commandHandler(msg, args)
+            }
         } else if (command == 'lol') {
             //Check if the command is a league of league command
             let check = cooldown.short(command, msg)
@@ -266,10 +267,10 @@ bot.on('messageCreate', async (msg) => {
                 tools.commandHandler(msg,args)
             }
         } else if (command == 'news') {
-            //let check = cooldown.short(command, msg)
-            //if (check) {
+            let check = cooldown.long(command, msg)
+            if (check) {
                 news.commandHandler(msg, args)
-            //}
+            }
         } else {
             //check for shortcuts
             if (command == 'ping') {
@@ -291,6 +292,43 @@ bot.on(`presenceUpdate`, async (other, old) => {
     //Is the presence update to streaming?
     if(other.game) {
         if(other.game == 1) {
+            let timestamp = new Date()
+            let twitchUser = other.game.assets.large_image.slice(7)
+
+            let embed = {
+                embed: {
+                    title: f(`%s is now streaming: %s`, other.username, other.game.name),
+                    author: {name: other.username, icon_url: other.avatarURL},
+                    thumbnail: {url:f(`https://static-cdn.jtvnw.net/previews-ttv/live_user_%s-256x256.jpg`, twitchUser), height:256, width:256}
+                    color: parseInt(config.color, 16),
+                    url: other.game.url,
+                    description: other.game.details,
+                    timestamp: timestamp.toISOString()
+                }
+            }
+
+            //create a list of guild ids the user is in
+            let guildsUserIsMember = []
+            bot.guilds.forEach(guild => {
+                let member = guild.members.find(m => m.username = other.id)
+                if (member) {
+                    guildsUserIsMember.push(guild.id)
+                }
+            })
+
+            let client = await MongoClient.connect(url)
+            let col = client.db('model_tower').collection('guild_announcers')
+
+            let guildsWithStreamAnnouncements = await col.find({_id: {$in: guildsUserIsMember}}).toArray()
+            if(!guildsWithStreamAnnouncements) {
+                return
+            }
+
+            guildsWithStreamAnnouncements.forEach(ga => {
+                if (ga.stream) {
+                    bot.createMessage(ga.stream, embed)
+                }
+            })
 
         } else if (other.game == 2) {
 
@@ -298,14 +336,7 @@ bot.on(`presenceUpdate`, async (other, old) => {
             return
         }
 
-        //send post to followers
-
-        //if guild has a streamer role configured send in stream announcement channel
-
-        //https://static-cdn.jtvnw.net/previews-ttv/live_user_TWITCHNAME-108x60.jpg TWITCH LINK
-        //https://static-cdn.jtvnw.net/previews-ttv/live_user_TWITCHNAME-108x60.jpg WHEN NOT STREAMING
-
-    }
+}
 })
 
 /////////////////////////////////////////////
@@ -324,7 +355,7 @@ const spotifyRefresh = () => {
     if(date.getDay() === 5)
         spotify.getReleases()
 }
-setInterval(spotifyRefresh, 15*60*60*1000)
+setInterval(spotifyRefresh, 12*60*60*1000)
 
 /////////////////////////////////////////////
 //EXPRESS SERVER                          //

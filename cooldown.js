@@ -12,6 +12,8 @@ const lolSet = new Set()
 const owSet = new Set()
 const mbSet = new Set()
 const utilSet = new Set()
+const newsSet = new Set()
+const chanSet = new Set()
 
 let shortCD = {
 	weather: weatherSet,
@@ -22,11 +24,13 @@ let shortCD = {
 	lol: lolSet,
 	ow: owSet,
 	mb: mbSet,
-	util: utilSet
+	util: utilSet,
+	chan: chanSet
 }
 
 let longCD = {
-	remind: remindSet
+	remind: remindSet,
+	news: newsSet
 }
 
 

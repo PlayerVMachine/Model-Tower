@@ -240,12 +240,10 @@ const unsubscribeFromNews = async (msg, args) => {
             let client = await MongoClient.connect(url)
             let col = client.db('RSS').collection('channels')
 
-            if (create.result.ok == 1) {
-                let registerChoice = await col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
-                if (registerChoice.result.ok == 1) {
-                    let confirmation = await bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
-                    setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
-                }
+            let registerChoice = await col.updateOne({_id:msg.channel.id}, {$addToSet: {subscriptions:choice}})
+            if (registerChoice.result.ok == 1) {
+                let confirmation = await bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been registered`, msg.author.username))
+                setTimeout(() => {confirmation.delete('Cleaning up after self')}, 5000)
             }
         }
 
