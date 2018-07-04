@@ -250,24 +250,24 @@ const postTop10ToChannels = async () => {
     const spotifyCol = client.db('spotify').collection('NewReleases')
 
     let guild_announcers = await col.find().toArray()
+    let albums = await spotifyCol.find({ $and: [ {position:{$gte:0}} , {position:{$lte:10}} ] }).toArray()
+
+    let fields = []
+    for (i = 0; i < albums.length; i++) {
+        fields.push({name: albums[i].position, value:f('Artist: **%s** | Album: [%s](%s)', albums[i].artist, albums[i].name.split('(')[0], albums[i].album_url), inline: false})
+
+        let embed = {
+            embed: {
+                author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
+                color: parseInt('0x1DB954', 16),
+                fields: fields,
+                footer: {text:'Part of the Broadcast Tower Integration Network'}
+            }
+        }
+    }
 
     guild_announcers.forEach(ga => {
         if (ga.spotify) {
-            let albums = await spotifyCol.find({ $and: [ {position:{$gte:0}} , {position:{$lte:10}} ] }).toArray()
-
-            let fields = []
-            for (i = 0; i < albums.length; i++)
-                fields.push({name: albums[i].position, value:f('Artist: **%s** | Album: [%s](%s)', albums[i].artist, albums[i].name.split('(')[0], albums[i].album_url), inline: false})
-
-            let embed = {
-                embed: {
-                    author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
-                    color: parseInt('0x1DB954', 16),
-                    fields: fields,
-                    footer: {text:'Part of the Broadcast Tower Integration Network'}
-                }
-            }
-
             bot.bot.createMessage(ga.spotify, embed)
         }
     })
