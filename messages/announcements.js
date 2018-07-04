@@ -134,6 +134,7 @@ const registerGuildStreamChannel = async (msg, args) => {
 
         if (!channel) {
             bot.bot.createMessage(msg.channel.id, `Sorry I couldn't find that channel in this server!`)
+            return
         }
 
         //Add the guild and channel to a collection
