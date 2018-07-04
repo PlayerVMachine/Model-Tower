@@ -311,7 +311,7 @@ bot.on(`presenceUpdate`, async (other, old) => {
             let client = await MongoClient.connect(url)
             let col = client.db('model_tower').collection('guild_announcers')
 
-            let announcesStreams = await col.findOne({_id: other.guild})
+            let announcesStreams = await col.findOne({_id: other.guild.id})
             if(!announcesStreams) {
                 return
             } else if (announcesStreams.stream) {
