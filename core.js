@@ -292,7 +292,7 @@ bot.on(`presenceUpdate`, async (other, old) => {
     //Is the presence update to streaming?
     if(other.game) {
         console.dir(other.game)
-        if(other.game == 1) {
+        if(other.game.type == 1) {
             let timestamp = new Date()
             let twitchUser = other.game.assets.large_image.slice(7)
 
