@@ -127,7 +127,7 @@ const subscribeToNews = async (msg, args) => {
         setTimeout(() => {
             bot.bot.removeListener('messageReactionAdd', createNewsSubscription)
             feedList.removeReactions()
-        }, 60 * 1000)
+        }, 30 * 1000)
 
     } catch (err) {
         bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: subscribeToNews`, new Date(), err.message))
@@ -152,6 +152,7 @@ const unsubscribeFromNews = async (msg, args) => {
         }
 
         let description = []
+        channel.subscriptions.sort()
         channel.subscriptions.forEach(n => {
             description.push(newsSourceNames[n])
         })
@@ -211,7 +212,7 @@ const unsubscribeFromNews = async (msg, args) => {
         setTimeout(() => {
             bot.bot.removeListener('messageReactionAdd', createNewsSubscription)
             feedList.removeReactions()
-        }, 60 * 1000)
+        }, 30 * 1000)
 
     } catch (err) {
         bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: subscribeToNews`, new Date(), err.message))
