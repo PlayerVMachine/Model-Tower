@@ -307,38 +307,23 @@ bot.on(`presenceUpdate`, async (other, old) => {
                     timestamp: timestamp.toISOString()
                 }
             }
-            console.dir(embed)
-
-            //create a list of guild ids the user is in
-            let guildsUserIsMember = []
-            bot.guilds.forEach(guild => {
-                let member = guild.members.find(m => m.username = other.id)
-                if (member) {
-                    guildsUserIsMember.push(guild.id)
-                }
-            })
 
             let client = await MongoClient.connect(url)
             let col = client.db('model_tower').collection('guild_announcers')
 
-            let guildsWithStreamAnnouncements = await col.find({_id: {$in: guildsUserIsMember}}).toArray()
-            if(!guildsWithStreamAnnouncements) {
+            let announcesStreams = await col.findOne({_id: other.guild})
+            if(!announcesStreams) {
                 return
+            } else if (announcesStreams.stream) {
+                bot.createMessage(announcesStreams.stream, embed)
             }
-
-            guildsWithStreamAnnouncements.forEach(ga => {
-                if (ga.stream) {
-                    bot.createMessage(ga.stream, embed)
-                }
-            })
 
         } else if (other.game == 2) {
 
         } else {
             return
         }
-
-}
+    }
 })
 
 /////////////////////////////////////////////
