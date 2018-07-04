@@ -133,6 +133,9 @@ const subscribeToNews = async (msg, args) => {
             //parse the emjoi name to get the # 1 through 4
             let choice = parseInt(emoji.name.charAt(0)) - 1
 
+            let client = await MongoClient.connect(url)
+            let col = client.db('RSS').collection('channels')
+
             let registerChoice = await col.updateOne({_id:msg.channel.id}, {$pull: {subscriptions:choice}})
             if (registerChoice.result.ok == 1) {
                 let confirmation = await bot.bot.createMessage(msg.channel.id, f(`%s your subscription has been removed`, msg.author.username))
