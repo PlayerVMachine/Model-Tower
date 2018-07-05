@@ -198,7 +198,7 @@ bot.on('messageCreate', async (msg) => {
         }
 
         if (command == 'invite') {
-            bot.createMessage(msg.channel.id, `Invite me with this link: <https://discordapp.com/api/oauth2/authorize?client_id=463370961941561344&permissions=536881152&scope=bot>`)
+            bot.createMessage(msg.channel.id, `Invite me with this link: <https://discordapp.com/api/oauth2/authorize?client_id=464529935315370004&permissions=536881152&scope=bot>`)
             return
         }
 
