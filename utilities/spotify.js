@@ -27,6 +27,10 @@ exports.commandHandler = (msg, args) => {
         tenList(msg, restOfArgs)
     } else if (['search', 'lookup', 'lu', 's'].includes(args[0])) {
         search(msg, restOfArgs)
+    } else if (['sub'].includes(args[0])) {
+        userSubscribeToWeeklyUpdate(msg, restOfArgs)
+    } else if (['unsub'].includes(args[0])) {
+        userUnsubscribeFromWeeklyUpdate(msg, restOfArgs)
     }
 }
 
@@ -87,6 +91,7 @@ exports.getReleases = async () => {
                 console.log('50 albums pushed to db')
         }
         postTop10ToChannels()
+        postTop10ToUsers()
     } catch (e) {
         console.log(e)
     }
@@ -273,4 +278,55 @@ const postTop10ToChannels = async () => {
     })
 }
 
+const postTop10ToUsers = async () => {
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('guild_announcers')
+    const spotifyCol = client.db('spotify').collection('NewReleases')
 
+    //get top 10
+    let albums = await spotifyCol.find({ $and: [ {position:{$gte:0}} , {position:{$lte:10}} ] }).toArray()
+    let description = []
+    for (i = 0; i < albums.length; i++) {
+        description.push(f('%s. Artist: **%s** | Album: [%s](%s)', albums[i].position, albums[i].artist, albums[i].name.split('(')[0], albums[i].album_url))
+    }
+
+    //create message
+    let message = {
+        source: `Spotify New Releases`,
+        content: description.join('\n'),
+        sent: new Date()
+    }
+
+    //put in all mailboxes where spotify is true
+    let sent = await col.updateMany({spotify:true}, {$addToSet: {news:message}})
+    if (sent.result.ok != 1) {
+        console.log(sent)
+    }
+}
+
+
+const userSubscribeToWeeklyUpdate = async (msg, args) => {
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('mailboxes')
+
+    let update = col.updateOne({_id:msg.author.id}, {spotify:true})
+    if (sent.result.ok != 1) {
+        bot.bot.createMessage(msg.channel.id, f(`Sorry %s, there was an error subscribing to Spotify updates. Please try again later.`, msg.author.username))
+        return
+    }
+
+    bot.bot.createMessage(msg.channel.id, f(`%s, you are now subscribed to Spotify weekly updates. You'll find them in your mailbox every Friday.`, msg.author.username))
+}
+
+const userUnsubscribeFromWeeklyUpdate = async (msg, args) => {
+    let client = await MongoClient.connect(url)
+    let col = client.db('model_tower').collection('mailboxes')
+
+    let update = col.updateOne({_id:msg.author.id}, {spotify:true})
+    if (sent.result.ok != 1) {
+        bot.bot.createMessage(msg.channel.id, f(`Sorry %s, there was an error unsubscribing from Spotify updates. Please try again later.`, msg.author.username))
+        return
+    }
+
+    bot.bot.createMessage(msg.channel.id, f(`%s, you are now unsubscribed from Spotify weekly updates.`, msg.author.username))
+}

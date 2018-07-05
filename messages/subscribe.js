@@ -36,6 +36,7 @@ const registerMailbox = async (userid) => {
 
         let mailbox = {
             _id: userid,
+            spotify: false,
             subscriptions: [],
             news: []
         }
