@@ -52,6 +52,9 @@ const getPlayerStats = async (msg, args) => {
     let accuracy = ((modeStats.headshotKills / modeStats.kills) * 100).toFixed(2)
     let kd = ((modeStats.kills / modeStats.losses) * 100).toFixed(2)
 
+    if (accuracy == NaN)
+        accuracy = 0
+
     let embed = {
         embed : {
             title: f(`Overall PUBG Stats for %s this season:`, args[1]),

@@ -171,7 +171,7 @@ bot.on('messageCreate', async (msg) => {
     prefix = await getGuildPrefix(msg.channel.guild)
 
     if (msg.content.startsWith(`<@463370961941561344> prefix`)) {
-        bot.createMessage(msg.channel.id, prefix)
+        bot.createMessage(msg.channel.id, f(`This server's prefix is: %s`, prefix))
     }
 
     //Check if the message sent was a command intended for the bot
