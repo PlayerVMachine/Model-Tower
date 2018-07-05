@@ -187,7 +187,7 @@ bot.on('messageCreate', async (msg) => {
             let description = args.length == 0 ? help['help'].replace(/pfx/g, prefix) : help[args[0]].replace(/pfx/g, prefix)
             let embed = {
                 embed : {
-                    title: 'Game Stats Central Command Help',
+                    title: 'Media Central Command Help',
                     color: 0x497fbc,
                     description: description,
                     footer: module.exports.footer
