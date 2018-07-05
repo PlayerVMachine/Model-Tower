@@ -304,7 +304,6 @@ const postTop10ToUsers = async () => {
     }
 }
 
-
 const userSubscribeToWeeklyUpdate = async (msg, args) => {
     let client = await MongoClient.connect(url)
     let col = client.db('model_tower').collection('mailboxes')
