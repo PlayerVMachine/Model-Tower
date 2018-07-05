@@ -91,6 +91,8 @@ bot.on('guildCreate', async (guild) => {
             bot.createMessage(ownerDM.id, f('Hi someone (perhaps you) just invited me to your server %s! But they/you haven\'t given me all the permissions I need to do my best work, I\'m missing: %s permissions', guild.name, missing.join(', ')))
         }
 
+        bot.createMessage(config.logChannelID, f(`I've just been invited to %s owned by <@%s> and has %s members`, guild.name, guild.ownerID, guild.memberCount))
+
     } catch (err) {
         console.log(err)
     }
@@ -113,6 +115,7 @@ bot.on('guildDelete', async (guild) => {
         }
 
         bot.on('messageCreate', feedback)
+        bot.createMessage(config.logChannelID, f(`I've just been kicked from %s owned by <@%s> and has %s members`, guild.name, guild.ownerID, guild.memberCount))
     } catch (err) {
         console.log(err)
     }
@@ -125,7 +128,7 @@ bot.on('guildDelete', async (guild) => {
 const getGuildPrefix = async (guild) => {
     //message channel is a DM not a guild channel
     if (!guild) {
-        return `g.`
+        return `m.`
     }
 
     let client = await MongoClient.connect(url)
@@ -135,7 +138,7 @@ const getGuildPrefix = async (guild) => {
     if(guildConfig) {
         return guildConfig.prefix
     } else {
-        return `g.`
+        return `m.`
     }
 }
 
