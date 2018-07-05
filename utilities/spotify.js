@@ -309,7 +309,7 @@ const userSubscribeToWeeklyUpdate = async (msg, args) => {
     let client = await MongoClient.connect(url)
     let col = client.db('model_tower').collection('mailboxes')
 
-    let update = col.updateOne({_id:msg.author.id}, {$set: {spotify:true}})
+    let update = await col.updateOne({_id:msg.author.id}, {$set: {spotify:true}})
     if (update.result.ok != 1) {
         bot.bot.createMessage(msg.channel.id, f(`Sorry %s, there was an error subscribing to Spotify updates. Please try again later.`, msg.author.username))
         return
@@ -322,7 +322,7 @@ const userUnsubscribeFromWeeklyUpdate = async (msg, args) => {
     let client = await MongoClient.connect(url)
     let col = client.db('model_tower').collection('mailboxes')
 
-    let update = col.updateOne({_id:msg.author.id}, {$set: {spotify:false}})
+    let update = await col.updateOne({_id:msg.author.id}, {$set: {spotify:false}})
     if (update.result.ok != 1) {
         bot.bot.createMessage(msg.channel.id, f(`Sorry %s, there was an error unsubscribing from Spotify updates. Please try again later.`, msg.author.username))
         return
