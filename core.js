@@ -170,7 +170,7 @@ bot.on('messageCreate', async (msg) => {
     //Check the origin guild to set prefix
     prefix = await getGuildPrefix(msg.channel.guild)
 
-    if (msg.content.startsWith(`<@463370961941561344> prefix`)) {
+    if (msg.content.startsWith(`<@464529935315370004> prefix`)) {
         bot.createMessage(msg.channel.id, f(`This server's prefix is: %s`, prefix))
     }
 
@@ -282,6 +282,10 @@ bot.on('messageCreate', async (msg) => {
             } else if (['post', 'pull'].includes(command)) {
                 let check = cooldown.short('mb', msg)
                 postManager.commandHandler(msg, [command].concat(args))
+            } else if (['glitch'].includes(command)) {
+                bot.createMessage(msg.channel.id, `Congrats you'm'st done broken the tower, test it on monday.`)
+            } else if (['titty', 'player', 'nsfw', 'night', 'raven'].includes(command)) {
+                bot.createMessage(msg.channel.id, `Heck of NightRaven <:catHeart:442431739936112640>`)
             }
         }
 
