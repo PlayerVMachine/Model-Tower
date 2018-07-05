@@ -203,7 +203,7 @@ bot.on('messageCreate', async (msg) => {
                     title: 'Media Central Bot',
                     author: {name: bot.user.username, icon_url: bot.user.avatarURL},
                     color: 0x497fbc,
-                    description: `Discord bot providing game statistics, posting/mailbox features, Spotify tools, and more community features on the way!\nIf you like the bot consider [buying me a coffee](buymeacoff.ee/playervm)`,
+                    description: `Discord bot providing game statistics, posting/mailbox features, Spotify tools, and more community features on the way!\n\nIf you like the bot consider [buying me a coffee](https://buymeacoff.ee/playervm)`,
                     fields: [
                     {name: 'Version', value:`0.2`, inline:true},
                     {name: 'Library', value:`Eris`, inline: true},
