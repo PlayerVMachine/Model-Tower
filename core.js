@@ -197,6 +197,24 @@ bot.on('messageCreate', async (msg) => {
             return
         }
 
+        if (command == 'about') {
+            let embed = {
+                embed : {
+                    title: 'Media Central Bot',
+                    author: {name: bot.user.username, icon_url: bot.user.avatarURL},
+                    color: 0x497fbc,
+                    description: `Discord bot providing game statistics, posting/mailbox features, Spotify tools, and more community features on the way!\nIf you like the bot consider [buying me a coffee](buymeacoff.ee/playervm)`,
+                    fields: [
+                    {name: 'Version', value:`0.2`, inline:true},
+                    {name: 'Library', value:`Eris`, inline: true},
+                    {name: 'Developer', value:`@PlayerVMachine#0169`, inline: true}
+                    ]
+                }
+            }
+            bot.createMessage(msg.channel.id, embed)
+            return
+        }
+
         if (command == 'invite') {
             bot.createMessage(msg.channel.id, `Invite me with this link: <https://discordapp.com/api/oauth2/authorize?client_id=464529935315370004&permissions=536881152&scope=bot>`)
             return
@@ -285,7 +303,7 @@ bot.on('messageCreate', async (msg) => {
             } else if (['glitch'].includes(command)) {
                 bot.createMessage(msg.channel.id, `Congrats you'm'st done broken the tower, test it on monday.`)
             } else if (['titty', 'player', 'nsfw', 'night', 'raven'].includes(command)) {
-                bot.createMessage(msg.channel.id, `Heck of NightRaven <:catHeart:442431739936112640>`)
+                bot.createMessage(msg.channel.id, `Heck off NightRaven <:catHeart:442431739936112640>`)
             }
         }
 
