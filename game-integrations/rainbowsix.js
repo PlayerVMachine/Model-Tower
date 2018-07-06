@@ -50,7 +50,7 @@ const getMiscStats = async (msg, args) => {
             desc = f('Suicides: %d', overall.suicides)
 
         let hitrate = (overall.bullets_hit / overall.bullets_fired)
-        console.log(overall.bullets_hit + ' : ' + overall.bullets_fired)
+        console.dir(overall)
         hitrate = hitrate.toFixed(2)
 
         let embed = {
