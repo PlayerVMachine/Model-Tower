@@ -49,10 +49,6 @@ const getMiscStats = async (msg, args) => {
         let overall = statistics.player.stats.overall
             desc = f('Suicides: %d', overall.suicides)
 
-        let hitrate = (overall.bullets_hit / overall.bullets_fired)
-        console.dir(overall)
-        hitrate = hitrate.toFixed(2)
-
         let embed = {
             embed: {
                 title:f("%s's Rainbow Six Siege Overall Stats", username),
@@ -61,11 +57,10 @@ const getMiscStats = async (msg, args) => {
                     {name:'Revives:', value:overall.revives, inline:false},
                     {name:'Reinforcements Deployed:', value:overall.reinforcements_deployed, inline:true},
                     {name:'Barricades Built:', value:overall.barricades_built, inline:true},
-                    {name:'Hit Rate:', value:hitrate, inline:false},
                     {name:'Headshots:', value:overall.headshots, inline:true},
                     {name:'Melee Kills:', value:overall.melee_kills, inline:true},
                     {name:'Penetration Kills:', value:overall.penetration_kills, inline:true},
-                    {name:'Assists:', value:overall.assists, inline:false}
+                    {name:'Assists:', value:overall.assists, inline:true}
                 ]
             }
         }
