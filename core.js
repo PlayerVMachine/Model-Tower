@@ -84,6 +84,10 @@ bot.on('guildCreate', async (guild) => {
             missing.push('Manage Webhooks')
         if (!botRole.permissions.has('manageMessages'))
             missing.push('Manage Messages')
+        if (!botRole.permissions.has('externalEmojis'))
+            missing.push('External Emojis')
+        if (!botRole.permissions.has('addReactions'))
+            missing.push('Add Reactions')
 
         //Message the server owner in the case that the bot is missing a key permission
         if (missing.length > 0) {
@@ -219,7 +223,7 @@ bot.on('messageCreate', async (msg) => {
         }
 
         if (command == 'invite') {
-            bot.createMessage(msg.channel.id, `Invite me with this link: <https://discordapp.com/api/oauth2/authorize?client_id=464529935315370004&permissions=536881152&scope=bot>`)
+            bot.createMessage(msg.channel.id, `Invite me with this link: <https://discordapp.com/api/oauth2/authorize?client_id=464529935315370004&permissions=537143360&scope=bot>`)
             return
         }
 

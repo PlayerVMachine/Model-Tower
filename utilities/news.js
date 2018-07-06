@@ -45,7 +45,7 @@ exports.pullNews = async () => {
                 if(Date.parse(item.isoDate) > Date.parse(fifteenMinutesAgo)) {
                     embeds.push({
                         title: item.title,
-                        description: item.contentSnippet,
+                        description: item.contentSnippet.slice(0,280) + `...`,
                         url: item.link,
                         timestamp: item.isoDate
                     })
