@@ -370,7 +370,7 @@ setInterval(getNews, 15*60*1000)
 const spotifyRefresh = () => {
     date = new Date()
     if(date.getDay() === 5) {
-        if (date.getHours() == 14) {
+        if (date.getHours() == 18) {
             spotify.getReleases()
         }
     }

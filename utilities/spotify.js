@@ -260,14 +260,13 @@ const postTop10ToChannels = async () => {
     let fields = []
     for (i = 0; i < albums.length; i++) {
         fields.push({name: albums[i].position, value:f('Artist: **%s** | Album: [%s](%s)', albums[i].artist, albums[i].name.split('(')[0], albums[i].album_url), inline: false})
-
-        let embed = {
-            embed: {
-                author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
-                color: parseInt('0x1DB954', 16),
-                fields: fields,
-                footer: {text:'Part of the Broadcast Tower Integration Network'}
-            }
+    }
+    let embed = {
+        embed: {
+            author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
+            color: parseInt('0x1DB954', 16),
+            fields: fields,
+            footer: {text:'Part of the Broadcast Tower Integration Network'}
         }
     }
 
