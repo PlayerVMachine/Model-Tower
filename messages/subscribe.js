@@ -128,7 +128,10 @@ const unsubscribeFromGuildAnnouncementChannel = async (msg, args) => {
 const subscribeToUser = async (msg, args) => {
     try {
         let user = resolver.user(bot.bot.users, args[0])
-        console.log(user)
+        if (!user) {
+            bot.bot.createMessage(msg.channel.id, f(`Could not find user: %s`, args[0]))
+            return
+        }
 
         if(msg.author.id == user.id) {
             bot.bot.createMessage(msg.channel.id, `Cannot subscribe to yourself!`)
