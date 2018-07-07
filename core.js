@@ -260,9 +260,7 @@ bot.on('messageCreate', async (msg) => {
             }
         } else {
             //check for shortcuts
-            if (command == 'ping') {
-                tools.commandHandler(msg, ['ping'].concat(args))
-            } else if (['post', 'pull'].includes(command)) {
+            if (['post', 'pull'].includes(command)) {
                 let check = cooldown.short('mb', msg)
                 postManager.commandHandler(msg, [command].concat(args))
             } else if (['glitch'].includes(command)) {
