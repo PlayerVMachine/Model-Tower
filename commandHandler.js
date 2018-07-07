@@ -38,6 +38,8 @@ const cooldown = async (command, msg, args, time, onCD, offCD) => {
         onCD(command, time, msg)
     } else {
         cdSet.add(msg.author.id)
+        console.log(cdSet)
+        console.log('+++')
         offCD(msg, args)
     }
 
