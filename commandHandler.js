@@ -40,25 +40,22 @@ const cooldown = async (command, msg, args, time, onCD, offCD) => {
         onCD(command, time, msg)
     } else {
         list.users.push(msg.author.id)
-        console.log(list)
-        console.log('+++')
         offCD(msg, args)
     }
 
     memcached.set(command, list, 60 * 60, (err, res) => {
-        console.log(res)
-        console.log('---')
+        console.log(err)
     })
 
     setTimeout(async () => {
         memcached.get(command, (err, res) => {
             console.log(res)
-        })
+            res.users.splice(res.users.indexOf(msg.author.id), 1)
 
-        //set.delete(msg.author.id)
-        //memcached.replace(command, set, 60 * 60,  (err) => {
-        //    console.log(err)
-        //})
+            memcached.replace(command, res, 60 * 60,  (err, res) => {
+                console.log(err)
+            })
+        })
     }, time)
 }
 
