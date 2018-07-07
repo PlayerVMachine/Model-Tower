@@ -25,6 +25,8 @@ const rem = require('./utilities/reminders.js')
 const tools = require('./utilities/tools.js')
 const news = require('./utilities/news.js')
 
+const ch = require('./commandHandler.js')
+
 //
 const help = require('./help.json')
 const cooldown = require('./cooldown.js')
@@ -191,47 +193,7 @@ bot.on('messageCreate', async (msg) => {
         let content = msg.content.split(' ')
         let args = content.slice(1)
 
-        if (command == 'help') {
-            let description = args.length == 0 ? help['help'].replace(/pfx/g, prefix) : help[args[0]].replace(/pfx/g, prefix)
-            let embed = {
-                embed : {
-                    title: 'Media Central Command Help',
-                    color: 0x497fbc,
-                    description: description,
-                    footer: module.exports.footer
-                }
-            }
-            bot.createMessage(msg.channel.id, embed)
-            return
-        }
-
-        if (command == 'about') {
-            let embed = {
-                embed : {
-                    title: 'Media Central Bot',
-                    author: {name: bot.user.username, icon_url: bot.user.avatarURL},
-                    color: 0x497fbc,
-                    description: `Discord bot providing game statistics, posting/mailbox features, Spotify tools, and more community features on the way!\n\nIf you like the bot consider [buying me a coffee](https://buymeacoff.ee/playervm)`,
-                    fields: [
-                    {name: 'Version', value:`0.2`, inline:true},
-                    {name: 'Library', value:`Eris`, inline: true},
-                    {name: 'Developer', value:`@PlayerVMachine#0169`, inline: true}
-                    ]
-                }
-            }
-            bot.createMessage(msg.channel.id, embed)
-            return
-        }
-
-        if (command == 'invite') {
-            bot.createMessage(msg.channel.id, `Invite me with this link: <https://discordapp.com/api/oauth2/authorize?client_id=464529935315370004&permissions=537143360&scope=bot>`)
-            return
-        }
-
-        if (command == 'server') {
-            bot.createMessage(msg.channel.id, `Join my support and information server: https://discord.gg/NNFnjFA`)
-            return
-        }
+        ch.parser(prefix, msg)
 
         if (command == 'r6') {
             //Check if the command is a rainbow six siege stats command
@@ -290,11 +252,6 @@ bot.on('messageCreate', async (msg) => {
             let check = cooldown.long(command, msg)
             if (check) {
                 rem.commandHandler(msg,args)
-            }
-        } else if (command == 'util') {
-            let check = cooldown.short(command, msg)
-            if (check) {
-                tools.commandHandler(msg,args)
             }
         } else if (command == 'news') {
             let check = cooldown.long(command, msg)

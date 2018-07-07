@@ -1,5 +1,6 @@
 const Memcached = require('memcached')
 const memcached = new Memcached('127.0.0.1:11222')
+const f = require('util').format
 
 const r6 = require('./game-integrations/rainbowsix.js')
 const lol = require('./game-integrations/leagueoflegends.js')
@@ -19,21 +20,22 @@ const news = require('./utilities/news.js')
 
 const help = require('./help.json')
 const config = require('./config.json')
-const bot = require('../core.js').bot
+const bot = require('./core.js')
 
-const userWait = async (command, msg) => {
-    let
+const userWait = async (command, time, msg) => {
+    let message = await bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you need to wait %d seconds before using %s again`, msg.author.username, (time/1000), command))
+    setTimeout(() => {message.delete(`Delete cooldown warning`)}, 3000)
 }
 
-const cooldown = async (name, msg, args, time, onCD, offCD) => {
-    let cdSet = await memcached.get(name)
+const cooldown = async (command, msg, args, time, onCD, offCD) => {
+    let cdSet = await memcached.get(command)
 
     if (!cdSet) {
         cdSet = new Set()
     }
 
     if (cdSet.has(msg.author.id)) {
-        onCD(name, msg)
+        onCD(command, time, msg)
     } else {
         cdSet.add(msg.author.id)
         offCD(msg, args)
@@ -43,9 +45,9 @@ const cooldown = async (name, msg, args, time, onCD, offCD) => {
         console.log(err)
     })
     setTimeout(() => {
-        let set = await memcached.get(name)
+        let set = await memcached.get(command)
         set.delete(msg.author.id)
-        memcached.replace(name, set, 60 * 60,  (err) => {
+        memcached.replace(command, set, 60 * 60,  (err) => {
             console.log(err)
         })
     }, time)
@@ -58,9 +60,11 @@ exports.parser = async (prefix, msg) => {
     let args = msg.content.split(' ').slice(1)
     let fullArgs = [command].concat(args)
 
-    if (['prefix', 'ping'].includes(command)) {
+    if (['prefix', 'ping', 'server', 'about', 'help', 'invite'].includes(command)) {
         cooldown(command, msg, fullArgs, 5000, userWait, util.commandHandler)
-    }
+    } else if (['clean'].includes(command)) {
+        cooldown(command, msg, fullArgs, 30000, userWait, util.commandHandler)
+    } else if ([])
 
 
 }

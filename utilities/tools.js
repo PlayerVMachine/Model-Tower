@@ -4,6 +4,7 @@ const f = require('util').format
 
 const bot = require('../core.js')
 const config = require('../config.json')
+const help = require('../help.json')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -17,6 +18,14 @@ exports.commandHandler = (msg, args) => {
 		clean(msg, restOfArgs)
 	} else if (['prefix'].includes(args[0])) {
 		setPrefix(msg, restOfArgs)
+	} else if (args[0] == 'help') {
+		help(msg, restOfArgs)
+	} else if (args[0] == 'about') {
+		about(msg, restOfArgs)
+	} else if (args[0] == 'invite') {
+		invite(msg, restOfArgs)
+	} else if (args[0] == 'server') {
+		server(msg, restOfArgs)
 	}
 }
 
@@ -75,4 +84,42 @@ const setPrefix = async (msg, args) => {
 		bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: setPrefix`, new Date(), err.message))
         bot.bot.createMessage(msg.channel.id, f(`Sorry %s, a fuse blew somewhere if this message persists please report it in <#447153276786311180>`, msg.author.username))
 	}
+}
+
+const help = (msg, args) => {
+	let description = args.length == 0 ? help['help'].replace(/pfx/g, prefix) : help[args[0]].replace(/pfx/g, prefix)
+    let embed = {
+        embed : {
+            title: 'Media Central Command Help',
+            color: 0x497fbc,
+            description: description,
+            footer: module.exports.footer
+        }
+    }
+    bot.bot.createMessage(msg.channel.id, embed)
+}
+
+const about = (msg, args) => {
+    let embed = {
+        embed : {
+            title: 'Media Central Bot',
+            author: {name: bot.bot.user.username, icon_url: bot.bot.user.avatarURL},
+            color: 0x497fbc,
+            description: `Discord bot providing game statistics, posting/mailbox features, Spotify tools, and more community features on the way!\n\nIf you like the bot consider [buying me a coffee](https://buymeacoff.ee/playervm)`,
+            fields: [
+            {name: 'Version', value:`0.2`, inline:true},
+            {name: 'Library', value:`Eris`, inline: true},
+            {name: 'Developer', value:`<@273999507174195203>`, inline: true}
+            ]
+        }
+    }
+    bot.bot.createMessage(msg.channel.id, embed)
+}
+
+const invite = (msg, args) => {
+	bot.bot.createMessage(msg.channel.id, `Invite me with this link: <https://discordapp.com/api/oauth2/authorize?client_id=464529935315370004&permissions=537143360&scope=bot>`)
+}
+
+const server = (msg, args) => {
+	bot.bot.createMessage(msg.channel.id, `Join my support and information server: https://discord.gg/NNFnjFA`)
 }
