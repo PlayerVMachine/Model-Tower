@@ -162,7 +162,7 @@ const subscribeToUser = async (msg, args) => {
             bot.bot.createMessage(msg.channel.id, f(`Could not find user: %s`, args[0]))
         }
     } catch (err) {
-        bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: subscribeToUser\n%s`, new Date(), err.message, err.stack.split('\n', 1).join('')))
+        bot.bot.createMessage(config.logChannelID ,f(`%s, error: %s in: subscribeToUser\n%s`, new Date(), err.message, err.stack.split('\n', 2).join('\n')))
         bot.bot.createMessage(msg.channel.id, f(`Sorry %s, a fuse blew somewhere if this message persists please report it in <#447153276786311180>`, msg.author.username))
     }
 }
