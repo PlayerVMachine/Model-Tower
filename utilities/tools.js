@@ -2,7 +2,7 @@
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
 
-const bot = require('../core.js')
+const {bot} = require('../core.js')
 const config = require('../config.json')
 
 // mongodb login
