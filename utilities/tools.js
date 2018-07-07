@@ -4,7 +4,7 @@ const f = require('util').format
 
 const bot = require('../core.js')
 const config = require('../config.json')
-const help = require('../help.json')
+const helpDoc = require('../help.json')
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
@@ -87,7 +87,7 @@ const setPrefix = async (msg, args) => {
 }
 
 const help = (msg, args) => {
-	let description = args.length == 0 ? help['help'].replace(/pfx/g, prefix) : help[args[0]].replace(/pfx/g, prefix)
+	let description = args.length == 0 ? helpDoc['help'].replace(/pfx/g, prefix) : helpDoc[args[0]].replace(/pfx/g, prefix)
     let embed = {
         embed : {
             title: 'Media Central Command Help',
