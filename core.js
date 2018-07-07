@@ -41,7 +41,7 @@ function sleep(ms) {
 //COMMAND CLIENT REWRITE WITH JUST CLIENT //
 ///////////////////////////////////////////
 
-bot = exports.bot = new Eris.Client(config.BOT_TOKEN, {
+exports.bot = new Eris.Client(config.BOT_TOKEN, {
     messageLimit: 20,
     defaultImageSize:256
 })
@@ -162,7 +162,7 @@ const isChannelGuildAnnouncer = async (id) => {
 /////////////////////////////////////////////
 //COMMANDS                                //
 ///////////////////////////////////////////
-bot.on('messageCreate', async (msg) => {
+module.exports.bot.on('messageCreate', async (msg) => {
 
     //Post announcement if message is in announcement channel
     let chanGuildAnn = await isChannelGuildAnnouncer(msg.channel.id)
