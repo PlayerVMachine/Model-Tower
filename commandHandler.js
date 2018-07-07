@@ -44,7 +44,7 @@ const cooldown = async (command, msg, args, time, onCD, offCD) => {
     memcached.set(commandName, cdSet, 60 * 60,  (err) => {
         console.log(err)
     })
-    setTimeout(() => {
+    setTimeout(async () => {
         let set = await memcached.get(command)
         set.delete(msg.author.id)
         memcached.replace(command, set, 60 * 60,  (err) => {
