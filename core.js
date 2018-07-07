@@ -47,11 +47,9 @@ const bot = new Eris.Client(config.BOT_TOKEN, {
 })
 
 //Export bot and footer
-module.exports = {
-    bot
-}
+module.exports = bot
 
-    let footer = {text: `If you like the bot consider supporting development here: buymeacoff.ee/playervm`, icon_url:`https://cdn.discordapp.com/attachments/461945242061504515/463104485443502090/logo-mark-1.png`}
+exports.footer = {text: `If you like the bot consider supporting development here: buymeacoff.ee/playervm`, icon_url:`https://cdn.discordapp.com/attachments/461945242061504515/463104485443502090/logo-mark-1.png`}
 
 /////////////////////////////////////////////
 //EVENTS TO REACT TO                      //
