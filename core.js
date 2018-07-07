@@ -63,6 +63,7 @@ bot.on("ready", () => {
     //spotify.getReleases()
 
     //check for expiring reminders
+    module.exports = bot
     rem.checkReminders
     setInterval(rem.checkReminders, 60*1000)
 });
@@ -400,5 +401,4 @@ setInterval(spotifyRefresh, 60*60*1000)
 ///////////////////////////////////////////
 
 //Connect to Discord
-module.exports = bot
 bot.connect()
