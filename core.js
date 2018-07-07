@@ -41,13 +41,13 @@ function sleep(ms) {
 //COMMAND CLIENT REWRITE WITH JUST CLIENT //
 ///////////////////////////////////////////
 
-const bot = new Eris.Client(config.BOT_TOKEN, {
+bot = exports.bot = new Eris.Client(config.BOT_TOKEN, {
     messageLimit: 20,
     defaultImageSize:256
 })
 
 //Export bot and footer
-module.exports = bot
+//module.exports = bot
 
 exports.footer = {text: `If you like the bot consider supporting development here: buymeacoff.ee/playervm`, icon_url:`https://cdn.discordapp.com/attachments/461945242061504515/463104485443502090/logo-mark-1.png`}
 
