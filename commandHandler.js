@@ -64,7 +64,5 @@ exports.parser = async (prefix, msg) => {
         cooldown(command, msg, fullArgs, 5000, userWait, util.commandHandler)
     } else if (['clean'].includes(command)) {
         cooldown(command, msg, fullArgs, 30000, userWait, util.commandHandler)
-    } else if ([])
-
-
+    }
 }
