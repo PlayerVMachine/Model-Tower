@@ -28,23 +28,25 @@ const userWait = async (command, time, msg) => {
 }
 
 const cooldown = async (command, msg, args, time, onCD, offCD) => {
-    let cdSet = await memcached.get(command)
+    let list = await memcached.get(command)
 
-    if (!cdSet) {
-        cdSet = new Set()
+    if (!list) {
+        list = {
+            users:[]
+        }
     }
 
-    if (cdSet.has(msg.author.id)) {
+    if (list.users.includes(msg.author.id)) {
         onCD(command, time, msg)
     } else {
-        cdSet.add(msg.author.id)
-        console.log(cdSet)
+        list.users.push(msg.author.id)
+        console.log(list)
         console.log('+++')
         offCD(msg, args)
     }
 
-    memcached.set(command, cdSet, 60 * 60, (err, res) => {
-        console.log(err)
+    memcached.set(command, list, 60 * 60, (err, res) => {
+        console.log(res)
         console.log('---')
     })
 
