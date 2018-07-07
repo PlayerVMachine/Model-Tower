@@ -48,7 +48,7 @@ const bot = new Eris.Client(config.BOT_TOKEN, {
 
 //Export bot and footer
 
-
+exports.bot = bot
 exports.footer = {text: `If you like the bot consider supporting development here: buymeacoff.ee/playervm`, icon_url:`https://cdn.discordapp.com/attachments/461945242061504515/463104485443502090/logo-mark-1.png`}
 
 /////////////////////////////////////////////
@@ -63,7 +63,6 @@ bot.on("ready", () => {
     //spotify.getReleases()
 
     //check for expiring reminders
-    module.exports = bot
     rem.checkReminders
     setInterval(rem.checkReminders, 60*1000)
 });
