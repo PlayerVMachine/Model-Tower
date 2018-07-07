@@ -28,35 +28,35 @@ const userWait = async (command, time, msg) => {
 }
 
 const cooldown = async (command, msg, args, time, onCD, offCD) => {
-    let list = await memcached.get(command)
-
-    if (!list) {
-        list = {
-            users:[]
+    memcached.get(command, (err, list) => {
+        if (!list) {
+            list = {
+                users:[]
+            }
         }
-    }
 
-    if (list.users.includes(msg.author.id)) {
-        onCD(command, time, msg)
-    } else {
-        list.users.push(msg.author.id)
-        offCD(msg, args)
-    }
+        if (list.users.includes(msg.author.id)) {
+            onCD(command, time, msg)
+        } else {
+            list.users.push(msg.author.id)
+            offCD(msg, args)
+        }
 
-    memcached.set(command, list, 60 * 60, (err, res) => {
-        console.log(err)
-    })
-
-    setTimeout(async () => {
-        memcached.get(command, (err, res) => {
-            console.log(res)
-            res.users.splice(res.users.indexOf(msg.author.id), 1)
-
-            memcached.replace(command, res, 60 * 60,  (err, res) => {
-                console.log(err)
-            })
+        memcached.set(command, list, 60 * 60, (err, res) => {
+            console.log(err)
         })
-    }, time)
+
+        setTimeout(async () => {
+            memcached.get(command, (err, res) => {
+                console.log(res)
+                res.users.splice(res.users.indexOf(msg.author.id), 1)
+
+                memcached.replace(command, res, 60 * 60,  (err, res) => {
+                    console.log(err)
+                })
+            })
+        }, time)
+    })
 }
 
 exports.parser = async (prefix, msg) => {
