@@ -41,7 +41,7 @@ function sleep(ms) {
 //COMMAND CLIENT REWRITE WITH JUST CLIENT //
 ///////////////////////////////////////////
 
-module.exports.bot = bot = new Eris.Client(config.BOT_TOKEN, {
+module.exports = bot = new Eris.Client(config.BOT_TOKEN, {
     messageLimit: 20,
     defaultImageSize:256
 })
