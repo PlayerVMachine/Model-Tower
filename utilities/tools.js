@@ -2,7 +2,7 @@
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
 
-const bot = require('../core.js')
+const bot = require('../core.js').bot
 const config = require('../config.json')
 
 // mongodb login
@@ -24,7 +24,7 @@ exports.commandHandler = (msg, args) => {
 const ping = async (msg, args) => {
     let start = Date.now()
 
-    bot.bot.createMessage(msg.channel.id, 'Pong!').then(msg => {
+    bot.createMessage(msg.channel.id, 'Pong!').then(msg => {
         let diff = Date.now() - start
         return msg.edit(f('Pong! `%dms`', diff))
     })

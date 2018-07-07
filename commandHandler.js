@@ -19,7 +19,7 @@ const news = require('./utilities/news.js')
 
 const help = require('./help.json')
 const config = require('./config.json')
-const bot = require('../core.js')
+const bot = require('../core.js').bot
 
 const userWait = async (command, msg) => {
     let
