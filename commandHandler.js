@@ -29,6 +29,7 @@ const userWait = async (command, time, msg) => {
 
 const cooldown = async (command, msg, args, time, onCD, offCD) => {
     let cdSet = await memcached.get(command)
+    console.log(cdSet)
 
     if (!cdSet) {
         cdSet = new Set()
@@ -41,9 +42,12 @@ const cooldown = async (command, msg, args, time, onCD, offCD) => {
         offCD(msg, args)
     }
 
-    memcached.set(command, cdSet, 60 * 60,  (err) => {
+    memcached.set(command, cdSet, 60 * 60, (err, res) => {
         console.log(err)
+        console.log('---')
+        console.log(res)
     })
+
     setTimeout(async () => {
         let set = await memcached.get(command)
         set.delete(msg.author.id)
