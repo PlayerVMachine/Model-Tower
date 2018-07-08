@@ -23,13 +23,18 @@ const config = require('./config.json')
 const bot = require('./core.js')
 
 const userWait = async (command, time, msg) => {
-    memcached.get(command + msg.author.id, async (err, res) => {
+    memcached.get(command + msg.author.id, (err, res) => {
         console.log('test ' + err + ' : ' + res)
         if (!err && !res) {
-            let message = await bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you need to wait %d seconds before using %s again`, msg.author.username, (time/1000), command))
-            setTimeout(() => {message.delete(`Delete cooldown warning`)}, 3000)
+            bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you need to wait %d seconds before using %s again`, msg.author.username, (time/1000), command)).then((message) => {
+                    setTimeout(() => {
+                        return message.delete(`Delete cooldown warning`)
+                    }, 3000)
+                })
+
             memcached.set(command + msg.author.id, 1, time/1000, (err, res) => {
-                console.log(err)
+                if (err)
+                    console.log(err)
             })
         }
     })
