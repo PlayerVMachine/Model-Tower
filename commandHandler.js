@@ -110,10 +110,8 @@ exports.parser = async (prefix, msg) => {
         cooldown(command, msg, args, 5000, userWait, ow.commandHandler)
     } else if (['lol'].includes(args[0])) {
         cooldown(command, msg, args, 5000, userWait, lol.commandHandler)
-    } else if (['pubg'].includes(args[0])) {
-        cooldown(command, msg, args, 5000, userWait, pubg.commandHandler)
     } else if (['r6'].includes(args[0])) {
-        cooldown(command, msg, args, 5000, userWait, pubg.commandHandler)
+        cooldown(command, msg, args, 5000, userWait, r6.commandHandler)
     } else if ('eval' == command) {
         util.commandHandler(msg, args)
     } else if (['glitch'].includes(command)) {
