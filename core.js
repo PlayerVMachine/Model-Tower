@@ -7,7 +7,6 @@ const config = require('./config.json')
 
 //Project files
 const ch = require('./commandHandler.js')
-const cooldown = require('./cooldown.js')
 const rem = require('./utilities/reminders.js')
 const spotify = require('./utilities/spotify.js')
 const postManager = require('./messages/postManager.js')
