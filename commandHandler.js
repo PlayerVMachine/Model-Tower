@@ -78,8 +78,6 @@ exports.parser = async (prefix, msg) => {
     let args = msg.content.split(' ').slice(1)
     let fullArgs = [command].concat(args)
 
-    console.log(command + ' : ' + args)
-
     if (['prefix', 'ping', 'server', 'about', 'help', 'invite'].includes(command)) {
         cooldown(command, msg, fullArgs, 10000, userWait, util.commandHandler)
     } else if (['clean'].includes(command)) {
@@ -104,15 +102,15 @@ exports.parser = async (prefix, msg) => {
         }
     } else if (['post', 'pull', 'notify', 'unnotify', 'sub', 'unsub', 'subscriptions'].includes(args[0])) {
         cooldown(command, msg, fullArgs, 5000, userWait, postManager.commandHandler)
-    } else if (['chan'].includes(args[0])) {
+    } else if (['chan'].includes(command)) {
         cooldown(command, msg, args, 5000, userWait, annMgmt.commandHandler)
-    } else if (['pubg'].includes(args[0])) {
+    } else if (['pubg'].includes(command)) {
         cooldown(command, msg, args, 5000, userWait, pubg.commandHandler)
-    } else if (['ow'].includes(args[0])) {
+    } else if (['ow'].includes(command)) {
         cooldown(command, msg, args, 5000, userWait, ow.commandHandler)
-    } else if (['lol'].includes(args[0])) {
+    } else if (['lol'].includes(command)) {
         cooldown(command, msg, args, 5000, userWait, lol.commandHandler)
-    } else if (['r6'].includes(args[0])) {
+    } else if (['r6'].includes(command)) {
         cooldown(command, msg, args, 5000, userWait, r6.commandHandler)
     } else if ('eval' == command) {
         util.commandHandler(msg, args)
