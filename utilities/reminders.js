@@ -14,9 +14,9 @@ const emotes1to10 = ['1_:461947842055897099', '2_:461947842546630656', '3_:46194
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
 
-    if (['me', 'set'].includes(args[0])) {
+    if ('me' == args[0]) {
         remindMe(msg, restOfArgs)
-    } else if (['view', 'list'].includes(args[0])) {
+    } else if ('view' == args[0]) {
         viewReminders(msg, restOfArgs)
     }
 }

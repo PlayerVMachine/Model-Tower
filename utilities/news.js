@@ -16,9 +16,9 @@ const newsSourceNames = [`1. League of Legends News`, `2. Rainbow Six Seige News
 
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
-    if (['set','sub'].includes(args[0])) {
+    if ('set' == args[0]) {
         subscribeToNews(msg, restOfArgs)
-    } else if (['unset', 'unsub'].includes(args[0])) {
+    } else if ('unset' == args[0]) {
         unsubscribeFromNews(msg, restOfArgs)
     }
 }

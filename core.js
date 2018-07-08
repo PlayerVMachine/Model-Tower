@@ -6,29 +6,7 @@ const Eris = require('eris')
 const config = require('./config.json')
 
 //Project files
-const r6 = require('./game-integrations/rainbowsix.js')
-const lol = require('./game-integrations/leagueoflegends.js')
-//const fortnite = require('./game-integrations/fortnite.js')
-//const destiny = require('./game-integrations/destiny.js')
-//const battlerite = require('./game-integrations/battlerite.js')
-const ow = require('./game-integrations/overwatch.js')
-const pubg = require('./game-integrations/pubg.js')
-
-const postManager = require('./messages/postManager.js')
-const subscribe = require('./messages/subscribe.js')
-const annMgmt = require('./messages/announcements.js')
-
-const notes = require('./utilities/notes.js')
-const spotify = require('./utilities/spotify.js')
-const weather = require('./utilities/weather.js')
-const rem = require('./utilities/reminders.js')
-const tools = require('./utilities/tools.js')
-const news = require('./utilities/news.js')
-
 const ch = require('./commandHandler.js')
-
-//
-const help = require('./help.json')
 const cooldown = require('./cooldown.js')
 
 // mongodb login
@@ -186,90 +164,7 @@ bot.on('messageCreate', async (msg) => {
 
     //Check if the message sent was a command intended for the bot
     if (msg.content.startsWith(prefix)) {
-        //Get the command after the prefix and before any arguments
-        let endIndex = msg.content.indexOf(` `) === -1 ? msg.length : msg.content.indexOf(` `)
-        let command = msg.content.slice(prefix.length, endIndex)
-
-        let content = msg.content.split(' ')
-        let args = content.slice(1)
-
         ch.parser(prefix, msg)
-
-        if (command == 'r6') {
-            //Check if the command is a rainbow six siege stats command
-            let check = cooldown.short(command, msg)
-            if (check) {
-                r6.commandHandler(msg, args)
-            }
-        } else if (command == 'mb') {
-            //Check if the command is a postManager command
-            let check = cooldown.short(command, msg)
-            if (check) {
-                postManager.commandHandler(msg, args)
-            }
-        } else if (command == 'chan') {
-            let check = cooldown.short(command, msg)
-            if (check) {
-                annMgmt.commandHandler(msg, args)
-            }
-        } else if (command == 'lol') {
-            //Check if the command is a league of league command
-            let check = cooldown.short(command, msg)
-            if (check) {
-                lol.commandHandler(msg, args)
-            }
-        } else if (command == 'pubg') {
-            //Check if the command is a pubg command
-            let check = cooldown.short(command, msg)
-            if (check) {
-                pubg.commandHandler(msg, args)
-            }
-        } else if (command == 'nts') {
-            //Check if the command is a notes command
-            let check = cooldown.short(command, msg)
-            if (check) {
-                notes.commandHandler(msg, args)
-            }
-        } else if (command == 'ow') {
-            //Check if the command is an overwatch command
-            let check = cooldown.short(command, msg)
-            if (check) {
-                ow.commandHandler(msg, args)
-            }
-        } else if (command == 'spotify') {
-            //Check if the command is a spotify command
-            let check = cooldown.short(command, msg)
-            if (check) {
-                spotify.commandHandler(msg, args)
-            }
-        } else if (command == 'weather') {
-            //Check if the command is a weather command
-            let check = cooldown.short(command, msg)
-            if (check) {
-                weather.commandHandler(msg, args)
-            }
-        } else if (command == 'remind') {
-            let check = cooldown.long(command, msg)
-            if (check) {
-                rem.commandHandler(msg,args)
-            }
-        } else if (command == 'news') {
-            let check = cooldown.long(command, msg)
-            if (check) {
-                news.commandHandler(msg, args)
-            }
-        } else {
-            //check for shortcuts
-            if (['post', 'pull'].includes(command)) {
-                let check = cooldown.short('mb', msg)
-                postManager.commandHandler(msg, [command].concat(args))
-            } else if (['glitch'].includes(command)) {
-                bot.createMessage(msg.channel.id, `Congrats you'm'st done broken the tower, test it on monday.`)
-            } else if (['titty', 'player', 'nsfw', 'night', 'raven'].includes(command)) {
-                bot.createMessage(msg.channel.id, `Heck off NightRaven <:catHeart:442431739936112640>`)
-            }
-        }
-
     }
 })
 

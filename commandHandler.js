@@ -8,7 +8,6 @@ const ow = require('./game-integrations/overwatch.js')
 const pubg = require('./game-integrations/pubg.js')
 
 const postManager = require('./messages/postManager.js')
-const subscribe = require('./messages/subscribe.js')
 const annMgmt = require('./messages/announcements.js')
 
 const notes = require('./utilities/notes.js')
@@ -24,12 +23,11 @@ const bot = require('./core.js')
 
 const userWait = async (command, time, msg) => {
     memcached.get(command + msg.author.id, (err, res) => {
-        console.log('test ' + err + ' : ' + res)
         if (!err && !res) {
             bot.bot.createMessage(msg.channel.id, f(`Sorry %s, you need to wait %d seconds before using %s again`, msg.author.username, (time/1000), command)).then((message) => {
                     setTimeout(() => {
                         return message.delete(`Delete cooldown warning`)
-                    }, 3000)
+                    }, 5000)
                 })
 
             memcached.set(command + msg.author.id, 1, time/1000, (err, res) => {
@@ -84,5 +82,43 @@ exports.parser = async (prefix, msg) => {
         cooldown(command, msg, fullArgs, 10000, userWait, util.commandHandler)
     } else if (['clean'].includes(command)) {
         cooldown(command, msg, fullArgs, 30000, userWait, util.commandHandler)
+    } else if (['weather', 'forecast'].includes(command)) {
+        cooldown(command, msg, fullArgs, 10000, userWait, weather.commandHandler)
+    } else if (['news'].includes(command)) {
+        cooldown(command, msg, args, 30000, userWait, news.commandHandler)
+    } else if (['remind'].includes(command)) {
+        if (args[0] == 'me') {
+            cooldown(command, msg, args, 5000, userWait, reminders.commandHandler)
+        } else if (args[0] == 'view') {
+            cooldown(command, msg, args, 30000, userWait, reminders.commandHandler)
+        }
+    } else if (['spotify'].includes(command)) {
+        cooldown(command, msg, args, 8000, userWait, spotify.commandHandler)
+    } else if (['nts'].includes(command)) {
+        if (['create', 'delete'].includes(args[0])) {
+            cooldown(command, msg, args, 5000, userWait, notes.commandHandler)
+        } else if (args[0] == 'view') {
+            cooldown(command, msg, args, 20000, userWait, notes.commandHandler)
+        }
+    } else if (['post', 'pull', 'notify', 'unnotify', 'sub', 'unsub', 'subscriptions'].includes(args[0])) {
+        cooldown(command, msg, fullArgs, 5000, userWait, postManager.commandHandler)
+    } else if (['chan'].includes(args[0])) {
+        cooldown(command, msg, args, 5000, userWait, annMgmt.commandHandler)
+    } else if (['pubg'].includes(args[0])) {
+        cooldown(command, msg, args, 5000, userWait, pubg.commandHandler)
+    } else if (['ow'].includes(args[0])) {
+        cooldown(command, msg, args, 5000, userWait, ow.commandHandler)
+    } else if (['lol'].includes(args[0])) {
+        cooldown(command, msg, args, 5000, userWait, lol.commandHandler)
+    } else if (['pubg'].includes(args[0])) {
+        cooldown(command, msg, args, 5000, userWait, pubg.commandHandler)
+    } else if (['r6'].includes(args[0])) {
+        cooldown(command, msg, args, 5000, userWait, pubg.commandHandler)
+    } else if ('eval' == command) {
+        util.commandHandler(msg, args)
+    } else if (['glitch'].includes(command)) {
+        bot.createMessage(msg.channel.id, `Congrats you'm'st done broken the tower, test it on monday.`)
+    } else if (msg.author.id == '239261547959025665') {
+        bot.createMessage(msg.channel.id, `Heck off NightRaven <:catHeart:442431739936112640>`)
     }
 }

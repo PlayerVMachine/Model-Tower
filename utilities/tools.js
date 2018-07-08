@@ -12,11 +12,11 @@ const url = 'mongodb://127.0.0.1:36505'
 exports.commandHandler = (msg, args) => {
 	let restOfArgs = args.slice(1)
 
-	if (['ping'].includes(args[0])) {
+	if ('ping' == args[0]) {
 		ping(msg, restOfArgs)
-	} else if (['clean', 'deldm'].includes(args[0])) {
+	} else if ('clean' == args[0]) {
 		clean(msg, restOfArgs)
-	} else if (['prefix'].includes(args[0])) {
+	} else if ('prefix' == args[0]) {
 		setPrefix(msg, restOfArgs)
 	} else if (args[0] == 'help') {
 		help(msg, restOfArgs)
@@ -26,7 +26,9 @@ exports.commandHandler = (msg, args) => {
 		invite(msg, restOfArgs)
 	} else if (args[0] == 'server') {
 		server(msg, restOfArgs)
-	}
+	} else if (args[0] == 'eval') {
+        discEval(msg, args)
+    }
 }
 
 //Ping, used to reassure people that the bot is up and to check latency
@@ -123,3 +125,31 @@ const invite = (msg, args) => {
 const server = (msg, args) => {
 	bot.bot.createMessage(msg.channel.id, `Join my support and information server: https://discord.gg/NNFnjFA`)
 }
+
+const clean = (text) => {
+  if (typeof(text) === "string") {
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203))
+  } else {
+      return text
+  }
+}
+
+const discEval = async (msg, args) => {
+  if(msg.author.id != 273999507174195203) {
+    return
+  }
+
+  try {
+    const code = args.join(" ")
+    let evaled = await eval(code)
+
+    if (typeof evaled !== "string") {
+      evaled = require("util").inspect(evaled, {depth:1})
+    }
+
+    bot.bot.createMessage(msg.channel.id, "```js\n" + clean(evaled) + "```")
+  } catch (err) {
+    bot.bot.createMessage(msg.channel.id, `\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``)
+  }
+}
+

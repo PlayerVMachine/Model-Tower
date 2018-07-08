@@ -7,9 +7,9 @@ const bot = require('../core.js')
 exports.commandHandler = (msg, args) => {
     let restOfArgs = args.slice(1)
 
-    if (['forecast', 'fc'].includes(args[0])) {
+    if (args[0] == 'forecast') {
         getForecast(msg, restOfArgs)
-    } else {
+    } else if (args[0] == 'weather') {
         getWeather(msg, args)
     }
 }
