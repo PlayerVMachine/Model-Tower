@@ -11,6 +11,8 @@ const cooldown = require('./cooldown.js')
 const rem = require('./utilities/reminders.js')
 const spotify = require('./utilities/spotify.js')
 const postManager = require('./messages/postManager.js')
+const news = require('./utilities/news.js')
+
 
 // mongodb login
 const url = 'mongodb://127.0.0.1:36505'
