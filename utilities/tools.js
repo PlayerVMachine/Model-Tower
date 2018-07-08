@@ -27,7 +27,7 @@ exports.commandHandler = (msg, args) => {
 	} else if (args[0] == 'server') {
 		server(msg, restOfArgs)
 	} else if (args[0] == 'eval') {
-        discEval(msg, args)
+        discEval(msg, restOfArgs)
     }
 }
 
