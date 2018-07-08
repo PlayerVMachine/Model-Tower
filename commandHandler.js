@@ -115,8 +115,8 @@ exports.parser = async (prefix, msg) => {
     } else if ('eval' == command) {
         util.commandHandler(msg, args)
     } else if (['glitch'].includes(command)) {
-        bot.createMessage(msg.channel.id, `Congrats you'm'st done broken the tower, test it on monday.`)
+        bot.bot.createMessage(msg.channel.id, `Congrats you'm'st done broken the tower, test it on monday.`)
     } else if (msg.author.id == '239261547959025665') {
-        bot.createMessage(msg.channel.id, `Heck off NightRaven <:catHeart:442431739936112640>`)
+        bot.bot.createMessage(msg.channel.id, `Heck off NightRaven <:catHeart:442431739936112640>`)
     }
 }
