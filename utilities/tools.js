@@ -126,7 +126,7 @@ const server = (msg, args) => {
 	bot.bot.createMessage(msg.channel.id, `Join my support and information server: https://discord.gg/NNFnjFA`)
 }
 
-const clean = (text) => {
+const sanitize = (text) => {
   if (typeof(text) === "string") {
     return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203))
   } else {
@@ -147,9 +147,9 @@ const discEval = async (msg, args) => {
       evaled = require("util").inspect(evaled, {depth:1})
     }
 
-    bot.bot.createMessage(msg.channel.id, "```js\n" + clean(evaled) + "```")
+    bot.bot.createMessage(msg.channel.id, "```js\n" + sanitize(evaled) + "```")
   } catch (err) {
-    bot.bot.createMessage(msg.channel.id, `\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``)
+    bot.bot.createMessage(msg.channel.id, `\`ERROR\` \`\`\`xl\n${sanitize(err)}\n\`\`\``)
   }
 }
 
