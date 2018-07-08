@@ -113,8 +113,7 @@ exports.parser = async (prefix, msg) => {
     } else if (['r6'].includes(command)) {
         cooldown(command, msg, args, 5000, userWait, r6.commandHandler)
     } else if ('eval' == command) {
-        console.log('reached 1')
-        util.commandHandler(msg, args)
+        util.commandHandler(msg, fullArgs)
     } else if (['glitch'].includes(command)) {
         bot.bot.createMessage(msg.channel.id, `Congrats you'm'st done broken the tower, test it on monday.`)
     } else if (msg.author.id == '239261547959025665') {

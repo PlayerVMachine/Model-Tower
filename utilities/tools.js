@@ -135,7 +135,6 @@ const sanitize = (text) => {
 }
 
 const discEval = async (msg, args) => {
-  console.log('reached')
   if(msg.author.id != 273999507174195203) {
     return
   }
