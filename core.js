@@ -111,7 +111,7 @@ bot.on('guildDelete', async (guild) => {
 })
 
 //////////////////////////////////////////////
-//GUILD PREFIX CONFIG                      //
+//GUILD CONFIG CHECKS                      //
 ////////////////////////////////////////////
 
 const getGuildPrefix = async (guild) => {
@@ -162,6 +162,7 @@ bot.on('messageCreate', async (msg) => {
     //Check the origin guild to set prefix
     prefix = await getGuildPrefix(msg.channel.guild)
 
+    //Get the prefix in case they lost it
     if (msg.content.startsWith(`<@464529935315370004> prefix`)) {
         bot.createMessage(msg.channel.id, f(`This server's prefix is: %s`, prefix))
     }
