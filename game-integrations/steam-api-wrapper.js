@@ -59,7 +59,7 @@ const getNewsForApp = async (name, count, maxLength) => {
     }
 
     let appID = null
-    if (!name.match(/\D/g)) {
+    if (name.match(/\D/g) == null) {
         //contains non digit characters so assume it's a name
         appID = await getGameIDByName(name)
         if (!appID) {
