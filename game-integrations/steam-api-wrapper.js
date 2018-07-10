@@ -22,7 +22,7 @@ const steamURL = {
     GetSchemaForGame: `http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/`,
 }
 
-const steamSearch = `https://store.steampowered.com/search/`
+const steamSearch = `https://store.steampowered.com/search/?term=`
 
 const getGameIDByName = (name) => {
     let searchURL = steamSearch + name.replace(/ /g, '+')
