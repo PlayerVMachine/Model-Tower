@@ -30,9 +30,14 @@ const getGameIDByName = (name) => {
 
     request(searchURL, (err, res, html) => {
         const $  = cheerio.load(html)
-        let test = $('a').filter((i, e) => {
-            return $(this).attr('data-ds-appid') != undefined
-        }).attr('data-ds-appid')
+        let test = $('a').each((i, e) => {
+            if($(this).attr('data-ds-appid') != undefined)
+                console.log($(this).attr('data-ds-appid'))
+            else if ($(this).prop('data-ds-appid') != undefined)
+                console.log($(this).prop('data-ds-appid'))
+            else if ($(this).data('data-ds-appid') != undefined)
+                console.log($(this).data('data-ds-appid'))
+        })
     })
 
 }
