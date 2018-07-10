@@ -75,11 +75,15 @@ const getNewsForApp = async (name, count, maxLength) => {
 
     try {
         let result = await axios.get(requestURL)
-        console.log(JSON.stringify(result, undefined, 4))
+        return JSON.stringify(result, undefined, 4)
 
     } catch (err) {
-
+        return err.message
     }
 }
 
-getNewsForApp('Borderlands', 4, 200)
+async function test () {
+    let res = await getNewsForApp('Borderlands', 4, 200)
+    console.log(res)
+}
+test()
