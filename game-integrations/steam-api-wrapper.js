@@ -2,7 +2,6 @@ const f = require('util').format
 //const Memcached = require('memcached')
 //const memcached = new Memcached('127.0.0.1:11222')
 const axios = require('axios')
-const cheerio = require('cheerio')
 const request = require('request')
 
 //config files
@@ -29,10 +28,10 @@ const getGameIDByName = (name) => {
     let searchURL = steamSearch + name.replace(/ /g, '+')
 
     request(searchURL, (err, res, html) => {
-        //const $  = cheerio.load(html)
-        //let test = $('#data-ds-appid').
-        let results = html.match(/data-ds-appid="\d+"/g)
-        console.log(results)
+        let appIDs = html.match(/data-ds-appid="\d+"/g)
+        let names = html.match(/<span class="title">.*<\/span>/g)
+        console.log(appIDs)
+        console.log(names)
     })
 
 }
