@@ -29,15 +29,9 @@ const getGameIDByName = (name) => {
     let searchURL = steamSearch + name.replace(/ /g, '+')
 
     request(searchURL, (err, res, html) => {
-        const $  = cheerio.load(html)
-        let test = $('a').each((i, e) => {
-            if($(this).attr('data-ds-appid') != undefined)
-                console.log($(this).attr('data-ds-appid'))
-            else if ($(this).prop('data-ds-appid') != undefined)
-                console.log($(this).prop('data-ds-appid'))
-            else if ($(this).data('data-ds-appid') != undefined)
-                console.log($(this).data('data-ds-appid'))
-        })
+        //const $  = cheerio.load(html)
+        //let test = $('#data-ds-appid').
+        let results = html.match(/data-ds-appid="\d+"/g)
     })
 
 }
