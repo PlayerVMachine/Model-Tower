@@ -38,7 +38,7 @@ const getGameIDByName = async (name) => {
         let title = names[i].substring(20, names[i].length - 7)
         if (title == name) {
             console.log(appIDs[i])
-            return(appIDs[i])
+            return(appIDs[i].substring(15, appIDs[i].length - 2))
         }
     }
 }
