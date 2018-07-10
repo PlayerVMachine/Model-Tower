@@ -2,7 +2,7 @@ const f = require('util').format
 //const Memcached = require('memcached')
 //const memcached = new Memcached('127.0.0.1:11222')
 const axios = require('axios')
-const request = require('request')
+const rp = require('request-promise')
 
 //config files
 //const bot = require('../core.js')
@@ -24,22 +24,22 @@ const steamURL = {
 
 const steamSearch = `https://store.steampowered.com/search/?term=`
 
-const getGameIDByName = (name) => {
+const getGameIDByName = async (name) => {
     let searchURL = steamSearch + name.replace(/ /g, '+')
 
-    request(searchURL, (err, res, html) => {
-        let appIDs = html.match(/data-ds-appid="\d+"/g)
-        let names = html.match(/<span class="title">.*<\/span>/g)
+    let html = await rp(searchURL)
+    let appIDs = html.match(/data-ds-appid="\d+"/g)
+    let names = html.match(/<span class="title">.*<\/span>/g)
 
-        console.log(name.split(''))
-        for (i = 0; i < names.length; i++) {
-            let title = names[i].substring(20, names[i].length - 7)
-            console.log(title.split(''))
-            //if (title == name)
-            //    return(appIDs[i])
-        }
 
-    })
+    console.log(name.split(''))
+    for (i = 0; i < names.length; i++) {
+        let title = names[i].substring(20, names[i].length - 7)
+        console.log(title.split(''))
+        if (title == name)
+            return(appIDs[i])
+    }
+
 
 }
 
