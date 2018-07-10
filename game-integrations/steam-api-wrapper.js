@@ -59,7 +59,7 @@ const getNewsForApp = async (name, count, maxLength) => {
     }
 
     let appID = null
-    console.log(name)
+    console.log(name.match(/\D/g)
     if (name.match(/\D/g) == null) {
         console.log('reached')
         //contains non digit characters so assume it's a name
