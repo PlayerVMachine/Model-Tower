@@ -31,6 +31,9 @@ const getGameIDByName = async (name) => {
     let appIDs = html.match(/data-ds-appid="\d+"/g)
     let names = html.match(/<span class="title">.*<\/span>/g)
 
+    if (appIDs == null)
+        return null
+
     for (i = 0; i < names.length; i++) {
         let title = names[i].substring(20, names[i].length - 7)
         if (title == name) {
@@ -38,8 +41,6 @@ const getGameIDByName = async (name) => {
             return(appIDs[i])
         }
     }
-
-    return null
 }
 
 getGameIDByName('Borderlands')
