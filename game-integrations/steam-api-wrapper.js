@@ -28,7 +28,7 @@ const getGameIDByName = (name) => {
     let searchURL = steamSearch + name.replace(/ /g, '+')
 
     const $  = cheerio.load(searchURL)
-    let res = $('a').data()
+    let res = $('a.search_result_row.ds_collapse_flag.app_impression_tracked').data()
     console.dir(res, {depth:10})
 }
 
