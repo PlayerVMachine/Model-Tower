@@ -50,6 +50,7 @@ const getNewsForApp = async (name, count, maxLength) => {
         return new Error(`Insufficent arguments!`)
     }
 
+    console.log(parseInt(count))
     if (parseInt(count) == NaN) {
         return new Error(`count is not a Number!`)
     }
@@ -72,7 +73,6 @@ const getNewsForApp = async (name, count, maxLength) => {
     }
 
     requestURL = f(`%s?appid=%s&count=%s&maxlength=%s&format=json`, steamURL.GetNewsForApp, appID, count, maxLength)
-    console.log(requestURL)
     try {
         let result = await axios.get(requestURL)
         return result.data
