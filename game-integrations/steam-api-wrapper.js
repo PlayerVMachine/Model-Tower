@@ -84,7 +84,7 @@ const getNewsForApp = async (name, count, maxLength) => {
 }
 
 async function test () {
-    let res = await getNewsForApp('sdfgsdg', 4, 200)
+    let res = await getNewsForApp('Borderlands', 'fd', 200)
     console.log(res)
 }
 test()
