@@ -76,7 +76,7 @@ const getNewsForApp = async (name, count, maxLength) => {
     console.log(requestURL)
     try {
         let result = await axios.get(requestURL)
-        return JSON.stringify(result, undefined, 4)
+        return result//JSON.stringify(result, undefined, 4)
 
     } catch (err) {
         return err.message
