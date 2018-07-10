@@ -33,13 +33,15 @@ const getGameIDByName = async (name) => {
 
     for (i = 0; i < names.length; i++) {
         let title = names[i].substring(20, names[i].length - 7)
-        if (title == name)
+        if (title == name) {
+            console.log(appIDs[i])
             return(appIDs[i])
+        }
     }
 
-
+    return null
 }
 
-console.log(getGameIDByName('Borderlands'))
-//console.log('----')
-//getGameIDByName('fjahsdfgjlkashg')
+getGameIDByName('Borderlands')
+console.log('----')
+getGameIDByName('fjahsdfgjlkashg')
