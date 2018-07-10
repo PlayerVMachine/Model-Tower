@@ -26,6 +26,7 @@ const steamSearch = `https://store.steampowered.com/search/?term=`
 
 const getGameIDByName = (name) => {
     let searchURL = steamSearch + name.replace(/ /g, '+')
+    console.log(searchURL)
     const $  = cheerio.load(searchURL)
     let res = $('ul').attr('data-ds-appid')
     console.log(res)
