@@ -1,6 +1,6 @@
 const f = require('util').format
-const Memcached = require('memcached')
-const memcached = new Memcached('127.0.0.1:11222')
+//const Memcached = require('memcached')
+//const memcached = new Memcached('127.0.0.1:11222')
 const axios = require('axios')
 const cheerio = require('cheerio')
 
