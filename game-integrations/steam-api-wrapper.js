@@ -50,17 +50,16 @@ const getNewsForApp = async (name, count, maxLength) => {
         return new Error(`Insufficent arguments!`)
     }
 
-    if (count == NaN || parseInt(count) == NaN) {
+    if (parseInt(count) == NaN) {
         return new Error(`count is not a Number!`)
     }
 
-    if (maxLength == NaN || parseInt(maxLength) == NaN) {
+    if (parseInt(maxLength) == NaN) {
         return new Error(`maxLength is not a Number!`)
     }
 
     let appID = null
     if (name.match(/\D/g) != null) {
-        console.log('reached')
         //contains non digit characters so assume it's a name
         appID = await getGameIDByName(name)
         if (!appID) {
