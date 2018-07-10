@@ -50,12 +50,11 @@ const getNewsForApp = async (name, count, maxLength) => {
         return new Error(`Insufficent arguments!`)
     }
 
-    console.log(parseInt(count))
-    if (parseInt(count) == NaN) {
+    if (isNaN(parseInt(count) == NaN)) {
         return new Error(`count is not a Number!`)
     }
 
-    if (parseInt(maxLength) == NaN) {
+    if (isNaN(parseInt(maxLength))) {
         return new Error(`maxLength is not a Number!`)
     }
 
