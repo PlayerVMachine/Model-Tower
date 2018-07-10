@@ -6,7 +6,7 @@ const cheerio = require('cheerio')
 
 //config files
 //const bot = require('../core.js')
-const config = require('./config.json')
+const config = require('../config.json')
 
 const steamURL = {
     GetNewsForApp: `http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/`,
