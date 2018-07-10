@@ -3,6 +3,7 @@ const f = require('util').format
 //const memcached = new Memcached('127.0.0.1:11222')
 const axios = require('axios')
 const cheerio = require('cheerio')
+const request = require('request')
 
 //config files
 //const bot = require('../core.js')
@@ -27,9 +28,12 @@ const steamSearch = `https://store.steampowered.com/search/?term=`
 const getGameIDByName = (name) => {
     let searchURL = steamSearch + name.replace(/ /g, '+')
 
-    const $  = cheerio.load(searchURL)
-    //let res = $('a.search_result_row.ds_collapse_flag.app_impression_tracked')
-    console.dir($, {depth:10})
+    request(searchURL, (err, res, html) => {
+        const $  = cheerio.load(html)
+        let test = $('a')
+        console.dir(test)
+    })
+
 }
 
 getGameIDByName('Borderlands')
