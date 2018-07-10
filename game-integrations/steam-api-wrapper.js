@@ -31,8 +31,9 @@ const getGameIDByName = (name) => {
     request(searchURL, (err, res, html) => {
         //const $  = cheerio.load(html)
         //let test = $('#data-ds-appid').
-        let results = html.match(/data-ds-appid="\d+"/g)
-        console.log(results)
+        //let results = html.match(/data-ds-appid="\d+"/g)
+        //console.log(results)
+        console.log(html)
     })
 
 }
