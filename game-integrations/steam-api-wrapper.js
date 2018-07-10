@@ -25,7 +25,7 @@ const steamURL = {
 const steamSearch = `https://store.steampowered.com/search/?term=`
 
 const getGameIDByName = async (name) => {
-    let searchURL = steamSearch + name.replace(/ /g, '+')
+    let searchURL = steamSearch + name.trim().replace(/ /g, '+')
 
     let html = await rp(searchURL)
     let appIDs = html.match(/data-ds-appid="\d+"/g)
@@ -37,12 +37,9 @@ const getGameIDByName = async (name) => {
     for (i = 0; i < names.length; i++) {
         let title = names[i].substring(20, names[i].length - 7)
         if (title == name) {
-            console.log(appIDs[i].substring(15, appIDs[i].length - 2))
-            return(appIDs[i].substring(15, appIDs[i].length - 2))
+            return(appIDs[i].substring(15, appIDs[i].length - 1))
         }
     }
-}
 
-getGameIDByName('Borderlands')
-console.log('----')
-getGameIDByName('fjahsdfgjlkashg')
+    return null
+}
