@@ -30,8 +30,10 @@ const getGameIDByName = (name) => {
 
     request(searchURL, (err, res, html) => {
         const $  = cheerio.load(html)
-        let test = $('a.search_result_row.ds_collapse_flag.app_impression_tracked')
-        console.dir(test, {depth: 10})
+        let test = $('a').each((i, elem) => {
+            if (this.attr('data-ds-appid'))
+                console.dir (this.attr('data-ds-appid'))
+        })
     })
 
 }
