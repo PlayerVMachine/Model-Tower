@@ -31,9 +31,10 @@ const getGameIDByName = (name) => {
         let appIDs = html.match(/data-ds-appid="\d+"/g)
         let names = html.match(/<span class="title">.*<\/span>/g)
 
+        console.log(name.split(''))
         for (i = 0; i < names.length; i++) {
             let title = names[i].substring(20, names[i].length - 7)
-            console.log(title)
+            console.log(title.split(''))
             //if (title == name)
             //    return(appIDs[i])
         }
