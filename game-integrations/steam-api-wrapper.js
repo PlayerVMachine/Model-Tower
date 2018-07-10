@@ -76,7 +76,7 @@ const getNewsForApp = async (name, count, maxLength) => {
     console.log(requestURL)
     try {
         let result = await axios.get(requestURL)
-        return JSON.stringify(result.data, undefined, 4)
+        return result.data
 
     } catch (err) {
         return err.message
@@ -84,7 +84,7 @@ const getNewsForApp = async (name, count, maxLength) => {
 }
 
 async function test () {
-    let res = await getNewsForApp('Borderlands', 4, 200)
+    let res = await getNewsForApp('sdfgsdg', 4, 200)
     console.log(res)
 }
 test()
