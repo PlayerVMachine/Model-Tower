@@ -29,7 +29,7 @@ const getGameIDByName = (name) => {
 
     const $  = cheerio.load(searchURL)
     let res = $('a').contents()
-    console.log(res)
+    console.dir(res, {depth:4})
 }
 
 getGameIDByName('Borderlands')
