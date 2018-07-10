@@ -111,6 +111,6 @@ const getGlobalAchievementPercentagesForApp = async (name) => {
 
 async function test () {
     let res = await getGlobalAchievementPercentagesForApp('Borderlands 2')
-    console.log(res)
+    console.dir(res, {depth:4})
 }
 test()
