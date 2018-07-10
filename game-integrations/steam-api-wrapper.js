@@ -43,3 +43,43 @@ const getGameIDByName = async (name) => {
 
     return null
 }
+
+const getNewsForApp = async (name, count, maxLength) => {
+    //Error if any arguments are missing
+    if (!name || !count || !maxLength) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    if (count == NaN || parseInt(count) == NaN) {
+        return new Error(`count is not a Number!`)
+    }
+
+    if (maxLength == NaN || parseInt(maxLength) == NaN) {
+        return new Error(`maxLength is not a Number!`)
+    }
+
+    let appID = null
+    if (!name.match(/\D/g)) {
+        //contains non digit characters so assume it's a name
+        appID = await getGameIDByName(name)
+        if (!appID) {
+            //error if the game is not found by name
+            return new Error(`Game Not Found`)
+        }
+    } else {
+        //appid is a number
+        appID = name
+    }
+
+    requestURL = f(`%s?appid=%s&count=%s&maxlength=%s&format=json`, steamURL.GetNewsForApp, appID, count, maxLength)
+
+    try {
+        let result = await axios.get(requestURL)
+        console.log(JSON.stringify(result, undefined, 4))
+
+    } catch (err) {
+
+    }
+}
+
+getNewsForApp('Borderlands', 4, 200)
