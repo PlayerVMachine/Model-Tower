@@ -71,18 +71,46 @@ const getNewsForApp = async (name, count, maxLength) => {
         appID = name
     }
 
+    //make the request and send the JSON response back
     requestURL = f(`%s?appid=%s&count=%s&maxlength=%s&format=json`, steamURL.GetNewsForApp, appID, count, maxLength)
     try {
         let result = await axios.get(requestURL)
         return result.data
+    } catch (err) {
+        return err.message
+    }
+}
 
+const getGlobalAchievementPercentagesForApp = async (name) => {
+    if (!name) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    let appID = null
+    if (name.match(/\D/g) != null) {
+        //contains non digit characters so assume it's a name
+        appID = await getGameIDByName(name)
+        if (!appID) {
+            //error if the game is not found by name
+            return new Error(`Game Not Found`)
+        }
+    } else {
+        //appid is a number
+        appID = name
+    }
+
+    //make the request and send the JSON response back
+    requestURL = f(`%s?gameid=%s&format=json`, steamURL.GetGlobalAchievementPercentagesForApp, appID)
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
     } catch (err) {
         return err.message
     }
 }
 
 async function test () {
-    let res = await getNewsForApp('Borderlands', 'fd', 200)
+    let res = await getGlobalAchievementPercentagesForApp('Borderlands 2')
     console.log(res)
 }
 test()
