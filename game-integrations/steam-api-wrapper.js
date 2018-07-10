@@ -72,7 +72,7 @@ const getNewsForApp = async (name, count, maxLength) => {
     }
 
     requestURL = f(`%s?appid=%s&count=%s&maxlength=%s&format=json`, steamURL.GetNewsForApp, appID, count, maxLength)
-
+    console.log(requestURL)
     try {
         let result = await axios.get(requestURL)
         return JSON.stringify(result, undefined, 4)
