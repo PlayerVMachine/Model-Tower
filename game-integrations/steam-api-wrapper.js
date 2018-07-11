@@ -212,6 +212,7 @@ const getFriendList = async (id) => {
     }
 
     requestURL = f(`%s?key=%s&steamid=%s&relationship=friend`, steamURL.GetFriendList, config.STEAM_KEY, steamID)
+    console.log(requestURL)
     try {
         let result = await axios.get(requestURL)
         return result.data
