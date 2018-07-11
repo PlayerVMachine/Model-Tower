@@ -137,7 +137,7 @@ const getGlobalStatsForGame = async (name, achievements) => {
     }
 
     //make the request and send the JSON response back
-    requestURL = f(`%s?format=json&appid=%s&count=%s&%s`, steamURL.GetGlobalAchievementPercentagesForApp, appID, achievements.length, achievementsList.join('&'))
+    requestURL = f(`%s?format=json&appid=%s&count=%s&%s`, steamURL.GetGlobalStatsForGame, appID, achievements.length, achievementsList.join('&'))
     console.log(requestURL)
     try {
         let result = await axios.get(requestURL)
