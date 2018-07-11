@@ -109,8 +109,48 @@ const getGlobalAchievementPercentagesForApp = async (name) => {
     }
 }
 
+const getGlobalStatsForGame = async (name, achievements) => {
+    if (!name || !count || !achievements) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    if (typeof(achievements) != 'object' || achievements.length == 0) {
+        return new Error(`Must provide an array of achievements`)
+    }
+
+    let achievementsList = []
+    for (i = 0; i < achievements.length; i ++) {
+        achievementsList.push(f(`name[%d]=%s`, i, achievements[i]))
+    }
+
+    let appID = null
+    if (name.match(/\D/g) != null) {
+        //contains non digit characters so assume it's a name
+        appID = await getGameIDByName(name)
+        if (!appID) {
+            //error if the game is not found by name
+            return new Error(`Game Not Found`)
+        }
+    } else {
+        //appid is a number
+        appID = name
+    }
+
+    //make the request and send the JSON response back
+    requestURL = f(`%s?format=json&appid=%s&count=%s&%s`, steamURL.GetGlobalAchievementPercentagesForApp, appID, achievements.length, achievementsList.join('&'))
+    console.log(requestURL)
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
+}
+
+
+
 async function test () {
-    let res = await getGlobalAchievementPercentagesForApp('Borderlands 2')
+    let res = await getGlobalStatsForGame(17740, ['global.map.emp_isle'])
     console.dir(res, {depth:4})
 }
 test()
