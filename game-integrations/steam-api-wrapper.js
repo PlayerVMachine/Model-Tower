@@ -23,6 +23,7 @@ const steamURL = {
 }
 
 const steamSearch = `https://store.steampowered.com/search/?term=`
+const steamCommunity = `https://steamcommunity.com/id/`
 
 const getGameIDByName = async (name) => {
     let searchURL = steamSearch + name.trim().replace(/ /g, '+')
@@ -42,6 +43,18 @@ const getGameIDByName = async (name) => {
     }
 
     return null
+}
+
+const getUserIDByUsername = async (name) => {
+    let searchURL = steamCommunity + name.trim()
+
+    let html = await rp(searchURL)
+    let userID = html.match(/"steamid":"\d+"/g)
+
+    if (userID == null)
+        return null
+    else
+        return userID.substring(11, userID.length - 1)
 }
 
 const getNewsForApp = async (name, count, maxLength) => {
@@ -147,10 +160,14 @@ const getGlobalStatsForGame = async (name, achievements) => {
     }
 }
 
+const getPlayerSummaries = async (steamids) => {
+    if (!steamids)
+}
+
 
 
 async function test () {
-    let res = await getGlobalStatsForGame('17740', ['global.map.emp_isle'])
-    console.dir(res, {depth:4})
+    let res = await getUserIDByUsername('wantSomeRanchSauce')
+    console.dir(res)
 }
 test()
