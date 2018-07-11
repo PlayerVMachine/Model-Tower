@@ -110,7 +110,7 @@ const getGlobalAchievementPercentagesForApp = async (name) => {
 }
 
 const getGlobalStatsForGame = async (name, achievements) => {
-    if (!name || !count || !achievements) {
+    if (!name || !achievements) {
         return new Error(`Insufficent arguments!`)
     }
 
