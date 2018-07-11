@@ -226,26 +226,26 @@ const getPlayerAchievements = async (app, name) => {
     }
 
     let steamID = null
-    if (id.match(/\D/g) != null) {
-        steamID = await getUserIDByUsername(id)
+    if (name.match(/\D/g) != null) {
+        steamID = await getUserIDByUsername(name)
         if (!steamID) {
             return new Error(f(`User not found: %s`, steamid))
         }
     } else {
-        steamID = id
+        steamID = name
     }
 
     let appID = null
-    if (name.match(/\D/g) != null) {
+    if (app.match(/\D/g) != null) {
         //contains non digit characters so assume it's a name
-        appID = await getGameIDByName(name)
+        appID = await getGameIDByName(app)
         if (!appID) {
             //error if the game is not found by name
             return new Error(`Game Not Found`)
         }
     } else {
         //appid is a number
-        appID = name
+        appID = app
     }
 
     requestURL = f(`%s?appid=%s&key=%s&steamid=%s&relationship=friend`, steamURL.GetPlayerAchievements, appID, config.STEAM_KEY, steamID)
