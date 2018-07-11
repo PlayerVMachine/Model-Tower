@@ -193,7 +193,7 @@ const getPlayerSummaries = async (steamids) => {
 }
 
 const getFriendList = async (id) => {
-    if (!id || steamids.length == 0) {
+    if (!id) {
         return new Error(`Insufficent arguments!`)
     }
 
