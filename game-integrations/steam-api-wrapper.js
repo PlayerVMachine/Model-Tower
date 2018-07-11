@@ -161,7 +161,7 @@ const getGlobalStatsForGame = async (name, achievements) => {
 }
 
 const getPlayerSummaries = async (steamids) => {
-    if (!steamids)
+    //if (!steamids)
 }
 
 
