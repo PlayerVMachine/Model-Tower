@@ -194,7 +194,7 @@ const getPlayerSummaries = async (steamids) => {
 
 
 async function test () {
-    let res = await getPlayerSummaries('wantSomeRanchSauce')
+    let res = await getPlayerSummaries(['wantSomeRanchSauce'])
     console.dir(res)
 }
 test()
