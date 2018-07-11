@@ -150,7 +150,7 @@ const getGlobalStatsForGame = async (name, achievements) => {
 
 
 async function test () {
-    let res = await getGlobalStatsForGame(17740, ['global.map.emp_isle'])
+    let res = await getGlobalStatsForGame('17740', ['global.map.emp_isle'])
     console.dir(res, {depth:4})
 }
 test()
