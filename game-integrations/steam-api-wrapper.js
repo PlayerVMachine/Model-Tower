@@ -194,7 +194,7 @@ const getPlayerSummaries = async (steamids) => {
 
 
 async function test () {
-    let res = await getPlayerSummaries(['wantSomeRanchSauce'])
+    let res = await getPlayerSummaries(['Inversman', '76561198035060083'])
     console.dir(res, {depth: 4})
 }
 test()
