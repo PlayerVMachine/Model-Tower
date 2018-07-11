@@ -54,7 +54,7 @@ const getUserIDByUsername = async (name) => {
     if (userID == null)
         return null
     else
-        return userID[0].substring(10, userID[0].length - 1)
+        return userID[0].substring(11, userID[0].length - 1)
 }
 
 const getNewsForApp = async (name, count, maxLength) => {
@@ -128,7 +128,7 @@ const getGlobalStatsForGame = async (name, achievements) => {
     }
 
     if (typeof(achievements) != 'object' || achievements.length == 0) {
-        return new Error(`Must provide an array of achievements`)
+        return new Error(`Must provide an array of achievements!`)
     }
 
     let achievementsList = []
@@ -151,7 +151,6 @@ const getGlobalStatsForGame = async (name, achievements) => {
 
     //make the request and send the JSON response back
     requestURL = f(`%s?format=json&appid=%s&count=%s&%s`, steamURL.GetGlobalStatsForGame, appID, achievements.length, achievementsList.join('&'))
-    console.log(requestURL)
     try {
         let result = await axios.get(requestURL)
         return result.data
@@ -161,13 +160,41 @@ const getGlobalStatsForGame = async (name, achievements) => {
 }
 
 const getPlayerSummaries = async (steamids) => {
-    //if (!steamids)
+    if (!steamids || steamids.length == 0) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    if (typeof(steamids) != 'object') {
+        return new Error(`Must provide an array of strings!`)
+    }
+
+    let listOfIDs = []
+    for (i = 0; i < steamids.length; i++) {
+        if (steamids[i].match(/\D/g) != null) {
+            let id = await getUserIDByUsername(steamids[i])
+            if (!id) {
+                return new Error(f(`User not found: %s`, steamids[i]))
+            } else {
+                listOfIDs.push(id)
+            }
+        } else {
+            listOfIDs.push(steamids[i])
+        }
+    }
+
+    requestURL = f(`%s?key=%s&steamids=%s`, steamURL.GetPlayerSummaries, config.STEAM_KEY, listOfIDs.join(','))
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
 }
 
 
 
 async function test () {
-    let res = await getUserIDByUsername('wantSomeRanchSauce')
+    let res = await getPlayerSummaries('wantSomeRanchSauce')
     console.dir(res)
 }
 test()
