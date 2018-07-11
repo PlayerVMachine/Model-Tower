@@ -203,7 +203,7 @@ const getFriendList = async (id) => {
 
     let steamID = null
     if (id.match(/\D/g) != null) {
-        let steamID = await getUserIDByUsername(id)
+        steamID = await getUserIDByUsername(id)
         if (!steamID) {
             return new Error(f(`User not found: %s`, steamid))
         }
