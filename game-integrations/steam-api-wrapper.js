@@ -257,6 +257,22 @@ const getPlayerAchievements = async (app, name) => {
     }
 }
 
+const getOwnedGames = async (name) => {
+    if (!name) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+        let steamID = null
+    if (name.match(/\D/g) != null) {
+        steamID = await getUserIDByUsername(name)
+        if (!steamID) {
+            return new Error(f(`User not found: %s`, steamid))
+        }
+    } else {
+        steamID = name
+    }
+}
+
 const getSchemaForGame = async (app) => {
     if (!app) {
         return new Error(`Insufficent arguments!`)
