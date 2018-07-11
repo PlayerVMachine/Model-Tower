@@ -212,7 +212,6 @@ const getFriendList = async (id) => {
     }
 
     requestURL = f(`%s?key=%s&steamid=%s&relationship=friend`, steamURL.GetFriendList, config.STEAM_KEY, steamID)
-    console.log(requestURL)
     try {
         let result = await axios.get(requestURL)
         return result.data
@@ -221,10 +220,45 @@ const getFriendList = async (id) => {
     }
 }
 
+const getPlayerAchievements = async (app, name) => {
+    if (!app || !name) {
+        return new Error(`Insufficent arguments!`)
+    }
 
+    let steamID = null
+    if (id.match(/\D/g) != null) {
+        steamID = await getUserIDByUsername(id)
+        if (!steamID) {
+            return new Error(f(`User not found: %s`, steamid))
+        }
+    } else {
+        steamID = id
+    }
+
+    let appID = null
+    if (name.match(/\D/g) != null) {
+        //contains non digit characters so assume it's a name
+        appID = await getGameIDByName(name)
+        if (!appID) {
+            //error if the game is not found by name
+            return new Error(`Game Not Found`)
+        }
+    } else {
+        //appid is a number
+        appID = name
+    }
+
+    requestURL = f(`%s?appid=%s&key=%s&steamid=%s&relationship=friend`, steamURL.GetPlayerAchievements, appID, config.STEAM_KEY, steamID)
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
+}
 
 async function test () {
-    let res = await getFriendList('Inversman')
+    let res = await getPlayerAchievements('Borderlands 2', 'Inversman')
     console.dir(res, {depth: 4})
 }
 test()
