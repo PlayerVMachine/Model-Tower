@@ -159,6 +159,7 @@ const getGlobalStatsForGame = async (name, achievements) => {
     }
 }
 
+//NOTE: if steamids is a mix of ids and usernames order cannot be guaranteed
 const getPlayerSummaries = async (steamids) => {
     if (!steamids || steamids.length == 0) {
         return new Error(`Insufficent arguments!`)
@@ -191,10 +192,38 @@ const getPlayerSummaries = async (steamids) => {
     }
 }
 
+const getFriendList = async (id) => {
+    if (!id || steamids.length == 0) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    if (typeof(id) != 'string') {
+        return new Error(`Must provide a string!`)
+    }
+
+    let steamID = null
+    if (id.match(/\D/g) != null) {
+        let steamID = await getUserIDByUsername(id)
+        if (!steamID) {
+            return new Error(f(`User not found: %s`, steamid))
+        }
+    } else {
+        steamID = id
+    }
+
+    requestURL = f(`%s?key=%s&steamid=%s&relationship=friend`, steamURL.GetFriendList, config.STEAM_KEY, steamID)
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
+}
+
 
 
 async function test () {
-    let res = await getPlayerSummaries(['Inversman', '76561198035060083'])
+    let res = await getFriendList('Inversman')
     console.dir(res, {depth: 4})
 }
 test()
