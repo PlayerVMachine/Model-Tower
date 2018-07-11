@@ -257,8 +257,35 @@ const getPlayerAchievements = async (app, name) => {
     }
 }
 
+const getSchemaForGame = async (app) => {
+    if (!app) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    let appID = null
+    if (app.match(/\D/g) != null) {
+        //contains non digit characters so assume it's a name
+        appID = await getGameIDByName(app)
+        if (!appID) {
+            //error if the game is not found by name
+            return new Error(`Game Not Found`)
+        }
+    } else {
+        //appid is a number
+        appID = app
+    }
+
+    requestURL = f(`%s?key=%s&appid=%s`, steamURL.GetSchemaForGame, config.STEAM_KEY, appID)
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
+}
+
 async function test () {
-    let res = await getPlayerAchievements('Borderlands 2', 'Inversman')
+    let res = await getSchemaForGame('Borderlands 2')
     console.dir(res, {depth: 4})
 }
 test()
