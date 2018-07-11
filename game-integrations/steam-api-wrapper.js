@@ -54,7 +54,7 @@ const getUserIDByUsername = async (name) => {
     if (userID == null)
         return null
     else
-        return userID.substring(11, userID.length - 1)
+        return userID[0].substring(11, userID.length - 1)
 }
 
 const getNewsForApp = async (name, count, maxLength) => {
