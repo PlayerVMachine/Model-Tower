@@ -323,7 +323,7 @@ const getRecentlyPlayedGames = async (name) => {
         steamID = name
     }
 
-    requestURL = f(`%s?key=%s&steamid=%s`, steamURL.GetOwnedGames, config.STEAM_KEY, steamID)
+    requestURL = f(`%s?key=%s&steamid=%s`, steamURL.GetRecentlyPlayedGames, config.STEAM_KEY, steamID)
     try {
         let result = await axios.get(requestURL)
         return result.data
