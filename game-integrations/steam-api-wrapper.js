@@ -20,6 +20,7 @@ const steamURL = {
     GetRecentlyPlayedGames: `http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/`,
     IsPlayingSharedGame: `http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/`,
     GetSchemaForGame: `http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/`,
+    GetPlayerBans: `http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/`
 }
 
 const steamSearch = `https://store.steampowered.com/search/?term=`
@@ -332,8 +333,77 @@ const getRecentlyPlayedGames = async (name) => {
     }
 }
 
+const isPlayingSharedGame = async (app, name) => {
+ if (!app || !name) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    let steamID = null
+    if (name.match(/\D/g) != null) {
+        steamID = await getUserIDByUsername(name)
+        if (!steamID) {
+            return new Error(f(`User not found: %s`, steamid))
+        }
+    } else {
+        steamID = name
+    }
+
+    let appID = null
+    if (app.match(/\D/g) != null) {
+        //contains non digit characters so assume it's a name
+        appID = await getGameIDByName(app)
+        if (!appID) {
+            //error if the game is not found by name
+            return new Error(`Game Not Found`)
+        }
+    } else {
+        //appid is a number
+        appID = app
+    }
+
+    requestURL = f(`%s?key=%s&steamid=%s&appid_playing=%s`, steamURL.IsPlayingSharedGame, config.STEAM_KEY, steamID, appID)
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
+}
+
+const getPlayerBans = async (steamids) => {
+    if (!steamids || steamids.length == 0) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    if (typeof(steamids) != 'object') {
+        return new Error(`Must provide an array of strings!`)
+    }
+
+    let listOfIDs = []
+    for (i = 0; i < steamids.length; i++) {
+        if (steamids[i].match(/\D/g) != null) {
+            let id = await getUserIDByUsername(steamids[i])
+            if (!id) {
+                return new Error(f(`User not found: %s`, steamids[i]))
+            } else {
+                listOfIDs.push(id)
+            }
+        } else {
+            listOfIDs.push(steamids[i])
+        }
+    }
+
+    requestURL = f(`%s?key=%s&steamids=%s`, steamURL.GetPlayerBans, config.STEAM_KEY, listOfIDs.join(','))
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
+}
+
 async function test () {
-    let res = await getRecentlyPlayedGames('Inversman')
+    let res = await getPlayerBans(['Inversman'])
     console.dir(res, {depth: 4})
 }
 test()
