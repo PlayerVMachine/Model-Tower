@@ -271,6 +271,14 @@ const getOwnedGames = async (name) => {
     } else {
         steamID = name
     }
+
+    requestURL = f(`%s?key=%s&steamid=%s&include_appinfo`, steamURL.GetOwnedGames, config.STEAM_KEY, steamID)
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
 }
 
 const getSchemaForGame = async (app) => {
@@ -300,8 +308,12 @@ const getSchemaForGame = async (app) => {
     }
 }
 
+const GetRecentlyPlayedGames = async (name) => {
+
+}
+
 async function test () {
-    let res = await getSchemaForGame('Borderlands 2')
+    let res = await getOwnedGames('Inverseman')
     console.dir(res, {depth: 4})
 }
 test()
