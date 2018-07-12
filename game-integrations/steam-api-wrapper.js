@@ -313,7 +313,7 @@ const GetRecentlyPlayedGames = async (name) => {
 }
 
 async function test () {
-    let res = await getOwnedGames('Inverseman')
+    let res = await getOwnedGames('Inversman')
     console.dir(res, {depth: 4})
 }
 test()
