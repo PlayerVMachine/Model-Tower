@@ -266,7 +266,7 @@ const getOwnedGames = async (name) => {
     if (name.match(/\D/g) != null) {
         steamID = await getUserIDByUsername(name)
         if (!steamID) {
-            return new Error(f(`User not found: %s`, steamid))
+            return new Error(f(`User not found: %s`, name))
         }
     } else {
         steamID = name
