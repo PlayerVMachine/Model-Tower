@@ -272,7 +272,7 @@ const getOwnedGames = async (name) => {
         steamID = name
     }
 
-    requestURL = f(`%s?key=%s&steamid=%s&include_appinfo`, steamURL.GetOwnedGames, config.STEAM_KEY, steamID)
+    requestURL = f(`%s?key=%s&steamid=%s&include_appinfo=true`, steamURL.GetOwnedGames, config.STEAM_KEY, steamID)
     try {
         let result = await axios.get(requestURL)
         return result.data
