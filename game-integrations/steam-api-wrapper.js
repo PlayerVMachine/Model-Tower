@@ -272,7 +272,7 @@ const getOwnedGames = async (name) => {
         steamID = name
     }
 
-    requestURL = f(`%s?key=%s&steamid=%s&include_appinfo=1`, steamURL.GetOwnedGames, config.STEAM_KEY, steamID)
+    requestURL = f(`%s?key=%s&steamid=%s&include_appinfo=1&include_played_free_games=1`, steamURL.GetOwnedGames, config.STEAM_KEY, steamID)
     try {
         let result = await axios.get(requestURL)
         return result.data
@@ -308,12 +308,32 @@ const getSchemaForGame = async (app) => {
     }
 }
 
-const GetRecentlyPlayedGames = async (name) => {
+const getRecentlyPlayedGames = async (name) => {
+    if (!name) {
+        return new Error(`Insufficent arguments!`)
+    }
 
+        let steamID = null
+    if (name.match(/\D/g) != null) {
+        steamID = await getUserIDByUsername(name)
+        if (!steamID) {
+            return new Error(f(`User not found: %s`, name))
+        }
+    } else {
+        steamID = name
+    }
+
+    requestURL = f(`%s?key=%s&steamid=%s`, steamURL.GetOwnedGames, config.STEAM_KEY, steamID)
+    try {
+        let result = await axios.get(requestURL)
+        return result.data
+    } catch (err) {
+        return err.message
+    }
 }
 
 async function test () {
-    let res = await getOwnedGames('Inversman')
+    let res = await getRecentlyPlayedGames('Inversman')
     console.dir(res, {depth: 4})
 }
 test()
