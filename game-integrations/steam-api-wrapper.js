@@ -407,7 +407,7 @@ const getAssetUrl = async (app) => {
 }
 
 async function test () {
-    let res = await getSchemaForGame('borderlands')
+    let res = await getSchemaForGame('Borderlands')
     console.dir(res, {depth: 4})
 }
 test()
