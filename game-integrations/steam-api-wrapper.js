@@ -402,8 +402,12 @@ const getPlayerBans = async (steamids) => {
     }
 }
 
+const getAssetUrl = async (app) => {
+    //http://steamcommunity.com/profiles/
+}
+
 async function test () {
-    let res = await getPlayerBans(['Inversman'])
+    let res = await getSchemaForGame('Bioshock')
     console.dir(res, {depth: 4})
 }
 test()
