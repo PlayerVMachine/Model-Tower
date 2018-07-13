@@ -425,7 +425,7 @@ const getAssetUrl = async (app, hash) => {
 }
 
 async function test () {
-    let res = await getSchemaForGame('Bioshock')
+    let res = await getSchemaForGame('Banner Saga')
     console.dir(res, {depth: 4})
     return f(`%s%s/%s.jpg`, assetBaseURL, appID, hash)
 }
