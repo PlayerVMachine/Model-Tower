@@ -37,9 +37,11 @@ const getGameIDByName = async (name) => {
     if (appIDs == null)
         return null
 
+    //
+
     for (i = 0; i < names.length; i++) {
         let title = names[i].substring(20, names[i].length - 7)
-        if (title.replace(/[©©®™]/g, '').toLowerCase() == name.toLowerCase) {
+        if (title.replace(/[©©®™]/g, '').toLowerCase() == name.toLowerCase()) {
             return(appIDs[i].substring(15, appIDs[i].length - 1))
         }
     }
