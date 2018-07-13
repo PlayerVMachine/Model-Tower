@@ -1,11 +1,8 @@
 const f = require('util').format
-//const Memcached = require('memcached')
-//const memcached = new Memcached('127.0.0.1:11222')
 const axios = require('axios')
 const rp = require('request-promise')
 
 //config files
-//const bot = require('../core.js')
 const config = require('../config.json')
 
 const steamURL = {
@@ -25,6 +22,10 @@ const steamURL = {
 
 const steamSearch = `https://store.steampowered.com/search/?term=`
 const steamCommunity = `https://steamcommunity.com/id/`
+//http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{hash}.jpg
+const assetBaseURL = `http://media.steampowered.com/steamcommunity/public/images/apps/`
+//http://steamcommunity.com/profiles/{steamid}/stats/{appid}
+const communityStatsURL = `http://steamcommunity.com/profiles/`
 
 const getGameIDByName = async (name) => {
     let searchURL = steamSearch + name.trim().replace(/ /g, '+')
@@ -38,7 +39,7 @@ const getGameIDByName = async (name) => {
 
     for (i = 0; i < names.length; i++) {
         let title = names[i].substring(20, names[i].length - 7)
-        if (title == name) {
+        if (title.replace(/[©©®™]/g, '').toLowerCase() == name.toLowerCase) {
             return(appIDs[i].substring(15, appIDs[i].length - 1))
         }
     }
@@ -58,9 +59,9 @@ const getUserIDByUsername = async (name) => {
         return userID[0].substring(11, userID[0].length - 1)
 }
 
-const getNewsForApp = async (name, count, maxLength) => {
+const getNewsForApp = async (app, count, maxLength) => {
     //Error if any arguments are missing
-    if (!name || !count || !maxLength) {
+    if (!app || !count || !maxLength) {
         return new Error(`Insufficent arguments!`)
     }
 
@@ -73,16 +74,16 @@ const getNewsForApp = async (name, count, maxLength) => {
     }
 
     let appID = null
-    if (name.match(/\D/g) != null) {
+    if (app.match(/\D/g) != null) {
         //contains non digit characters so assume it's a name
-        appID = await getGameIDByName(name)
+        appID = await getGameIDByName(app)
         if (!appID) {
             //error if the game is not found by name
             return new Error(`Game Not Found`)
         }
     } else {
         //appid is a number
-        appID = name
+        appID = app
     }
 
     //make the request and send the JSON response back
@@ -95,22 +96,22 @@ const getNewsForApp = async (name, count, maxLength) => {
     }
 }
 
-const getGlobalAchievementPercentagesForApp = async (name) => {
-    if (!name) {
+const getGlobalAchievementPercentagesForApp = async (app) => {
+    if (!app) {
         return new Error(`Insufficent arguments!`)
     }
 
     let appID = null
-    if (name.match(/\D/g) != null) {
+    if (app.match(/\D/g) != null) {
         //contains non digit characters so assume it's a name
-        appID = await getGameIDByName(name)
+        appID = await getGameIDByName(app)
         if (!appID) {
             //error if the game is not found by name
             return new Error(`Game Not Found`)
         }
     } else {
         //appid is a number
-        appID = name
+        appID = app
     }
 
     //make the request and send the JSON response back
@@ -123,8 +124,8 @@ const getGlobalAchievementPercentagesForApp = async (name) => {
     }
 }
 
-const getGlobalStatsForGame = async (name, achievements) => {
-    if (!name || !achievements) {
+const getGlobalStatsForGame = async (app, achievements) => {
+    if (!app || !achievements) {
         return new Error(`Insufficent arguments!`)
     }
 
@@ -138,16 +139,16 @@ const getGlobalStatsForGame = async (name, achievements) => {
     }
 
     let appID = null
-    if (name.match(/\D/g) != null) {
+    if (app.match(/\D/g) != null) {
         //contains non digit characters so assume it's a name
-        appID = await getGameIDByName(name)
+        appID = await getGameIDByName(app)
         if (!appID) {
             //error if the game is not found by name
             return new Error(`Game Not Found`)
         }
     } else {
         //appid is a number
-        appID = name
+        appID = app
     }
 
     //make the request and send the JSON response back
@@ -193,23 +194,23 @@ const getPlayerSummaries = async (steamids) => {
     }
 }
 
-const getFriendList = async (id) => {
-    if (!id) {
+const getFriendList = async (name) => {
+    if (!name) {
         return new Error(`Insufficent arguments!`)
     }
 
-    if (typeof(id) != 'string') {
+    if (typeof(name) != 'string') {
         return new Error(`Must provide a string!`)
     }
 
     let steamID = null
-    if (id.match(/\D/g) != null) {
-        steamID = await getUserIDByUsername(id)
+    if (name.match(/\D/g) != null) {
+        steamID = await getUserIDByUsername(name)
         if (!steamID) {
             return new Error(f(`User not found: %s`, steamid))
         }
     } else {
-        steamID = id
+        steamID = name
     }
 
     requestURL = f(`%s?key=%s&steamid=%s&relationship=friend`, steamURL.GetFriendList, config.STEAM_KEY, steamID)
@@ -402,12 +403,49 @@ const getPlayerBans = async (steamids) => {
     }
 }
 
-const getAssetUrl = async (app) => {
-    //http://steamcommunity.com/profiles/
+const getAssetUrl = async (app, hash) => {
+    if (!app) {
+        return new Error(`Insufficent arguments!`)
+    }
+
+    let appID = null
+    if (app.match(/\D/g) != null) {
+        //contains non digit characters so assume it's a name
+        appID = await getGameIDByName(app)
+        if (!appID) {
+            //error if the game is not found by name
+            return new Error(`Game Not Found`)
+        }
+    } else {
+        //appid is a number
+        appID = app
+    }
+
+    return f(`%s%s/%s.jpg`, assetBaseURL, appID, hash)
 }
 
 async function test () {
-    let res = await getSchemaForGame('Borderlands')
+    let res = await getSchemaForGame('Bioshock')
     console.dir(res, {depth: 4})
+    return f(`%s%s/%s.jpg`, assetBaseURL, appID, hash)
 }
 test()
+
+module.exports = {
+    assetBaseURL,
+    communityStatsURL,
+    getGameIDByName,
+    getUserIDByUsername,
+    getNewsForApp,
+    getGlobalAchievementPercentagesForApp,
+    getGlobalStatsForGame,
+    getPlayerSummaries,
+    getFriendList,
+    getPlayerAchievements,
+    getOwnedGames,
+    getSchemaForGame,
+    getRecentlyPlayedGames,
+    isPlayingSharedGame,
+    getPlayerBans,
+    getAssetUrl
+}
