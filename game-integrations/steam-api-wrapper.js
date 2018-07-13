@@ -427,7 +427,7 @@ const getAssetUrl = async (app, hash) => {
 }
 
 async function test () {
-    let res = await getNewsForApp('Bioshock')
+    let res = await getNewsForApp('Bioshock', 5, 200)
     console.dir(res, {depth: 4})
 }
 test()
