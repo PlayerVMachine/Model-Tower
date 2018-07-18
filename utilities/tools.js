@@ -170,7 +170,7 @@ const getUsersFromReact = async (msg, args) => {
     }, `One time role to mention users who reacted to a message`)
 
     reactors.forEach(async (u) => {
-        let addUser = await msg.guild.addMemberRole(u.id, makeOneTimeRole.id, `Needs to be mentioned`)
+        let addUser = await msg.channel.guild.addMemberRole(u.id, makeOneTimeRole.id, `Needs to be mentioned`)
     })
 
     bot.bot.createMessage(msg.channel.id, `One time role ready to go!`)
