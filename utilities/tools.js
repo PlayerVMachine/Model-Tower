@@ -164,7 +164,7 @@ const getUsersFromReact = async (msg, args) => {
     let Message = await Channel.getMessage(messageid)
     let reactors = await Message.getReaction(args[2])
 
-    let makeOneTimeRole = await msg.guild.createRole({
+    let makeOneTimeRole = await msg.channel.guild.createRole({
         name: `Mentionable`,
         mentionable: true
     }, `One time role to mention users who reacted to a message`)
