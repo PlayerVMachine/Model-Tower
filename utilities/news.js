@@ -64,6 +64,11 @@ const subscribeToNews = async (msg, args) => {
             return
         }
 
+        if (!msg.channel.permissionsOf(ind.bot.user.id).has("externalEmoji") ||) {
+            bot.bot.createMessage(msg.channel.id, `I'm missing the permission to react and/or to use external emojis and cannot run this command without them.`)
+            return
+        }
+
         let embed = {
             embed: {
                 title: `Available Game Newsfeeds`,

@@ -78,7 +78,7 @@ exports.parser = async (prefix, msg) => {
     let args = msg.content.split(' ').slice(1)
     let fullArgs = [command].concat(args)
 
-    if (['prefix', 'ping', 'server', 'about', 'help', 'invite'].includes(command)) {
+    if (['prefix', 'ping', 'server', 'about', 'help', 'invite', 'special'].includes(command)) {
         cooldown(command, msg, fullArgs, 10000, userWait, util.commandHandler)
     } else if (['clean'].includes(command)) {
         cooldown(command, msg, fullArgs, 30000, userWait, util.commandHandler)

@@ -28,6 +28,8 @@ exports.commandHandler = (msg, args) => {
 		server(msg, restOfArgs)
 	} else if (args[0] == 'eval') {
         discEval(msg, restOfArgs)
+    } else if (args[0] == 'special') {
+        getUsersFromReact(msg, restOfArgs)
     }
 }
 
@@ -153,3 +155,25 @@ const discEval = async (msg, args) => {
   }
 }
 
+const getUsersFromReact = async (msg, args) => {
+    let channelid = args[0]
+    let messageid = args[1]
+    let emojiid = args[2]
+
+    let Channel = msg.channel.guild.channels.get(channelid)
+    let Message = await Channel.getMessage(messageid)
+    let reactors = await Message.getReaction(args[2])
+
+    let makeOneTimeRole = await msg.guild.createRole({
+        name: `Mentionable`,
+        mentionable: true
+    }, `One time role to mention users who reacted to a message`)
+
+    reactors.forEach(async (u) => {
+        let addUser = await msg.guild.addMemberRole(u.id, makeOneTimeRole.id, `Needs to be mentioned`)
+    })
+
+    bot.bot.createMessage(msg.channel.id, `One time role ready to go!`)
+    //EVENTUALLY One time mention use so creates a role with all the reactors and once the role id is mentioned once in a message the role is deleted
+
+}
