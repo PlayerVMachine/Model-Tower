@@ -215,6 +215,18 @@ bot.on(`presenceUpdate`, async (other, old) => {
             if(!announcesStreams) {
                 return
             } else if (announcesStreams.stream) {
+                let lastMessages = await bot.getMessages(announcesStreams.stream, 20)
+                lastMessages.forEach(m => {
+                    if (m.author.id == bot.user.id) {
+                        if (m.embeds != undefined) {
+                            if (m.embeds[0].embed.author.name == other.username) {
+                                if (new Date(m.timestamp) > new Date(timestamp - 60 * 60 * 1000)) {
+                                    m.delete('Replace with latest stream message')
+                                }
+                            }
+                        }
+                    }
+                })
                 bot.createMessage(announcesStreams.stream, embed)
             }
         } else {
